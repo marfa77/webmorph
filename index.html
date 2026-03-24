@@ -90,6 +90,7 @@
         <nav class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="text-2xl font-bold">webmorp.art</a>
             <div class="flex items-center gap-4">
+                <a href="#templates" class="text-gray-600 hover:text-[#0A0A0A] text-sm font-medium hidden sm:inline">Templates</a>
                 <a href="#work" class="text-gray-600 hover:text-[#0A0A0A] text-sm font-medium hidden sm:inline">Examples</a>
                 <span class="bg-[#0066FF] text-white px-3 py-1 rounded-full text-sm">24h delivery</span>
                 <a href="#contact" class="bg-[#0A0A0A] text-white px-6 py-2 rounded-lg hover:bg-opacity-90">Get Started</a>
@@ -106,51 +107,68 @@
         </div>
     </section>
 
-    <!-- Templates -->
-    <section class="py-20 bg-gray-50">
+    <!-- Reference: official Tailwind Plus templates (inspiration) -->
+    <section class="py-20 bg-gray-50" id="templates">
         <div class="max-w-6xl mx-auto px-4">
-            <h2 class="font-playfair text-4xl mb-12 text-center">Fast and Cheap Website Templates</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Minimalist Apple-esque -->
-                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-bold mb-4">Minimalist Apple-esque</h3>
-                    <div class="aspect-video bg-gray-100 rounded flex items-center justify-center">
-                        <div class="w-4/5 space-y-4">
-                            <div class="h-8 bg-gray-200 rounded w-3/4"></div>
-                            <div class="h-4 bg-gray-200 rounded"></div>
-                            <div class="h-4 bg-gray-200 rounded w-2/3"></div>
-                        </div>
+            <h2 class="font-playfair text-4xl mb-3 text-center">Five Tailwind templates we use as reference</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-2">Official <strong class="text-gray-800">Tailwind Plus</strong> kits by the Tailwind CSS team — production-grade layouts and components. We can morph your content into this level of polish for $100.</p>
+            <p class="text-center text-sm text-gray-500 mb-12">Preview: live marketing pages on tailwindcss.com · not included in the $100 fee (inspiration only).</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="https://tailwindcss.com/plus/templates/radiant" target="_blank" rel="noopener noreferrer" class="group flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg hover:border-[#0066FF] hover:shadow-lg transition-all">
+                    <div class="aspect-[16/10] bg-gray-100 overflow-hidden border-b border-gray-100">
+                        <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Ftailwindcss.com%2Fplus%2Ftemplates%2Fradiant?w=800" alt="Radiant template preview" width="800" height="500" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
                     </div>
-                    <p class="mt-4 text-gray-600">Clean, focused, purposeful</p>
-                </div>
-
-                <!-- Tech Noir -->
-                <div class="bg-[#0A0A0A] text-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-bold mb-4">Tech Noir</h3>
-                    <div class="aspect-video bg-gray-900 rounded flex items-center justify-center">
-                        <div class="w-4/5 space-y-4">
-                            <div class="h-8 bg-[#0066FF]/20 rounded w-3/4"></div>
-                            <div class="h-4 bg-[#0066FF]/20 rounded"></div>
-                            <div class="h-4 bg-[#0066FF]/20 rounded w-2/3"></div>
-                        </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold mb-1 group-hover:text-[#0066FF]">Radiant</h3>
+                        <p class="text-xs font-medium text-[#0066FF] mb-2">SaaS marketing · multi-page</p>
+                        <p class="text-sm text-gray-600 flex-1">Full marketing site for a SaaS — hero, features, pricing, blog patterns.</p>
+                        <span class="text-sm text-[#0066FF] font-medium mt-3">View on Tailwind Plus →</span>
                     </div>
-                    <p class="mt-4 text-gray-400">Bold, dramatic, futuristic</p>
-                </div>
-
-                <!-- High-Fashion Editorial -->
-                <div class="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
-                    <h3 class="text-xl font-bold mb-4">High-Fashion Editorial</h3>
-                    <div class="aspect-video bg-gray-100 rounded p-4">
-                        <div class="grid grid-cols-2 gap-4 h-full">
-                            <div class="bg-gray-200 rounded"></div>
-                            <div class="space-y-2">
-                                <div class="h-4 bg-gray-200 rounded"></div>
-                                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
-                            </div>
-                        </div>
+                </a>
+                <a href="https://tailwindcss.com/plus/templates/salient" target="_blank" rel="noopener noreferrer" class="group flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg hover:border-[#0066FF] hover:shadow-lg transition-all">
+                    <div class="aspect-[16/10] bg-gray-100 overflow-hidden border-b border-gray-100">
+                        <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Ftailwindcss.com%2Fplus%2Ftemplates%2Fsalient?w=800" alt="Salient template preview" width="800" height="500" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
                     </div>
-                    <p class="mt-4 text-gray-600">Elegant, sophisticated, refined</p>
-                </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold mb-1 group-hover:text-[#0066FF]">Salient</h3>
+                        <p class="text-xs font-medium text-[#0066FF] mb-2">SaaS · single landing</p>
+                        <p class="text-sm text-gray-600 flex-1">Strong one-page launch — hero, logos, features, CTA stack.</p>
+                        <span class="text-sm text-[#0066FF] font-medium mt-3">View on Tailwind Plus →</span>
+                    </div>
+                </a>
+                <a href="https://tailwindcss.com/plus/templates/spotlight" target="_blank" rel="noopener noreferrer" class="group flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg hover:border-[#0066FF] hover:shadow-lg transition-all">
+                    <div class="aspect-[16/10] bg-gray-100 overflow-hidden border-b border-gray-100">
+                        <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Ftailwindcss.com%2Fplus%2Ftemplates%2Fspotlight?w=800" alt="Spotlight template preview" width="800" height="500" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold mb-1 group-hover:text-[#0066FF]">Spotlight</h3>
+                        <p class="text-xs font-medium text-[#0066FF] mb-2">Personal / portfolio</p>
+                        <p class="text-sm text-gray-600 flex-1">Personal site with writing, projects, and clean typography.</p>
+                        <span class="text-sm text-[#0066FF] font-medium mt-3">View on Tailwind Plus →</span>
+                    </div>
+                </a>
+                <a href="https://tailwindcss.com/plus/templates/studio" target="_blank" rel="noopener noreferrer" class="group flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg hover:border-[#0066FF] hover:shadow-lg transition-all">
+                    <div class="aspect-[16/10] bg-gray-100 overflow-hidden border-b border-gray-100">
+                        <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Ftailwindcss.com%2Fplus%2Ftemplates%2Fstudio?w=800" alt="Studio template preview" width="800" height="500" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold mb-1 group-hover:text-[#0066FF]">Studio</h3>
+                        <p class="text-xs font-medium text-[#0066FF] mb-2">Agency / creative</p>
+                        <p class="text-sm text-gray-600 flex-1">Case studies, services, team — for studios and freelancers.</p>
+                        <span class="text-sm text-[#0066FF] font-medium mt-3">View on Tailwind Plus →</span>
+                    </div>
+                </a>
+                <a href="https://tailwindcss.com/plus/templates/protocol" target="_blank" rel="noopener noreferrer" class="group flex flex-col overflow-hidden bg-white border border-gray-200 rounded-lg hover:border-[#0066FF] hover:shadow-lg transition-all">
+                    <div class="aspect-[16/10] bg-gray-100 overflow-hidden border-b border-gray-100">
+                        <img src="https://s.wordpress.com/mshots/v1/https%3A%2F%2Ftailwindcss.com%2Fplus%2Ftemplates%2Fprotocol?w=800" alt="Protocol template preview" width="800" height="500" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]" />
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold mb-1 group-hover:text-[#0066FF]">Protocol</h3>
+                        <p class="text-xs font-medium text-[#0066FF] mb-2">API &amp; docs</p>
+                        <p class="text-sm text-gray-600 flex-1">Reference-style layout — nav, code blocks, endpoints (great for devtools).</p>
+                        <span class="text-sm text-[#0066FF] font-medium mt-3">View on Tailwind Plus →</span>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
