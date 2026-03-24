@@ -16,3 +16,10 @@ npm-debug.log*
 # Temporary files
 *.tmp
 *.temp
+
+# WebMorp CLI (pipeline/)
+pipeline/.venv/
+pipeline/.webmorp_run/
+pipeline/.env
+__pycache__/
+*.pyc
