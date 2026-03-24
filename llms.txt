@@ -30,13 +30,13 @@ webmorp.art is operated by PixID Studio (https://www.pixid.studio/), the team be
 
 ## How it works
 
-1. Send your brief — share a reference link/screenshot plus your content to support@pixid.studio
+1. Send your brief — share a reference link/screenshot plus your content to customer@pixid.studio
 2. We morph the design — adapt the style using Tailwind CSS templates, rewrite copy, curate visuals
 3. Go live — receive clean HTML/CSS within 24 hours, deploy anywhere for free
 
 ## Contact
 
-Email: support@pixid.studio
+Email: customer@pixid.studio
 Website: https://webmorp.art
 
 ## Links

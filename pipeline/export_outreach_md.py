@@ -102,7 +102,7 @@ def export_md(
         "",
         f"Сгенерировано из базы: `{db_path.name}`. В документе **{len(kept)}** лидов (макс. {limit}) после фильтра доменов. Проверь To и URL вручную перед отправкой.",
         "",
-        "От кого: `support@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art",
+        "От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art",
         "",
         "## Тема письма (Subject)",
         "",

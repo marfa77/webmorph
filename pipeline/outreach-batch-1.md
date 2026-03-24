@@ -1,6 +1,6 @@
 # Outreach batch 1 — кому и что писать
 
-От кого: `support@pixid.studio`  
+От кого: `customer@pixid.studio`  
 Подпись: Pavel, CEO, webmorp · https://webmorp.art  
 
 Коротко: хук → бесплатный превью → цена → что получит (быстрый «супер» сайт по блюпринту 2026, десктоп + мобилка) → шаблоны/примеры на сайте → reply yes.

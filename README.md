@@ -23,7 +23,7 @@ Fast and affordable website transformation service. Get your professional custom
 
 ## Contact
 
-Email: support@pixid.studio
+Email: customer@pixid.studio
 
 ## SEO Optimized
 
