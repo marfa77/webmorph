@@ -92,6 +92,15 @@ def export_md(
         "",
         "От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art",
         "",
+        "## Тема письма (Subject)",
+        "",
+        "Одной «лучшей» темы нет — зависит от ящика и A/B. По умолчанию в таблице ниже — **два варианта**:",
+        "",
+        "- **A (рекомендуем по умолчанию):** `Quick question — {host}` — коротко, без бренда в теме (бренд в From / подписи), меньше «рекламного» вида.",
+        "- **B:** `{host} — quick note (webmorp.art)` — узнаваемо, но очень типовая формулировка.",
+        "",
+        "Другие идеи для теста: `Pavel — idea for {host}` · `{host} — 2026 site idea` · без домена: `Quick question about your website`.",
+        "",
         "---",
         "",
     ]
@@ -99,13 +108,15 @@ def export_md(
     for i, r in enumerate(kept, start=1):
         host = r["host"] or urlparse(r["url"]).netloc.lower().lstrip("www.")
         em = r["email"]
-        subj = f"{host} — quick note (webmorp.art)"
+        subj_a = f"Quick question — {host}"
+        subj_b = f"{host} — quick note (webmorp.art)"
         lines.append(f"## {i} — {host}")
         lines.append("")
         lines.append("| Поле | Значение |")
         lines.append("|------|----------|")
         lines.append(f"| To | {em} |")
-        lines.append(f"| Subject | {subj} |")
+        lines.append(f"| Subject A | {subj_a} |")
+        lines.append(f"| Subject B | {subj_b} |")
         lines.append(f"| URL (лид) | {r['url']} |")
         lines.append(f"| Score | {r['score']} |")
         lines.append(f"| Niche (поиск) | {r.get('niche') or '—'} |")

@@ -4,6 +4,15 @@
 
 От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art
 
+## Тема письма (Subject)
+
+Одной «лучшей» темы нет — зависит от ящика и A/B. По умолчанию в таблице ниже — **два варианта**:
+
+- **A (рекомендуем по умолчанию):** `Quick question — {host}` — коротко, без бренда в теме (бренд в From / подписи), меньше «рекламного» вида.
+- **B:** `{host} — quick note (webmorp.art)` — узнаваемо, но очень типовая формулировка.
+
+Другие идеи для теста: `Pavel — idea for {host}` · `{host} — 2026 site idea` · без домена: `Quick question about your website`.
+
 ---
 
 ## 1 — ramplumbing.net
@@ -11,7 +20,8 @@
 | Поле | Значение |
 |------|----------|
 | To | info@ramplumbing.net |
-| Subject | ramplumbing.net — quick note (webmorp.art) |
+| Subject A | Quick question — ramplumbing.net |
+| Subject B | ramplumbing.net — quick note (webmorp.art) |
 | URL (лид) | https://ramplumbing.net |
 | Score | 8 |
 | Niche (поиск) | plumbing service |
@@ -40,7 +50,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@mosbarbers.uk |
-| Subject | mosbarbers.uk — quick note (webmorp.art) |
+| Subject A | Quick question — mosbarbers.uk |
+| Subject B | mosbarbers.uk — quick note (webmorp.art) |
 | URL (лид) | https://mosbarbers.uk |
 | Score | 7 |
 | Niche (поиск) | barber shop |
@@ -69,7 +80,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@mensgrooming.ie |
-| Subject | mensgrooming.ie — quick note (webmorp.art) |
+| Subject A | Quick question — mensgrooming.ie |
+| Subject B | mensgrooming.ie — quick note (webmorp.art) |
 | URL (лид) | https://mensgrooming.ie/creating-the-best-barbershop-in-terenure |
 | Score | 7 |
 | Niche (поиск) | barber shop |
@@ -98,7 +110,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | admin@anytimeplumbing.net |
-| Subject | anytimeplumbing.net — quick note (webmorp.art) |
+| Subject A | Quick question — anytimeplumbing.net |
+| Subject B | anytimeplumbing.net — quick note (webmorp.art) |
 | URL (лид) | https://anytimeplumbing.net/bathroom-plumbing-services |
 | Score | 7 |
 | Niche (поиск) | plumbing service |
@@ -127,7 +140,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | phil@goldenpizzarestaurant.com |
-| Subject | goldenpizzarestaurant.com — quick note (webmorp.art) |
+| Subject A | Quick question — goldenpizzarestaurant.com |
+| Subject B | goldenpizzarestaurant.com — quick note (webmorp.art) |
 | URL (лид) | https://goldenpizzarestaurant.com/index.php/contact |
 | Score | 6 |
 | Niche (поиск) | pizza restaurant |
@@ -156,7 +170,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@crystallinedrycleaners.co.uk |
-| Subject | crystallinedrycleaners.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — crystallinedrycleaners.co.uk |
+| Subject B | crystallinedrycleaners.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://www.crystallinedrycleaners.co.uk/drycleaning |
 | Score | 6 |
 | Niche (поиск) | dry cleaning |
@@ -185,7 +200,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@ads4ae.com |
-| Subject | ads4ae.com — quick note (webmorp.art) |
+| Subject A | Quick question — ads4ae.com |
+| Subject B | ads4ae.com — quick note (webmorp.art) |
 | URL (лид) | https://www.ads4ae.com/en/uae/dubai/electricians |
 | Score | 6 |
 | Niche (поиск) | electrician |
@@ -214,7 +230,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@dubaiclean.com |
-| Subject | dubaiclean.com — quick note (webmorp.art) |
+| Subject A | Quick question — dubaiclean.com |
+| Subject B | dubaiclean.com — quick note (webmorp.art) |
 | URL (лид) | https://dubaiclean.com/technical-services/electricians-in-dubai |
 | Score | 6 |
 | Niche (поиск) | electrician |
@@ -243,7 +260,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | tyrone@roofingrestoration.com.au |
-| Subject | roofingrestoration.com.au — quick note (webmorp.art) |
+| Subject A | Quick question — roofingrestoration.com.au |
+| Subject B | roofingrestoration.com.au — quick note (webmorp.art) |
 | URL (лид) | https://www.roofingrestoration.com.au/flat-roofs-pros-cons |
 | Score | 6 |
 | Niche (поиск) | roofing company |
@@ -272,7 +290,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | help@plumberdubai.com |
-| Subject | plumberdubai.com — quick note (webmorp.art) |
+| Subject A | Quick question — plumberdubai.com |
+| Subject B | plumberdubai.com — quick note (webmorp.art) |
 | URL (лид) | https://plumberdubai.com/how-to-remove-bathroom-odors |
 | Score | 6 |
 | Niche (поиск) | plumbing service |
@@ -301,7 +320,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | reception@esvc.co.uk |
-| Subject | esvc.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — esvc.co.uk |
+| Subject B | esvc.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://www.esvc.co.uk |
 | Score | 5 |
 | Niche (поиск) | veterinary clinic |
@@ -330,7 +350,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | office@pawsisters.ae |
-| Subject | pawsisters.ae — quick note (webmorp.art) |
+| Subject A | Quick question — pawsisters.ae |
+| Subject B | pawsisters.ae — quick note (webmorp.art) |
 | URL (лид) | https://pawsisters.ae |
 | Score | 5 |
 | Niche (поиск) | veterinary clinic |
@@ -359,7 +380,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@wefixautoservices.com |
-| Subject | wefixautoservices.com — quick note (webmorp.art) |
+| Subject A | Quick question — wefixautoservices.com |
+| Subject B | wefixautoservices.com — quick note (webmorp.art) |
 | URL (лид) | https://wefixautoservices.com |
 | Score | 5 |
 | Niche (поиск) | auto repair shop |
@@ -388,7 +410,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | advertise@hillstohawkesbury.com.au |
-| Subject | hillstohawkesbury.com.au — quick note (webmorp.art) |
+| Subject A | Quick question — hillstohawkesbury.com.au |
+| Subject B | hillstohawkesbury.com.au — quick note (webmorp.art) |
 | URL (лид) | https://hillstohawkesbury.com.au/pizza-hut-restaurants-55-year-legacy |
 | Score | 5 |
 | Niche (поиск) | pizza restaurant |
@@ -417,7 +440,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | contactus@gastronomicslc.com |
-| Subject | gastronomicslc.com — quick note (webmorp.art) |
+| Subject A | Quick question — gastronomicslc.com |
+| Subject B | gastronomicslc.com — quick note (webmorp.art) |
 | URL (лид) | https://gastronomicslc.com/italian-restaurants-salt-lake-city |
 | Score | 5 |
 | Niche (поиск) | pizza restaurant |
@@ -446,7 +470,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@crazypizza.com |
-| Subject | crazypizza.com — quick note (webmorp.art) |
+| Subject A | Quick question — crazypizza.com |
+| Subject B | crazypizza.com — quick note (webmorp.art) |
 | URL (лид) | https://crazypizza.com |
 | Score | 5 |
 | Niche (поиск) | pizza restaurant |
@@ -475,7 +500,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | consumables@udcs.com.au |
-| Subject | universaldrycleaningsolutions.com.au — quick note (webmorp.art) |
+| Subject A | Quick question — universaldrycleaningsolutions.com.au |
+| Subject B | universaldrycleaningsolutions.com.au — quick note (webmorp.art) |
 | URL (лид) | https://www.universaldrycleaningsolutions.com.au/commercial-laundry-supplies-equipment-new-zealand |
 | Score | 5 |
 | Niche (поиск) | dry cleaning |
@@ -504,7 +530,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | ben@entrapov.com |
-| Subject | entrapov.com — quick note (webmorp.art) |
+| Subject A | Quick question — entrapov.com |
+| Subject B | entrapov.com — quick note (webmorp.art) |
 | URL (лид) | https://entrapov.com/barber |
 | Score | 5 |
 | Niche (поиск) | barber shop |
@@ -533,7 +560,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@desibarber.lv |
-| Subject | desibarber.lv — quick note (webmorp.art) |
+| Subject A | Quick question — desibarber.lv |
+| Subject B | desibarber.lv — quick note (webmorp.art) |
 | URL (лид) | https://desibarber.lv |
 | Score | 5 |
 | Niche (поиск) | barber shop |
@@ -562,7 +590,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@cannonstruct.com |
-| Subject | cannonstruct.com — quick note (webmorp.art) |
+| Subject A | Quick question — cannonstruct.com |
+| Subject B | cannonstruct.com — quick note (webmorp.art) |
 | URL (лид) | https://cannonstruct.com/barber-shop |
 | Score | 5 |
 | Niche (поиск) | barber shop |
@@ -591,7 +620,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@tgelectrics.co.uk |
-| Subject | tgelectrics.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — tgelectrics.co.uk |
+| Subject B | tgelectrics.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://www.tgelectrics.co.uk |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -620,7 +650,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@eastonelectrical.com.au |
-| Subject | eastonelectrical.com.au — quick note (webmorp.art) |
+| Subject A | Quick question — eastonelectrical.com.au |
+| Subject B | eastonelectrical.com.au — quick note (webmorp.art) |
 | URL (лид) | https://www.eastonelectrical.com.au/service-area/electrician-hire-frankston |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -649,7 +680,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@betterelectrician.com.au |
-| Subject | betterelectrician.com.au — quick note (webmorp.art) |
+| Subject A | Quick question — betterelectrician.com.au |
+| Subject B | betterelectrician.com.au — quick note (webmorp.art) |
 | URL (лид) | https://www.betterelectrician.com.au |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -678,7 +710,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@uaemaintain.com |
-| Subject | uaemaintain.com — quick note (webmorp.art) |
+| Subject A | Quick question — uaemaintain.com |
+| Subject B | uaemaintain.com — quick note (webmorp.art) |
 | URL (лид) | https://uaemaintain.com/electrician-in-dubai |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -707,7 +740,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@topnotchelectrician.com |
-| Subject | topnotchelectrician.com — quick note (webmorp.art) |
+| Subject A | Quick question — topnotchelectrician.com |
+| Subject B | topnotchelectrician.com — quick note (webmorp.art) |
 | URL (лид) | https://topnotchelectrician.com/electrician-mckinney |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -736,7 +770,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@safaeewala.com |
-| Subject | safaeewala.com — quick note (webmorp.art) |
+| Subject A | Quick question — safaeewala.com |
+| Subject B | safaeewala.com — quick note (webmorp.art) |
 | URL (лид) | https://safaeewala.com/service/electrician-near-me |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -765,7 +800,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | support@moseselectrical.co.nz |
-| Subject | moseselectrical.co.nz — quick note (webmorp.art) |
+| Subject A | Quick question — moseselectrical.co.nz |
+| Subject B | moseselectrical.co.nz — quick note (webmorp.art) |
 | URL (лид) | https://moseselectrical.co.nz |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -794,7 +830,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@jlkelectrical.ie |
-| Subject | jlkelectrical.ie — quick note (webmorp.art) |
+| Subject A | Quick question — jlkelectrical.ie |
+| Subject B | jlkelectrical.ie — quick note (webmorp.art) |
 | URL (лид) | https://jlkelectrical.ie |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -823,7 +860,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | robert@internationalelectricinc.com |
-| Subject | internationalelectricinc.com — quick note (webmorp.art) |
+| Subject A | Quick question — internationalelectricinc.com |
+| Subject B | internationalelectricinc.com — quick note (webmorp.art) |
 | URL (лид) | https://internationalelectricinc.com |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -852,7 +890,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | hallo@gretarsson.is |
-| Subject | gretarsson.is — quick note (webmorp.art) |
+| Subject A | Quick question — gretarsson.is |
+| Subject B | gretarsson.is — quick note (webmorp.art) |
 | URL (лид) | https://gretarsson.is/our_team/felix |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -881,7 +920,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | listing@getbusiness.co.in |
-| Subject | getbusiness.co.in — quick note (webmorp.art) |
+| Subject A | Quick question — getbusiness.co.in |
+| Subject B | getbusiness.co.in — quick note (webmorp.art) |
 | URL (лид) | https://getbusiness.co.in/listing/electrician-dubai-electricians-dubai |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -910,7 +950,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | enquiry@elec.training |
-| Subject | elec.training — quick note (webmorp.art) |
+| Subject A | Quick question — elec.training |
+| Subject B | elec.training — quick note (webmorp.art) |
 | URL (лид) | https://elec.training/electrician-courses-manchester |
 | Score | 5 |
 | Niche (поиск) | electrician |
@@ -939,7 +980,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | bids@thomasroofingaz.com |
-| Subject | thomasroofingaz.com — quick note (webmorp.art) |
+| Subject A | Quick question — thomasroofingaz.com |
+| Subject B | thomasroofingaz.com — quick note (webmorp.art) |
 | URL (лид) | https://www.thomasroofingaz.com |
 | Score | 5 |
 | Niche (поиск) | roofing company |
@@ -968,7 +1010,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | sales@roofline-residential.co.uk |
-| Subject | roofline-residential.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — roofline-residential.co.uk |
+| Subject B | roofline-residential.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://roofline-residential.co.uk/contact |
 | Score | 5 |
 | Niche (поиск) | roofing company |
@@ -997,7 +1040,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | admin@pomonaroofingco.com |
-| Subject | pomonaroofingco.com — quick note (webmorp.art) |
+| Subject A | Quick question — pomonaroofingco.com |
+| Subject B | pomonaroofingco.com — quick note (webmorp.art) |
 | URL (лид) | https://pomonaroofingco.com |
 | Score | 5 |
 | Niche (поиск) | roofing company |
@@ -1026,7 +1070,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | michael@klrroofing.com |
-| Subject | klrroofing.com — quick note (webmorp.art) |
+| Subject A | Quick question — klrroofing.com |
+| Subject B | klrroofing.com — quick note (webmorp.art) |
 | URL (лид) | https://klrroofing.com/roofing-jokes-quotes |
 | Score | 5 |
 | Niche (поиск) | roofing company |
@@ -1055,7 +1100,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@sweeneyrenewables.com |
-| Subject | sweeneyrenewables.com — quick note (webmorp.art) |
+| Subject A | Quick question — sweeneyrenewables.com |
+| Subject B | sweeneyrenewables.com — quick note (webmorp.art) |
 | URL (лид) | https://www.sweeneyrenewables.com/plumbing-services-dublin |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1084,7 +1130,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@greatplumbers.co.uk |
-| Subject | greatplumbers.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — greatplumbers.co.uk |
+| Subject B | greatplumbers.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://www.greatplumbers.co.uk/contact-us |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1113,7 +1160,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@boltonplumbingandheatingltd.co.uk |
-| Subject | boltonplumbingandheatingltd.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — boltonplumbingandheatingltd.co.uk |
+| Subject B | boltonplumbingandheatingltd.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://www.boltonplumbingandheatingltd.co.uk/need-an-emergency-plumber |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1142,7 +1190,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | danielle@archerplumbing.com |
-| Subject | archerplumbing.com — quick note (webmorp.art) |
+| Subject A | Quick question — archerplumbing.com |
+| Subject B | archerplumbing.com — quick note (webmorp.art) |
 | URL (лид) | https://www.archerplumbing.com/edison-plumber |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1171,7 +1220,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | hiring@powerhouseplumbers.com |
-| Subject | powerhouseplumbers.com — quick note (webmorp.art) |
+| Subject A | Quick question — powerhouseplumbers.com |
+| Subject B | powerhouseplumbers.com — quick note (webmorp.art) |
 | URL (лид) | https://powerhouseplumbers.com/mountvernon-indiana |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1200,7 +1250,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@plumbingservices.sydney |
-| Subject | plumbingservices.sydney — quick note (webmorp.art) |
+| Subject A | Quick question — plumbingservices.sydney |
+| Subject B | plumbingservices.sydney — quick note (webmorp.art) |
 | URL (лид) | https://plumbingservices.sydney |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1229,7 +1280,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@plumbingimmediately.co.uk |
-| Subject | plumbingimmediately.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — plumbingimmediately.co.uk |
+| Subject B | plumbingimmediately.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://plumbingimmediately.co.uk/bromley-plumbing-emergency |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1258,7 +1310,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@plumberindubai.com |
-| Subject | plumberindubai.com — quick note (webmorp.art) |
+| Subject A | Quick question — plumberindubai.com |
+| Subject B | plumberindubai.com — quick note (webmorp.art) |
 | URL (лид) | https://plumberindubai.com |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1287,7 +1340,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | sales@leevaplumbing.co.uk |
-| Subject | leevaplumbing.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — leevaplumbing.co.uk |
+| Subject B | leevaplumbing.co.uk — quick note (webmorp.art) |
 | URL (лид) | https://leevaplumbing.co.uk/10-silent-signs-your-house-has-plumbing-problems |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1316,7 +1370,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | help@dubairepairs.org |
-| Subject | dubairepairs.org — quick note (webmorp.art) |
+| Subject A | Quick question — dubairepairs.org |
+| Subject B | dubairepairs.org — quick note (webmorp.art) |
 | URL (лид) | https://dubairepairs.org/our-services/gardeners-dubai |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1345,7 +1400,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | d.ross@aplumbing.net.au |
-| Subject | aplumbing.net.au — quick note (webmorp.art) |
+| Subject A | Quick question — aplumbing.net.au |
+| Subject B | aplumbing.net.au — quick note (webmorp.art) |
 | URL (лид) | https://aplumbing.net.au |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1374,7 +1430,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | book@ameplumbingnj.com |
-| Subject | ameplumbingnj.com — quick note (webmorp.art) |
+| Subject A | Quick question — ameplumbingnj.com |
+| Subject B | ameplumbingnj.com — quick note (webmorp.art) |
 | URL (лид) | https://ameplumbingnj.com |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1403,7 +1460,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | info@acmaintenanceuae.com |
-| Subject | acmaintenanceuae.com — quick note (webmorp.art) |
+| Subject A | Quick question — acmaintenanceuae.com |
+| Subject B | acmaintenanceuae.com — quick note (webmorp.art) |
 | URL (лид) | https://acmaintenanceuae.com/ac-duct-cleaning-dubai/?trk=article-ssr-frontend-pulse_little-text-block |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
@@ -1432,7 +1490,8 @@ webmorp.art
 | Поле | Значение |
 |------|----------|
 | To | topmarksplumbing@yahoo.co.uk |
-| Subject | topmarksplumbing.co.uk — quick note (webmorp.art) |
+| Subject A | Quick question — topmarksplumbing.co.uk |
+| Subject B | topmarksplumbing.co.uk — quick note (webmorp.art) |
 | URL (лид) | http://www.topmarksplumbing.co.uk |
 | Score | 5 |
 | Niche (поиск) | plumbing service |
