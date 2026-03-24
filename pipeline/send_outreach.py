@@ -4,12 +4,13 @@
 Лимит по умолчанию: 20 писем/день первые 14 дней с даты старта кампании,
 затем +10 к дневному лимиту каждую календарную неделю (день 14–20 → 30, 21–27 → 40, …).
 
-Требуется: campaign start date, SMTP в .env (см. --help).
+Требуется: campaign start date и либо SMTP, либо Microsoft Graph (см. --help).
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import random
 import re
@@ -22,8 +23,10 @@ from email.message import EmailMessage
 from email.utils import formataddr
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 from zoneinfo import ZoneInfo
+
+import requests
 
 try:
     from dotenv import load_dotenv
@@ -148,6 +151,75 @@ def load_env() -> None:
     if load_dotenv:
         env_path = Path(__file__).resolve().parent / ".env"
         load_dotenv(env_path)
+
+
+def use_graph_backend() -> bool:
+    b = os.environ.get("OUTREACH_SEND_BACKEND", "").strip().lower()
+    if b in ("graph", "msgraph", "microsoft-graph"):
+        return True
+    return bool(
+        os.environ.get("GRAPH_TENANT_ID", "").strip()
+        and os.environ.get("GRAPH_CLIENT_ID", "").strip()
+        and os.environ.get("GRAPH_CLIENT_SECRET", "").strip()
+    )
+
+
+def graph_get_access_token() -> str:
+    tenant = os.environ.get("GRAPH_TENANT_ID", "").strip()
+    cid = os.environ.get("GRAPH_CLIENT_ID", "").strip()
+    sec = os.environ.get("GRAPH_CLIENT_SECRET", "").strip()
+    if not tenant or not cid or not sec:
+        print(
+            "Graph: задайте GRAPH_TENANT_ID, GRAPH_CLIENT_ID, GRAPH_CLIENT_SECRET в pipeline/.env",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    url = f"https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token"
+    r = requests.post(
+        url,
+        data={
+            "client_id": cid,
+            "client_secret": sec,
+            "scope": "https://graph.microsoft.com/.default",
+            "grant_type": "client_credentials",
+        },
+        timeout=60,
+    )
+    if r.status_code != 200:
+        print(f"Graph token error {r.status_code}: {r.text[:500]}", file=sys.stderr)
+        sys.exit(1)
+    return str(r.json()["access_token"])
+
+
+def send_graph(
+    *,
+    to_addr: str,
+    subject: str,
+    body: str,
+    from_upn: str,
+) -> None:
+    """Отправка через Graph API (application permission Mail.Send). Отправитель = ящик from_upn."""
+    token = graph_get_access_token()
+    user_seg = quote(from_upn, safe="")
+    url = f"https://graph.microsoft.com/v1.0/users/{user_seg}/sendMail"
+    msg: dict[str, Any] = {
+        "subject": subject,
+        "body": {"contentType": "Text", "content": body},
+        "toRecipients": [{"emailAddress": {"address": to_addr}}],
+    }
+    payload = {"message": msg, "saveToSentItems": True}
+    r = requests.post(
+        url,
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        },
+        data=json.dumps(payload),
+        timeout=90,
+    )
+    if r.status_code not in (200, 202):
+        print(f"Graph sendMail {r.status_code}: {r.text[:800]}", file=sys.stderr)
+        sys.exit(1)
 
 
 def send_smtp(
@@ -284,17 +356,28 @@ def run_send(
         print(f"Лимит на сегодня исчерпан ({sent_today}/{cap}).")
         return
 
-    from_email = os.environ.get("SMTP_FROM", os.environ.get("SMTP_USER", "")).strip()
-    from_name = os.environ.get("SMTP_FROM_NAME", "").strip() or None
-
     queue = fetch_queue(conn, limit=remaining)
     if not queue:
         print("Очередь пуста: не осталось лидов без записи в outreach_sent.")
         return
 
+    graph_mode = use_graph_backend()
+    backend_label = "Graph" if graph_mode else "SMTP"
+
     print(
-        f"День кампании {idx}, лимит {cap}/день, сегодня уже {sent_today}, отправляем до {remaining} писем, в очереди {len(queue)}."
+        f"День кампании {idx}, лимит {cap}/день, сегодня уже {sent_today}, отправляем до {remaining} писем, в очереди {len(queue)}. Канал: {backend_label}."
     )
+
+    if graph_mode:
+        from_email = (
+            os.environ.get("GRAPH_FROM_USER", "").strip()
+            or os.environ.get("SMTP_FROM", "").strip()
+            or os.environ.get("SMTP_USER", "").strip()
+        )
+        from_name = None
+    else:
+        from_email = os.environ.get("SMTP_FROM", os.environ.get("SMTP_USER", "")).strip()
+        from_name = os.environ.get("SMTP_FROM_NAME", "").strip() or None
 
     if dry_run:
         for r in queue:
@@ -304,7 +387,10 @@ def run_send(
         return
 
     if not from_email:
-        print("Задайте SMTP_FROM или SMTP_USER.", file=sys.stderr)
+        print(
+            "Задайте отправителя: для Graph — GRAPH_FROM_USER (или SMTP_FROM/SMTP_USER); для SMTP — SMTP_FROM или SMTP_USER.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     sent = 0
@@ -315,19 +401,24 @@ def run_send(
         subj = subject_problem(host)
         body = EMAIL_TEMPLATE.format(host=host)
         try:
-            send_smtp(
-                to_addr=em,
-                subject=subj,
-                body=body,
-                from_email=from_email,
-                from_name=from_name,
-            )
+            if graph_mode:
+                send_graph(to_addr=em, subject=subj, body=body, from_upn=from_email)
+                src = "graph"
+            else:
+                send_smtp(
+                    to_addr=em,
+                    subject=subj,
+                    body=body,
+                    from_email=from_email,
+                    from_name=from_name,
+                )
+                src = "smtp"
             conn.execute(
                 """
                 INSERT INTO outreach_sent (email, lead_id, sent_at, subject, source)
-                VALUES (?, ?, ?, ?, 'smtp')
+                VALUES (?, ?, ?, ?, ?)
                 """,
-                (em.lower(), lead_id, utc_now_iso(), subj),
+                (em.lower(), lead_id, utc_now_iso(), subj, src),
             )
             conn.commit()
             sent += 1
@@ -358,20 +449,26 @@ def main() -> None:
   status                             лимит сегодня и сколько уже отправлено
   mark-sent --emails A,B | --file   отметить уже отправленные (вручную)
   set-start-date YYYY-MM-DD         дата старта кампании в БД
+  test-graph                         проверить токен Graph (GRAPH_* в .env)
 
 Переменные окружения (pipeline/.env):
   OUTREACH_START_DATE   дата первого дня кампании (обязательно для send/status)
   OUTREACH_TZ             часовой пояс для «сегодня» (по умолчанию UTC)
-  SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD
-  SMTP_FROM, SMTP_FROM_NAME   от кого (часто = SMTP_USER)
-  SMTP_SSL=1 или SMTP_STARTTLS=1 (порт 587)
+
+  SMTP (классическая отправка):
+  SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD, SMTP_FROM, SMTP_FROM_NAME …
+
+  Microsoft Graph (если SMTP заблокирован Security defaults / политиками):
+  GRAPH_TENANT_ID, GRAPH_CLIENT_ID, GRAPH_CLIENT_SECRET
+  GRAPH_FROM_USER=customer@...   ящик отправителя (Application permission Mail.Send + admin consent)
+  OUTREACH_SEND_BACKEND=graph   или явно задать все три GRAPH_* — тогда выбирается Graph
 
 Пример:  OUTREACH_START_DATE=2025-03-20  python send_outreach.py send --dry-run
 """
         )
         sys.exit(0)
 
-    ap = argparse.ArgumentParser(description="Рассылка outreach с лимитом и SMTP")
+    ap = argparse.ArgumentParser(description="Рассылка outreach с лимитом (SMTP или Microsoft Graph)")
     ap.add_argument("--db", default=str(DEFAULT_DB_PATH), help="Путь к leads.db")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
@@ -389,6 +486,8 @@ def main() -> None:
     p_start.add_argument("date", help="YYYY-MM-DD")
 
     p_status = sub.add_parser("status", help="Лимит и сколько отправлено сегодня")
+
+    sub.add_parser("test-graph", help="Проверить client credentials и токен Graph")
 
     args = ap.parse_args()
     db_path = Path(args.db)
@@ -418,6 +517,10 @@ def main() -> None:
             return
         if args.cmd == "status":
             cmd_status(conn, tz)
+            return
+        if args.cmd == "test-graph":
+            tok = graph_get_access_token()
+            print(f"Graph: токен получен, OK (длина {len(tok)}). Проверь в Azure: Mail.Send (application) + admin consent.")
             return
         if args.cmd == "send":
             run_send(
