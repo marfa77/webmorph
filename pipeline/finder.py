@@ -485,6 +485,14 @@ def main(argv: list[str] | None = None) -> None:
         metavar="N",
         help="Остановиться после N подходящих результатов",
     )
+    ap.add_argument(
+        "--db",
+        metavar="PATH",
+        nargs="?",
+        const="leads.db",
+        default=None,
+        help="Записать лиды в SQLite (путь к .db; по умолчанию pipeline/leads.db)",
+    )
     args = ap.parse_args(argv)
 
     niche = " ".join(args.niche).strip()
@@ -525,6 +533,19 @@ def main(argv: list[str] | None = None) -> None:
             encoding="utf-8",
         )
         print(f"\nSaved {len(rows)} rows → {args.out}", file=sys.stderr)
+
+    if args.db is not None:
+        base = Path(__file__).resolve().parent
+        p = Path(args.db)
+        db_path = p if p.is_absolute() else (base / p)
+        try:
+            from leads_db import save_rows_from_finder
+
+            n = save_rows_from_finder(rows, niche=niche, path=db_path)
+            print(f"DB: записано {n} строк → {db_path}", file=sys.stderr)
+        except Exception as e:
+            print(f"DB error: {e}", file=sys.stderr)
+            sys.exit(1)
 
 
 if __name__ == "__main__":

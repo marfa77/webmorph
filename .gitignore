@@ -20,6 +20,7 @@ npm-debug.log*
 # WebMorp CLI (pipeline/)
 pipeline/.venv/
 pipeline/.webmorp_run/
+pipeline/leads.db
 pipeline/.env
 __pycache__/
 *.pyc
