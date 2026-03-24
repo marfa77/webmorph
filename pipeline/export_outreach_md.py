@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 import sqlite3
 from pathlib import Path
 from urllib.parse import urlparse
@@ -37,6 +36,19 @@ _HOST_BLOCK_SUBSTR = (
     "hazlewoods.co.uk",
     "simmonsinc.com",
 )
+
+# Проблема в теме = та же логика, что в первом абзаце (без «рекламных» слов в теме).
+# Коротко: скорость + устаревший вид + мобильные.
+def subject_problem(host: str, max_len: int = 78) -> str:
+    """Subject line: state the site problem (English). Truncate for long domains."""
+    s = f"{host} — feels slow & dated on mobile vs 2026 expectations"
+    if len(s) <= max_len:
+        return s
+    s = f"{host} — slow on phones, looks dated (2026)"
+    if len(s) <= max_len:
+        return s
+    return s[: max_len - 1].rstrip() + "…"
+
 
 EMAIL_TEMPLATE = """Hi,
 
@@ -94,12 +106,7 @@ def export_md(
         "",
         "## Тема письма (Subject)",
         "",
-        "Одной «лучшей» темы нет — зависит от ящика и A/B. По умолчанию в таблице ниже — **два варианта**:",
-        "",
-        "- **A (рекомендуем по умолчанию):** `Quick question — {host}` — коротко, без бренда в теме (бренд в From / подписи), меньше «рекламного» вида.",
-        "- **B:** `{host} — quick note (webmorp.art)` — узнаваемо, но очень типовая формулировка.",
-        "",
-        "Другие идеи для теста: `Pavel — idea for {host}` · `{host} — 2026 site idea` · без домена: `Quick question about your website`.",
+        "В теме — **сама проблема с сайтом** (медленно / устарело / особенно на телефонах), в том же духе, что первый абзац письма. Без бренда webmorp в теме — бренд в From и подписи.",
         "",
         "---",
         "",
@@ -108,15 +115,13 @@ def export_md(
     for i, r in enumerate(kept, start=1):
         host = r["host"] or urlparse(r["url"]).netloc.lower().lstrip("www.")
         em = r["email"]
-        subj_a = f"Quick question — {host}"
-        subj_b = f"{host} — quick note (webmorp.art)"
+        subj = subject_problem(host)
         lines.append(f"## {i} — {host}")
         lines.append("")
         lines.append("| Поле | Значение |")
         lines.append("|------|----------|")
         lines.append(f"| To | {em} |")
-        lines.append(f"| Subject A | {subj_a} |")
-        lines.append(f"| Subject B | {subj_b} |")
+        lines.append(f"| Subject | {subj} |")
         lines.append(f"| URL (лид) | {r['url']} |")
         lines.append(f"| Score | {r['score']} |")
         lines.append(f"| Niche (поиск) | {r.get('niche') or '—'} |")
