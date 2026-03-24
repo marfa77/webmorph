@@ -31,6 +31,19 @@ CREATE TABLE IF NOT EXISTS leads (
 CREATE INDEX IF NOT EXISTS idx_leads_host ON leads(host);
 CREATE INDEX IF NOT EXISTS idx_leads_email ON leads(email);
 CREATE INDEX IF NOT EXISTS idx_leads_niche ON leads(niche);
+CREATE TABLE IF NOT EXISTS outreach_meta (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS outreach_sent (
+    email TEXT PRIMARY KEY,
+    lead_id INTEGER,
+    sent_at TEXT NOT NULL,
+    subject TEXT,
+    source TEXT NOT NULL DEFAULT 'smtp',
+    FOREIGN KEY (lead_id) REFERENCES leads(id)
+);
+CREATE INDEX IF NOT EXISTS idx_outreach_sent_at ON outreach_sent(sent_at);
 """
 
 
