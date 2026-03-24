@@ -42,5 +42,7 @@ Website: https://www.webmorp.art
 ## Links
 
 - Homepage: https://www.webmorp.art/
+- Privacy Policy: https://www.webmorp.art/privacy.html
+- Terms of Service: https://www.webmorp.art/terms.html
 - PixID Studio: https://www.pixid.studio/
 - Portfolio: https://www.pixidstudio.online/
