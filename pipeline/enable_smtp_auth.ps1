@@ -1,14 +1,15 @@
 # Включает Authenticated SMTP для ящика (после того как модуль Exchange установлен).
 # Запуск из корня репо или из pipeline/:
 #   pwsh pipeline/enable_smtp_auth.ps1
-# Откроется вход Microsoft — используй учётку с правами Exchange Admin.
+# Используется -Device (код + URL в терминале) — на macOS надёжнее, чем интерактивный браузер MSAL.
+# Войди учёткой с правами Exchange Admin.
 
 $ErrorActionPreference = "Stop"
 Import-Module ExchangeOnlineManagement
 
 $Mailbox = "customer@pixid.studio"
 
-Connect-ExchangeOnline
+Connect-ExchangeOnline -Device
 
 Set-CASMailbox -Identity $Mailbox -SmtpClientAuthenticationDisabled $false
 
