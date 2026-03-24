@@ -2,7 +2,7 @@
 
 Сгенерировано из базы: `leads.db`. В документе **50** лидов (макс. 50) после фильтра доменов. Проверь To и URL вручную перед отправкой.
 
-От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art
+От кого: `support@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art
 
 ## Тема письма (Subject)
 
