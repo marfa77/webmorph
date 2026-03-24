@@ -15,7 +15,7 @@ from bs4 import BeautifulSoup
 
 DEFAULT_TIMEOUT = 20
 USER_AGENT = (
-    "Mozilla/5.0 (compatible; WebMorpBot/1.0; +https://webmorp.art) "
+    "Mozilla/5.0 (compatible; WebMorpBot/1.0; +https://www.webmorp.art) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 )
 

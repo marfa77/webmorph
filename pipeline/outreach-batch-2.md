@@ -2,7 +2,7 @@
 
 Сгенерировано из базы: `leads.db`. В документе **50** лидов (макс. 50) после фильтра доменов. Проверь To и URL вручную перед отправкой.
 
-От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art
+От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://www.webmorp.art
 
 ## Тема письма (Subject)
 
@@ -26,7 +26,7 @@ Hi,
 
 We came across ramplumbing.net — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -55,7 +55,7 @@ Hi,
 
 We came across mosbarbers.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -84,7 +84,7 @@ Hi,
 
 We came across mensgrooming.ie — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -113,7 +113,7 @@ Hi,
 
 We came across anytimeplumbing.net — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -142,7 +142,7 @@ Hi,
 
 We came across goldenpizzarestaurant.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -171,7 +171,7 @@ Hi,
 
 We came across crystallinedrycleaners.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -200,7 +200,7 @@ Hi,
 
 We came across ads4ae.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -229,7 +229,7 @@ Hi,
 
 We came across dubaiclean.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -258,7 +258,7 @@ Hi,
 
 We came across roofingrestoration.com.au — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -287,7 +287,7 @@ Hi,
 
 We came across plumberdubai.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -316,7 +316,7 @@ Hi,
 
 We came across esvc.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -345,7 +345,7 @@ Hi,
 
 We came across pawsisters.ae — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -374,7 +374,7 @@ Hi,
 
 We came across wefixautoservices.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -403,7 +403,7 @@ Hi,
 
 We came across hillstohawkesbury.com.au — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -432,7 +432,7 @@ Hi,
 
 We came across gastronomicslc.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -461,7 +461,7 @@ Hi,
 
 We came across crazypizza.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -490,7 +490,7 @@ Hi,
 
 We came across universaldrycleaningsolutions.com.au — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -519,7 +519,7 @@ Hi,
 
 We came across entrapov.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -548,7 +548,7 @@ Hi,
 
 We came across desibarber.lv — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -577,7 +577,7 @@ Hi,
 
 We came across cannonstruct.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -606,7 +606,7 @@ Hi,
 
 We came across tgelectrics.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -635,7 +635,7 @@ Hi,
 
 We came across eastonelectrical.com.au — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -664,7 +664,7 @@ Hi,
 
 We came across betterelectrician.com.au — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -693,7 +693,7 @@ Hi,
 
 We came across uaemaintain.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -722,7 +722,7 @@ Hi,
 
 We came across topnotchelectrician.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -751,7 +751,7 @@ Hi,
 
 We came across safaeewala.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -780,7 +780,7 @@ Hi,
 
 We came across moseselectrical.co.nz — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -809,7 +809,7 @@ Hi,
 
 We came across jlkelectrical.ie — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -838,7 +838,7 @@ Hi,
 
 We came across internationalelectricinc.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -867,7 +867,7 @@ Hi,
 
 We came across gretarsson.is — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -896,7 +896,7 @@ Hi,
 
 We came across getbusiness.co.in — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -925,7 +925,7 @@ Hi,
 
 We came across elec.training — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -954,7 +954,7 @@ Hi,
 
 We came across thomasroofingaz.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -983,7 +983,7 @@ Hi,
 
 We came across roofline-residential.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1012,7 +1012,7 @@ Hi,
 
 We came across pomonaroofingco.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1041,7 +1041,7 @@ Hi,
 
 We came across klrroofing.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1070,7 +1070,7 @@ Hi,
 
 We came across sweeneyrenewables.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1099,7 +1099,7 @@ Hi,
 
 We came across greatplumbers.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1128,7 +1128,7 @@ Hi,
 
 We came across boltonplumbingandheatingltd.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1157,7 +1157,7 @@ Hi,
 
 We came across archerplumbing.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1186,7 +1186,7 @@ Hi,
 
 We came across powerhouseplumbers.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1215,7 +1215,7 @@ Hi,
 
 We came across plumbingservices.sydney — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1244,7 +1244,7 @@ Hi,
 
 We came across plumbingimmediately.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1273,7 +1273,7 @@ Hi,
 
 We came across plumberindubai.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1302,7 +1302,7 @@ Hi,
 
 We came across leevaplumbing.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1331,7 +1331,7 @@ Hi,
 
 We came across dubairepairs.org — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1360,7 +1360,7 @@ Hi,
 
 We came across aplumbing.net.au — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1389,7 +1389,7 @@ Hi,
 
 We came across ameplumbingnj.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1418,7 +1418,7 @@ Hi,
 
 We came across acmaintenanceuae.com — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -1447,7 +1447,7 @@ Hi,
 
 We came across topmarksplumbing.co.uk — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 

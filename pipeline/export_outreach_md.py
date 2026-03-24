@@ -54,7 +54,7 @@ EMAIL_TEMPLATE = """Hi,
 
 We came across {host} — the site is easy to find, but it can feel slower or older than what visitors expect in 2026, especially on phones. That costs trust and clicks.
 
-I'm Pavel, CEO of webmorp (https://webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
+I'm Pavel, CEO of webmorp (https://www.webmorp.art). Full redesign free first — you see everything before you pay. Keep it → $100. Deploy on your domain → +$100.
 
 What you get: a fast, striking site with a premium look — built on our 2026 blueprint, fully responsive (desktop + mobile), SEO copy from your pages, new AI visuals. Pick a template on webmorp.art or we choose from experience; examples are on the site.
 
@@ -102,7 +102,7 @@ def export_md(
         "",
         f"Сгенерировано из базы: `{db_path.name}`. В документе **{len(kept)}** лидов (макс. {limit}) после фильтра доменов. Проверь To и URL вручную перед отправкой.",
         "",
-        "От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://webmorp.art",
+        "От кого: `customer@pixid.studio` · Pavel, CEO, webmorp · https://www.webmorp.art",
         "",
         "## Тема письма (Subject)",
         "",

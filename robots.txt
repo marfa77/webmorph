@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap: https://webmorp.art/sitemap.xml
+Sitemap: https://www.webmorp.art/sitemap.xml
 
 User-agent: GPTBot
 Allow: /
