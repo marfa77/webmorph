@@ -1,12 +1,15 @@
 """
 Пакетный сбор лидов в leads.db: несколько ниш подряд, пока не наберётся цель.
 
-Использует finder.search_leads + DDG. Для рассылки по умолчанию --require-email
-(только строки с email на домене сайта).
+«Ниша» здесь — не фильтр по типу сайта в коде: это только текст запроса в DuckDuckGo.
+Отсев визиток делает finder (WP/CMS, score и т.д.), а не поле niche в БД.
+Чтобы больше личных одностраничников — см. PERSONAL_BROCHURE_NICHES и флаг --personal-only.
+
+Использует finder.search_leads + DDG. Для рассылки по умолчанию --require-email.
 
 Пример:
   python collect_leads.py --target 1000
-  python collect_leads.py --target 500 --min-score 4 --sleep-between 3
+  python collect_leads.py --personal-only --target 200 --global-english
 """
 
 from __future__ import annotations
@@ -21,8 +24,9 @@ from pathlib import Path
 from finder import search_leads
 from leads_db import DEFAULT_DB_PATH, init_db, save_rows_from_finder
 
-# SMB-ниши (англ. запросы → те же рынки, что ENGLISH_MARKETS в finder)
-DEFAULT_NICHES: tuple[str, ...] = (
+# Строки ниже — только шаблоны для DuckDuckGo (ниша ≠ фильтр HTML: визитку не отсекаем по типу).
+# Часть списка — SMB, часть — личные сайты / портфолио, чтобы не упускать одностраничники людей.
+SMB_NICHES: tuple[str, ...] = (
     "plumbing service",
     "electrician",
     "roofing contractor",
@@ -74,7 +78,89 @@ DEFAULT_NICHES: tuple[str, ...] = (
     "water damage restoration",
     "catering service",
     "event venue",
+    "tattoo studio",
+    "medical spa",
+    "acupuncture clinic",
+    "towing service",
+    "septic tank service",
+    "metal fabrication welder",
+    "awning company",
+    "sign shop",
+    "print shop",
+    "computer repair shop",
+    "it support small business",
+    "home security installer",
+    "dog trainer",
+    "pet sitting service",
+    "nail salon",
+    "day spa",
+    "travel agency",
+    "tax preparation service",
+    "immigration lawyer",
+    "personal injury attorney",
+    "boat repair marina",
+    "bicycle shop repair",
+    "music school lessons",
+    "dance studio",
+    "martial arts school",
+    "bed and breakfast",
+    "pilates studio",
+    "hvac installation company",
+    "epoxy flooring contractor",
+    "mobile detailing service",
+    "junk removal service",
+    "property management company",
+    "surveying company land surveyor",
 )
+
+PERSONAL_BROCHURE_NICHES: tuple[str, ...] = (
+    "freelance web developer portfolio",
+    "freelance designer portfolio",
+    "life coach personal website",
+    "business consultant one page website",
+    "independent consultant website",
+    "personal trainer website",
+    "yoga instructor website",
+    "private tutor website",
+    "makeup artist portfolio",
+    "photography portfolio website",
+    "artist portfolio website",
+    "musician official website",
+    "author speaker website",
+    "architect portfolio website",
+    "therapist private practice website",
+    # Одностраничники / визитки, которые DDG иначе не поднимает в SMB-запросах
+    "personal homepage contact email",
+    "one page cv resume website",
+    "interior designer portfolio website",
+    "voice actor personal website",
+    "nutritionist dietitian website",
+    "massage therapist private practice",
+    "driving instructor website",
+    "wedding officiant website",
+    "notary public website",
+    "podcaster personal website",
+    "filmmaker portfolio website",
+    "copywriter freelance website",
+    "illustrator portfolio website",
+    "3d artist portfolio",
+    "virtual assistant website",
+    "freelance bookkeeper website",
+    "social media manager freelance",
+    "seo consultant freelance website",
+    "doula birth support website",
+    "private chef personal website",
+    "tour guide freelance website",
+    "translator interpreter website",
+    "event planner personal website",
+    "home stager website",
+    "data analyst freelance portfolio",
+    "ux designer portfolio website",
+    "editorial photographer website",
+    "stunt performer portfolio",
+)
+
+DEFAULT_NICHES: tuple[str, ...] = SMB_NICHES + PERSONAL_BROCHURE_NICHES
 
 
 def count_with_email(db_path: Path) -> int:
@@ -114,11 +200,60 @@ def main() -> None:
         help="Макс. новых подходящих строк за один проход по нише",
     )
     ap.add_argument("--max-rounds", type=int, default=80, help="Стоп после стольких полных кругов по списку ниш")
+    ap.add_argument(
+        "--global-english",
+        action="store_true",
+        help="Как finder --global-english: поиск без привязки к стране + проверка англ. страницы",
+    )
+    ap.add_argument(
+        "--personal-only",
+        action="store_true",
+        help="Только личные/портфолио-ниши (PERSONAL_BROCHURE_NICHES), без SMB",
+    )
+    ap.add_argument(
+        "--smb-only",
+        action="store_true",
+        help="Только SMB-ниши (SMB_NICHES), без личных сайтов",
+    )
+    ap.add_argument(
+        "--niches-file",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Файл UTF-8: доп. ниши по одной строке (# — комментарий до конца строки); добавляется к SMB/Personal/DEFAULT",
+    )
     args = ap.parse_args()
 
     require_email = not args.allow_no_email
     db_path = args.db.resolve()
-    niches = list(DEFAULT_NICHES)
+    if args.personal_only and args.smb_only:
+        print("Нельзя одновременно --personal-only и --smb-only", file=sys.stderr)
+        sys.exit(1)
+    if args.personal_only:
+        niches = list(PERSONAL_BROCHURE_NICHES)
+    elif args.smb_only:
+        niches = list(SMB_NICHES)
+    else:
+        niches = list(DEFAULT_NICHES)
+
+    if args.niches_file:
+        p = args.niches_file.resolve()
+        if not p.is_file():
+            print(f"Нет файла --niches-file: {p}", file=sys.stderr)
+            sys.exit(1)
+        raw = p.read_text(encoding="utf-8")
+        extra: list[str] = []
+        for line in raw.splitlines():
+            s = line.split("#", 1)[0].strip()
+            if s:
+                extra.append(s)
+        base_n = len(niches)
+        niches = niches + extra
+        niches = list(dict.fromkeys(niches))
+        print(
+            f"{p.name}: строк в файле {len(extra)}, ниш до слияния {base_n}, уникальных после: {len(niches)}",
+            file=sys.stderr,
+        )
 
     start_count = count_with_email(db_path)
     print(
@@ -158,6 +293,7 @@ def main() -> None:
                     require_email=require_email,
                     limit=lim,
                     single_region=False,
+                    global_english=args.global_english,
                 )
             except Exception as e:
                 print(f"Ошибка search_leads({niche!r}): {e}", file=sys.stderr)

@@ -311,6 +311,8 @@
         .blob { animation: blob-move 7s ease-in-out infinite; }
         .blob-delay { animation: blob-move 7s ease-in-out 2s infinite; }
         .blob-slow { animation: blob-move 10s ease-in-out 4s infinite; }
+        /* Tally embed: transparentBackground=1 — тема формы в Tally → Customize → Dark; фон #0d0d1f или прозрачный, поля темнее, текст светлый */
+        .contact-tally-card { background: linear-gradient(180deg, rgba(13,13,31,0.98) 0%, #0d0d1f 100%); }
     </style>
     <script src="https://analytics.ahrefs.com/analytics.js" data-key="mxElZupDL+Tyl+iGuMaCew" async></script>
 </head>
@@ -870,9 +872,19 @@
                 <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">Get Your Website<br><span class="gradient-text">In 24 Hours</span></h2>
                 <p class="text-white/75 text-lg mb-8 max-w-lg mx-auto leading-relaxed">Send your brief below — your current site URL if you have one, business type, what you already have ready, and how to reach you. We usually reply the same day.</p>
 
-                <!-- Tally Pdl0Rb: set form theme to Light in Tally; optional field “Last name” remove there. -->
-                <div class="rounded-2xl overflow-hidden bg-white text-left mb-6 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] ring-1 ring-white/25">
-                    <iframe data-tally-src="https://tally.so/embed/Pdl0Rb?alignLeft=1&hideTitle=1&dynamicHeight=1" loading="lazy" width="100%" height="520" title="Start your webmorp.art project" class="min-h-[520px] w-full border-0 bg-white block"></iframe>
+                <!-- Tally Pdl0Rb: Share → Transparent background ON. Customize → Dark: page bg #0d0d1f/transparent, label #e2e8f0, input bg #12122a, border #334155, placeholder #94a3b8, button #0066FF. Remove “Last name” + duplicate $100 blurb inside form if redundant. -->
+                <div class="contact-tally-card rounded-2xl text-left mb-6 border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.08] overflow-hidden">
+                    <div class="px-5 pt-5 sm:px-8 sm:pt-7 pb-4 border-b border-white/[0.08]">
+                        <p class="text-sm sm:text-base text-slate-200 leading-relaxed text-left">
+                            <span class="font-semibold text-white">$100</span> flat to keep your build.
+                            <span class="text-white/40 mx-1.5" aria-hidden="true">·</span>
+                            Optional <span class="font-semibold text-white">+$100</span> to publish on your domain.
+                            <span class="block mt-2.5 text-slate-300">Static HTML, fast, no WordPress — we usually ship within 24 hours.</span>
+                        </p>
+                    </div>
+                    <div class="px-2 sm:px-5 pb-5 pt-4 bg-[#0a0a18]">
+                        <iframe data-tally-src="https://tally.so/embed/Pdl0Rb?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="120" title="Start your webmorp.art project" class="min-h-0 w-full border-0 bg-[#0a0a18] block rounded-lg align-top" style="background-color:#0a0a18"></iframe>
+                    </div>
                 </div>
                 <script>
                 (function(){

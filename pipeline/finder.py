@@ -18,12 +18,19 @@ from urllib.parse import urljoin, urlparse
 
 import requests
 from bs4 import BeautifulSoup
-try:
-    from ddgs import DDGS
-except ImportError:
-    from duckduckgo_search import DDGS  # pragma: no cover
 
 from scraper import USER_AGENT
+
+
+def _ddgs_class():  # lazy: refilter_leads и др. могут импортировать finder без ddgs
+    try:
+        from ddgs import DDGS
+
+        return DDGS
+    except ImportError:
+        from duckduckgo_search import DDGS  # pragma: no cover
+
+        return DDGS
 
 try:
     from scraper import _session
@@ -365,20 +372,116 @@ ENGLISH_MARKETS: tuple[str, ...] = (
     "Ireland",
 )
 
+# Явный lang / content-language начинается с одного из этих — считаем не английским.
+_NON_EN_LANG_PREFIXES: tuple[str, ...] = (
+    "es",
+    "fr",
+    "de",
+    "it",
+    "pt",
+    "nl",
+    "pl",
+    "ru",
+    "ja",
+    "zh",
+    "ko",
+    "ar",
+    "hi",
+    "tr",
+    "sv",
+    "da",
+    "no",
+    "nb",
+    "fi",
+    "cs",
+    "el",
+    "he",
+    "th",
+    "vi",
+    "id",
+    "ms",
+    "ro",
+    "hu",
+    "bg",
+    "sk",
+    "uk",
+    "fa",
+)
+
+
+def _lang_tag_is_non_english(lang: str) -> bool:
+    lang = lang.strip().lower().replace("_", "-")
+    if not lang:
+        return False
+    if lang.startswith("en"):
+        return False
+    base = lang.split("-", 1)[0]
+    return base in _NON_EN_LANG_PREFIXES or any(
+        lang == p or lang.startswith(f"{p}-") for p in _NON_EN_LANG_PREFIXES
+    )
+
+
+def _page_likely_english(html: str | None) -> bool:
+    """
+    Эвристика: html lang / meta content-language + доля кириллицы/CJK в тексте.
+    Нет lang — допускаем (много старых сайтов), но режем явный не-английский.
+    """
+    if not html:
+        return False
+    soup = BeautifulSoup(html, "html.parser")
+    html_el = soup.find("html")
+    if html_el and html_el.get("lang"):
+        if _lang_tag_is_non_english(html_el["lang"]):
+            return False
+    for meta in soup.find_all("meta"):
+        if (meta.get("http-equiv") or "").lower() != "content-language":
+            continue
+        raw = (meta.get("content") or "").lower().split(",")[0].strip().split(";")[0]
+        if raw and _lang_tag_is_non_english(raw):
+            return False
+    text = soup.get_text(separator=" ", strip=True)[:5000]
+    if len(text) > 100:
+        cyr = len(re.findall(r"[\u0400-\u04FF]", text))
+        if cyr / len(text) > 0.12:
+            return False
+        cjk = len(re.findall(r"[\u3040-\u30ff\u4e00-\u9fff\uac00-\ud7af]", text))
+        if cjk / len(text) > 0.12:
+            return False
+    return True
+
 
 def build_search_queries(
     niche: str,
     region: str = "",
     *,
     single_region: bool = False,
+    global_english: bool = False,
 ) -> list[str]:
     """
     single_region=False (по умолчанию): запросы по ниши для USA, Dubai, UK, AU, CA, …
     single_region=True + region: старый режим — один географический хвост и site: TLD при возможности.
+    global_english=True: без привязки к стране — нейтральные англоязычные запросы (сайт фильтруем по языку).
     """
     niche = niche.strip()
     if not niche:
         return []
+
+    if global_english:
+        queries = [
+            f"{niche} contact email",
+            f"{niche} contact us",
+            f'{niche} "powered by WordPress"',
+            f"{niche} website © 2018",
+            f"{niche} website © 2019",
+            f"{niche} small business website",
+            f"{niche} professional services",
+            f"{niche} get a quote",
+            f"{niche} book online",
+            f"{niche} licensed insured",
+            f'"{niche}" @gmail.com',
+            f"{niche} ltd contact",
+        ]
+        return list(dict.fromkeys(queries))
 
     if single_region and region.strip():
         r = region.strip()
@@ -528,6 +631,7 @@ class LeadRow:
 def _ddg_collect(queries: list[str], per_query: int) -> list[str]:
     urls: list[str] = []
     seen: set[str] = set()
+    DDGS = _ddgs_class()
     with DDGS() as ddgs:
         for q in queries:
             try:
@@ -556,8 +660,14 @@ def search_leads(
     require_email: bool = False,
     limit: int | None = None,
     single_region: bool = False,
+    global_english: bool = False,
 ) -> list[LeadRow]:
-    queries = build_search_queries(niche, region, single_region=single_region)
+    queries = build_search_queries(
+        niche,
+        region,
+        single_region=single_region,
+        global_english=global_english,
+    )
     urls = _ddg_collect(queries, per_query)
     rows: list[LeadRow] = []
     seen_hosts: set[str] = set()
@@ -575,6 +685,8 @@ def search_leads(
 
         time.sleep(delay_s)
         html, meta = _fetch(url)
+        if html and global_english and not _page_likely_english(html):
+            continue
         if html and _looks_like_non_static_brochure(html):
             continue
         score, reasons = _score_page(html, meta)
@@ -618,7 +730,7 @@ def main(argv: list[str] | None = None) -> None:
         "niche",
         nargs="+",
         metavar="WORD",
-        help="Ниша (напр. dentist, house cleaning). Регион по умолчанию не нужен — ищем USA, Dubai, UK, AU, CA, …",
+        help="Ниша (напр. dentist, house cleaning). Без --global-english: рынки USA, UK, AU, … С флагом — любая география, страница на англ.",
     )
     ap.add_argument(
         "--region",
@@ -661,6 +773,11 @@ def main(argv: list[str] | None = None) -> None:
         help="Остановиться после N подходящих результатов",
     )
     ap.add_argument(
+        "--global-english",
+        action="store_true",
+        help="Поиск без привязки к стране; отсекаем сайты с явным не-англ. lang и сильной кириллицей/CJK в тексте",
+    )
+    ap.add_argument(
         "--db",
         metavar="PATH",
         nargs="?",
@@ -678,13 +795,21 @@ def main(argv: list[str] | None = None) -> None:
     region = (args.region or "").strip()
     single_region = bool(region)
 
-    queries = build_search_queries(niche, region, single_region=single_region)
+    queries = build_search_queries(
+        niche,
+        region,
+        single_region=single_region,
+        global_english=args.global_english,
+    )
     if args.dry_search:
         for i, sq in enumerate(queries, 1):
             print(f"{i}. {sq}")
         return
 
-    scope = f"регион: {region}" if single_region else f"рынки: {', '.join(ENGLISH_MARKETS)}"
+    if args.global_english:
+        scope = "глобально, страница на англ. (эвристика lang + текст)"
+    else:
+        scope = f"регион: {region}" if single_region else f"рынки: {', '.join(ENGLISH_MARKETS)}"
     print(
         f"Запросы: {len(queries)} DDG | {scope} | min_score≥{args.min_score}"
         f"{' | только email' if args.require_email else ''}"
@@ -699,6 +824,7 @@ def main(argv: list[str] | None = None) -> None:
         require_email=args.require_email,
         limit=args.limit,
         single_region=single_region,
+        global_english=args.global_english,
     )
     for r in rows:
         print(r.line())

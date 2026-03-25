@@ -13,6 +13,8 @@ DuckDuckGo → finder.py (оценка страницы, email, отсев e-com
                     ↓
          collect_leads.py (много ниш, цель по количеству)
                     ↓
+         refilter_leads.py (опционально: снова применить фильтр finder к уже сохранённым URL)
+                    ↓
          psi_enrich.py (опционально: PageSpeed mobile → psi_mobile_score)
                     ↓
          export_outreach_md.py → outreach-batch-*.md (черновики; опц. --psi-slow-only)
@@ -42,6 +44,16 @@ DuckDuckGo → finder.py (оценка страницы, email, отсев e-com
 | `created_at`, `updated_at` | ISO UTC |
 
 Инициализация: `python leads_db.py init --db leads.db`.
+
+**Перефильтрация после правок `finder.py`:** заново скачивается главная каждого лида, применяются `_looks_like_non_static_brochure` и `_score_page`; неподходящие строки удаляются из `leads`, у остальных обновляются `score` / `reasons`. У `outreach_sent` для удалённых лидов обнуляется `lead_id`.
+
+```bash
+python refilter_leads.py --dry-run
+python refilter_leads.py --since 2026-03-23 --min-score 5
+# опционально: --strict-email, --drop-unreachable
+# если без --skip-engine-filter почти все удаляются (типично: весь список на WordPress):
+python refilter_leads.py --since 2026-03-23 --min-score 5 --skip-engine-filter
+```
 
 ### Таблицы рассылки
 
