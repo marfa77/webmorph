@@ -25,6 +25,8 @@ CREATE TABLE IF NOT EXISTS leads (
     score INTEGER,
     reasons TEXT,
     niche TEXT,
+    psi_mobile_score INTEGER,
+    psi_checked_at TEXT,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL
 );
@@ -61,6 +63,16 @@ def _host_from_url(url: str) -> str:
         return ""
 
 
+def ensure_psi_columns(conn: sqlite3.Connection) -> None:
+    """Добавить psi_mobile_score / psi_checked_at в старые БД (ALTER)."""
+    cur = conn.execute("PRAGMA table_info(leads)")
+    cols = {row[1] for row in cur.fetchall()}
+    if "psi_mobile_score" not in cols:
+        conn.execute("ALTER TABLE leads ADD COLUMN psi_mobile_score INTEGER")
+    if "psi_checked_at" not in cols:
+        conn.execute("ALTER TABLE leads ADD COLUMN psi_checked_at TEXT")
+
+
 def connect(path: Path | str | None = None) -> sqlite3.Connection:
     p = Path(path) if path else DEFAULT_DB_PATH
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -74,6 +86,7 @@ def init_db(path: Path | str | None = None) -> Path:
     conn = connect(p)
     try:
         conn.executescript(SCHEMA)
+        ensure_psi_columns(conn)
         conn.commit()
     finally:
         conn.close()
@@ -103,8 +116,8 @@ def _upsert_lead_conn(
     else:
         conn.execute(
             """
-            INSERT INTO leads (url, host, email, score, reasons, niche, created_at, updated_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO leads (url, host, email, score, reasons, niche, psi_mobile_score, psi_checked_at, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, NULL, NULL, ?, ?)
             """,
             (url, host, email, score, reasons, niche, now, now),
         )
@@ -165,7 +178,7 @@ def list_leads(
     try:
         cur = conn.execute(
             """
-            SELECT id, url, host, email, score, reasons, niche, created_at, updated_at
+            SELECT id, url, host, email, score, reasons, niche, psi_mobile_score, psi_checked_at, created_at, updated_at
             FROM leads ORDER BY updated_at DESC LIMIT ?
             """,
             (limit,),

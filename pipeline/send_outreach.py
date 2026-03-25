@@ -33,7 +33,7 @@ try:
 except ImportError:
     load_dotenv = None  # type: ignore[misc, assignment]
 
-from export_outreach_md import EMAIL_TEMPLATE, _blocked, subject_problem
+from export_outreach_md import _blocked, build_email_body, subject_problem
 from leads_db import DEFAULT_DB_PATH, connect, init_db
 
 # Доменная логика очереди как в export_outreach_md (тот же порядок и фильтр)
@@ -125,15 +125,29 @@ def sent_on_local_day(conn: sqlite3.Connection, tz: ZoneInfo, day_iso: str) -> i
     return n
 
 
-def fetch_queue(conn: sqlite3.Connection, limit: int) -> list[dict[str, Any]]:
-    cur = conn.execute(
-        """
-        SELECT l.id, l.url, l.host, l.email, l.score, l.reasons, l.niche
-        FROM leads l
-        WHERE l.email IS NOT NULL AND l.email != ''
+def fetch_queue(
+    conn: sqlite3.Connection,
+    limit: int,
+    *,
+    psi_slow_only: bool = False,
+    psi_threshold: int = 55,
+) -> list[dict[str, Any]]:
+    where = """
+        l.email IS NOT NULL AND l.email != ''
           AND NOT EXISTS (SELECT 1 FROM outreach_sent s WHERE lower(s.email) = lower(l.email))
+    """
+    params: list[Any] = []
+    if psi_slow_only:
+        where += " AND l.psi_mobile_score IS NOT NULL AND l.psi_mobile_score < ?"
+        params.append(int(psi_threshold))
+    cur = conn.execute(
+        f"""
+        SELECT l.id, l.url, l.host, l.email, l.score, l.reasons, l.niche, l.psi_mobile_score
+        FROM leads l
+        WHERE {where}
         ORDER BY l.score DESC, l.id DESC
-        """
+        """,
+        params,
     )
     rows = [dict(zip([c[0] for c in cur.description], row)) for row in cur.fetchall()]
     out: list[dict[str, Any]] = []
@@ -336,6 +350,8 @@ def run_send(
     min_delay: float,
     max_delay: float,
     no_delay: bool,
+    psi_slow_only: bool = False,
+    psi_threshold: int = 55,
 ) -> None:
     start = resolve_start_date(conn)
     if not start:
@@ -356,7 +372,12 @@ def run_send(
         print(f"Лимит на сегодня исчерпан ({sent_today}/{cap}).")
         return
 
-    queue = fetch_queue(conn, limit=remaining)
+    queue = fetch_queue(
+        conn,
+        limit=remaining,
+        psi_slow_only=psi_slow_only,
+        psi_threshold=psi_threshold,
+    )
     if not queue:
         print("Очередь пуста: не осталось лидов без записи в outreach_sent.")
         return
@@ -383,7 +404,10 @@ def run_send(
         for r in queue:
             host = _host_from_row(r)
             em = (r.get("email") or "").strip()
-            print(f"DRY  {em}  |  {subject_problem(host)[:60]}…")
+            psi = r.get("psi_mobile_score")
+            ps = int(psi) if psi is not None else None
+            subj = subject_problem(host, psi_mobile=ps)
+            print(f"DRY  {em}  |  {subj[:72]}{'…' if len(subj) > 72 else ''}")
         return
 
     if not from_email:
@@ -398,8 +422,10 @@ def run_send(
         host = _host_from_row(r)
         em = (r.get("email") or "").strip()
         lead_id = r.get("id")
-        subj = subject_problem(host)
-        body = EMAIL_TEMPLATE.format(host=host)
+        psi = r.get("psi_mobile_score")
+        ps = int(psi) if psi is not None else None
+        subj = subject_problem(host, psi_mobile=ps)
+        body = build_email_body(host, em, ps)
         try:
             if graph_mode:
                 send_graph(to_addr=em, subject=subj, body=body, from_upn=from_email)
@@ -477,6 +503,17 @@ def main() -> None:
     p_send.add_argument("--no-delay", action="store_true", help="Без паузы между письмами")
     p_send.add_argument("--min-delay", type=float, default=45.0, help="Сек между письмами (мин)")
     p_send.add_argument("--max-delay", type=float, default=120.0, help="Сек между письмами (макс)")
+    p_send.add_argument(
+        "--psi-slow-only",
+        action="store_true",
+        help="Только лиды с PSI mobile < порога (см. OUTREACH_PSI_SLOW_ONLY=1 в .env)",
+    )
+    p_send.add_argument(
+        "--psi-threshold",
+        type=int,
+        default=55,
+        help="Порог для --psi-slow-only (по умолчанию 55)",
+    )
 
     p_mark = sub.add_parser("mark-sent", help="Отметить адреса как уже отправленные (ручная рассылка)")
     p_mark.add_argument("--emails", default="", help="Список через запятую")
@@ -523,6 +560,11 @@ def main() -> None:
             print(f"Graph: токен получен, OK (длина {len(tok)}). Проверь в Azure: Mail.Send (application) + admin consent.")
             return
         if args.cmd == "send":
+            env_psi = os.environ.get("OUTREACH_PSI_SLOW_ONLY", "").strip().lower() in (
+                "1",
+                "true",
+                "yes",
+            )
             run_send(
                 conn,
                 tz,
@@ -530,6 +572,8 @@ def main() -> None:
                 min_delay=args.min_delay,
                 max_delay=args.max_delay,
                 no_delay=args.no_delay,
+                psi_slow_only=bool(args.psi_slow_only or env_psi),
+                psi_threshold=int(args.psi_threshold),
             )
             return
     finally:

@@ -142,6 +142,179 @@ def _host_ok(url: str) -> bool:
     return True
 
 
+def _looks_like_non_static_brochure(html: str | None) -> bool:
+    """
+    Оставляем только простые статические визитки (чистый HTML/CSS, без CMS/БД/магазинов).
+
+    Отсекаем: e-commerce, типовые CMS, конструкторы сайтов, признаки SSR/React/Vue/Nuxt/Next
+    и прочие «движки». Не пытаемся ловить каждый скрипт (GA и т.д. — норма).
+    """
+    if not html:
+        return False
+    low = html.lower()
+
+    # --- Интернет-магазины и checkout ---
+    ecommerce: tuple[str, ...] = (
+        "turbify",
+        "store.turbify",
+        "yhst-",
+        "wg-order",
+        "shopify.com",
+        "shopifycdn.net",
+        "myshopify.com",
+        "woocommerce",
+        "wc-ajax",
+        "wp-json/wc/",
+        "wc-cart",
+        "class=\"woocommerce",
+        "bigcommerce",
+        "bigcommerce.com",
+        "magento",
+        "mage/cookies",
+        "snipcart",
+        "ecwid.com",
+        "ecwid_script",
+        "wixstores",
+        "wixstores.com",
+        "square.site",
+        "squareup.com/checkout",
+        "paypal.com/cgi-bin/webscr",
+        "cmd=_cart",
+        "stripe.com/checkout",
+        "buy-button-container",
+        "add to cart",
+        "add-to-cart",
+        "addtocart",
+        "add_to_cart",
+        "shopping cart",
+        "view cart",
+        "your cart",
+        "minicart",
+        "cart-items",
+        "/shopping-cart",
+        "/shopping_cart",
+        "checkout.aspx",
+        "/checkout?",
+        'href="/cart',
+        "href='/cart",
+        "/cart.php",
+        "/cart.htm",
+        "/basket",
+        "prestashop",
+        "opencart",
+        "fastspring",
+        "gumroad.com",
+        "lemon squeezy",
+        "lemonsqueezy",
+        "amazon-associates",
+        "ebay.com/itm",
+        "etsy.com/listing",
+    )
+
+    # --- CMS, БД-сайты, конструкторы ---
+    cms_and_builders: tuple[str, ...] = (
+        # WordPress
+        "/wp-content/",
+        "/wp-includes/",
+        "wp-json/",
+        "xmlrpc.php",
+        "/wp-login.php",
+        "wp-embed.min.js",
+        'content="wordpress',
+        "wp-emoji-release",
+        # Drupal / Joomla / TYPO3
+        "drupal.js",
+        "drupalsettings",
+        "/sites/default/files/",
+        'content="drupal',
+        "option=com_content",
+        "?option=com_",
+        "&option=com_",
+        "/media/system/js/joomla",
+        "typo3temp",
+        "typo3conf",
+        # Ghost / Craft / SilverStripe / Concrete …
+        'content="ghost',
+        "ghost.io/",
+        "craftcms",
+        "/craft/",
+        "concrete5",
+        "silverstripe",
+        "expressionengine",
+        # Конструкторы
+        "wixstatic.com",
+        "static.parastorage.com",
+        ".wix.com/",
+        "wixpress.com",
+        "editorx.com",
+        "squarespace.com",
+        "squarespace-cdn",
+        "static1.squarespace",
+        "webflow.io",
+        "webflow.com",
+        "data-wf-domain",
+        "assets.website-files.com",
+        "weebly.com",
+        "weeblycloud.com",
+        "multiscreensite.com",
+        "duda.co",
+        "leadpages.net",
+        "unbounce.com",
+        "landingi.com",
+        "instapage.com",
+        "clickfunnels.com",
+        "kartra.com",
+        # HubSpot / маркетинговые CMS
+        "hs-scripts.com",
+        "hubspotusercontent",
+        "hsforms.net",
+        "hs-sites.com",
+        # GoDaddy Website Builder
+        "wsimg.com",
+        # SharePoint / enterprise
+        "sharepoint.com",
+        "/_layouts/",
+        # Adobe Experience Manager
+        "/etc.clientlibs/",
+        # Форумы / LMS (не визитки)
+        "phpbb",
+        "vbulletin",
+        "discourse-cdn",
+        "flarum",
+        "moodle",
+        # Blogger
+        "blogblog.com",
+        "blogger.com/static",
+    )
+
+    # --- SPA / SSR / app-оболочки (не «простой статик») ---
+    spa_ssr: tuple[str, ...] = (
+        "__next_data__",
+        "__next_f",
+        "/_next/static/",
+        "/_next/data/",
+        "__nuxt",
+        "/_nuxt/",
+        "___gatsby",
+        "gatsby-js",
+        "data-reactroot",
+        "data-react-helmet",
+        "sveltekit",
+        "__sveltekit",
+        "@remix-run",
+        "ember-cli",
+        "angular-cli",
+    )
+
+    all_markers = ecommerce + cms_and_builders + spa_ssr
+    return any(m in low for m in all_markers)
+
+
+def _looks_like_ecommerce(html: str | None) -> bool:
+    """Совместимость: раньше только магазины; логика вошла в _looks_like_non_static_brochure."""
+    return _looks_like_non_static_brochure(html)
+
+
 def _email_matches_site(url: str, email: str) -> bool:
     """Email на том же домене, что и сайт (не чужой баннер/реклама)."""
     if "@" not in email:
@@ -402,6 +575,8 @@ def search_leads(
 
         time.sleep(delay_s)
         html, meta = _fetch(url)
+        if html and _looks_like_non_static_brochure(html):
+            continue
         score, reasons = _score_page(html, meta)
         if score < min_score:
             continue
