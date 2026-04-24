@@ -1,8 +1,0 @@
-{
-  "name": "webmorph",
-  "private": true,
-  "description": "Static site at repo root; Next.js (OGKit) in ogkit/. Vercel: install/build run in ogkit/ — see vercel.json.",
-  "scripts": {
-    "build": "cd ogkit && npm run build"
-  }
-}

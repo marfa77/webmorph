@@ -25,6 +25,10 @@ Fast and affordable website transformation service. Get your professional custom
 
 Email: customer@pixid.studio
 
+## Vercel (OGKit — Next.js в `ogkit/`)
+
+Для деплоя приложения из папки **`ogkit`**: в проекте Vercel задайте **Root Directory** = **`ogkit`**. Иначе сборка ищет `package.json` и `.next` в корне монорепозитория и падает.
+
 ## SEO Optimized
 
 Optimized for search queries:

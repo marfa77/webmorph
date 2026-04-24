@@ -36,7 +36,7 @@ Open [http://localhost:3000](http://localhost:3000). See **[/docs](http://localh
 
 The app is built to be served under the **`/ogkit` path** on **`www.webmorp.art`** (see `next.config.mjs` + `config/paths.ts`).
 
-1. **Repo layout** — if this Next app lives in a subfolder of `webmorph` (e.g. `ogkit/`), set Vercel **Settings → General → Root Directory = `ogkit`**. If the Vercel project is **only** this app at repo root, leave root as `/`.
+1. **Repo layout** — in the **`marfa77/webmorph`** monorepo this app lives in **`ogkit/`**. Set Vercel **Settings → General → Root Directory = `ogkit`** (required). Otherwise `npm install` / `.next` run in the wrong place (`ENOENT`, missing `routes-manifest.json`). If you import a repo that is **only** this app at the repository root, leave Root Directory empty.
 2. **Vercel** — **Add New Project** → **Import** that GitHub repo → **Framework: Next.js**, **Install:** `pnpm install` (or auto-detect pnpm from lockfile), **Build:** `pnpm run build` (default).
 3. **Environment variables (Production)** — copy from `.env.example` and set at least:
 
