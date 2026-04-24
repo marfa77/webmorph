@@ -23,7 +23,7 @@ from email.message import EmailMessage
 from email.utils import formataddr
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote, urlparse
+from urllib.parse import quote, unquote, urlparse
 from zoneinfo import ZoneInfo
 
 import requests
@@ -123,6 +123,139 @@ def sent_on_local_day(conn: sqlite3.Connection, tz: ZoneInfo, day_iso: str) -> i
         except Exception:
             continue
     return n
+
+
+def _valid_outreach_email(addr: str) -> bool:
+    """Отсекаем ложные совпадения из HTML (картинки, CSS) и плейсхолдеры."""
+    e = (addr or "").strip()
+    if e.count("@") != 1:
+        return False
+    local, _, domain = e.partition("@")
+    local = unquote(local).strip()
+    if not local or not domain or "." not in domain:
+        return False
+    low_loc = local.lower()
+    if "u003e" in low_loc or low_loc.startswith(">"):
+        return False
+    if any(c in local for c in " \t\n"):
+        return False
+    e_norm = f"{local}@{domain}"
+    if len(e_norm) > 254 or len(local) > 64:
+        return False
+    if any(c in local for c in "/\\"):
+        return False
+    low = local.lower()
+    if any(
+        low.endswith(s)
+        for s in (".png", ".jpg", ".jpeg", ".gif", ".css", ".js", ".svg", ".webp")
+    ):
+        return False
+    dom_low = domain.lower()
+    if dom_low in ("example.com", "domain.com", "test.com", "localhost"):
+        return False
+    if low_loc == "your" and dom_low == "email.com":
+        return False
+    if low_loc == "john" and dom_low == "doe.com":
+        return False
+    if any(
+        dom_low.endswith(s)
+        for s in (".png", ".jpg", ".jpeg", ".gif", ".css", ".js", ".svg", ".webp")
+    ):
+        return False
+    if low in ("user", "test", "admin", "noreply") and "domain" in domain.lower():
+        return False
+    if not re.match(
+        r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", e_norm
+    ):
+        return False
+    return True
+
+
+def _pixid_skip_gov_corp_email(email: str) -> bool:
+    """Не слать B2B-аутрич на госсектор и типовые корпоративные ящики."""
+    dom = email.split("@")[-1].lower() if "@" in email else ""
+    if not dom:
+        return True
+    if ".gov" in dom or dom.endswith(".mil") or dom.endswith(".gouv.fr"):
+        return True
+    for s in (
+        "walmart.com",
+        "amazon.",
+        "swindlerbuster",
+        "incometax.gov",
+    ):
+        if s in dom:
+            return True
+    return False
+
+
+def _normalize_lead_email(addr: str) -> str | None:
+    """Вернуть нормализованный адрес или None, если невалиден."""
+    if not _valid_outreach_email(addr):
+        return None
+    local, _, domain = (addr or "").strip().partition("@")
+    local = unquote(local).strip()
+    return f"{local}@{domain}"
+
+
+def fetch_queue_pixid(conn: sqlite3.Connection, limit: int) -> list[dict[str, Any]]:
+    """Очередь для PixID (фотоателье): те же правила, что в export_pixid_photo_studios_md."""
+    from clean_pixid_photo_leads import _reject_reason, pixid_junk_email_domain
+    from export_pixid_photo_studios_md import _row_ok_for_pixid
+
+    where = """
+        l.email IS NOT NULL AND l.email != ''
+          AND NOT EXISTS (SELECT 1 FROM outreach_sent s WHERE lower(s.email) = lower(l.email))
+    """
+    cur = conn.execute(
+        f"""
+        SELECT l.id, l.url, l.host, l.email, l.score, l.reasons, l.niche, l.psi_mobile_score
+        FROM leads l
+        WHERE {where}
+        ORDER BY l.id DESC
+        LIMIT ?
+        """,
+        (max(limit * 80, 400),),
+    )
+    rows = [dict(zip([c[0] for c in cur.description], row)) for row in cur.fetchall()]
+    out: list[dict[str, Any]] = []
+    seen_emails: set[str] = set()
+    for r in rows:
+        if not _row_ok_for_pixid(r):
+            continue
+        url = r.get("url") or ""
+        hrow = (r.get("host") or "").strip()
+        if not hrow:
+            hrow = _host_from_row(r)
+        if _reject_reason(url, hrow):
+            continue
+        em_raw = (r.get("email") or "").strip()
+        em_norm = _normalize_lead_email(em_raw)
+        if not em_norm:
+            continue
+        if pixid_junk_email_domain(em_norm):
+            continue
+        if _pixid_skip_gov_corp_email(em_norm):
+            continue
+        el = em_norm.lower()
+        if el in seen_emails:
+            continue
+        seen_emails.add(el)
+        host = _host_from_row(r)
+        if _blocked(host):
+            continue
+        out.append({**dict(r), "email": em_norm})
+        if len(out) >= limit:
+            break
+    return out
+
+
+def _pixid_subject_and_body(r: dict[str, Any]) -> tuple[str, str]:
+    from export_pixid_photo_studios_md import BODY_TEMPLATE, SUBJECT, first_name_from_email
+
+    em = (r.get("email") or "").strip()
+    body = BODY_TEMPLATE.format(first_name=first_name_from_email(em))
+    return SUBJECT, body
 
 
 def fetch_queue(
@@ -352,6 +485,8 @@ def run_send(
     no_delay: bool,
     psi_slow_only: bool = False,
     psi_threshold: int = 55,
+    pixid_photo_studios: bool = False,
+    min_daily_cap: int | None = None,
 ) -> None:
     start = resolve_start_date(conn)
     if not start:
@@ -366,27 +501,33 @@ def run_send(
     today_iso = today.isoformat()
     idx = campaign_day_index(start, today)
     cap = daily_send_cap(idx)
+    if min_daily_cap is not None and min_daily_cap > 0:
+        cap = max(cap, int(min_daily_cap))
     sent_today = sent_on_local_day(conn, tz, today_iso)
     remaining = cap - sent_today
     if remaining <= 0:
         print(f"Лимит на сегодня исчерпан ({sent_today}/{cap}).")
         return
 
-    queue = fetch_queue(
-        conn,
-        limit=remaining,
-        psi_slow_only=psi_slow_only,
-        psi_threshold=psi_threshold,
-    )
+    if pixid_photo_studios:
+        queue = fetch_queue_pixid(conn, limit=remaining)
+    else:
+        queue = fetch_queue(
+            conn,
+            limit=remaining,
+            psi_slow_only=psi_slow_only,
+            psi_threshold=psi_threshold,
+        )
     if not queue:
         print("Очередь пуста: не осталось лидов без записи в outreach_sent.")
         return
 
     graph_mode = use_graph_backend()
     backend_label = "Graph" if graph_mode else "SMTP"
+    mode_lbl = "PixID photo studios" if pixid_photo_studios else "webmorp"
 
     print(
-        f"День кампании {idx}, лимит {cap}/день, сегодня уже {sent_today}, отправляем до {remaining} писем, в очереди {len(queue)}. Канал: {backend_label}."
+        f"День кампании {idx}, лимит {cap}/день, сегодня уже {sent_today}, отправляем до {remaining} писем, в очереди {len(queue)}. Канал: {backend_label}. Режим: {mode_lbl}."
     )
 
     if graph_mode:
@@ -402,11 +543,14 @@ def run_send(
 
     if dry_run:
         for r in queue:
-            host = _host_from_row(r)
             em = (r.get("email") or "").strip()
-            psi = r.get("psi_mobile_score")
-            ps = int(psi) if psi is not None else None
-            subj = subject_problem(host, psi_mobile=ps)
+            if pixid_photo_studios:
+                subj, _ = _pixid_subject_and_body(r)
+            else:
+                host = _host_from_row(r)
+                psi = r.get("psi_mobile_score")
+                ps = int(psi) if psi is not None else None
+                subj = subject_problem(host, psi_mobile=ps)
             print(f"DRY  {em}  |  {subj[:72]}{'…' if len(subj) > 72 else ''}")
         return
 
@@ -419,13 +563,16 @@ def run_send(
 
     sent = 0
     for r in queue:
-        host = _host_from_row(r)
         em = (r.get("email") or "").strip()
         lead_id = r.get("id")
-        psi = r.get("psi_mobile_score")
-        ps = int(psi) if psi is not None else None
-        subj = subject_problem(host, psi_mobile=ps)
-        body = build_email_body(host, em, ps)
+        if pixid_photo_studios:
+            subj, body = _pixid_subject_and_body(r)
+        else:
+            host = _host_from_row(r)
+            psi = r.get("psi_mobile_score")
+            ps = int(psi) if psi is not None else None
+            subj = subject_problem(host, psi_mobile=ps)
+            body = build_email_body(host, em, ps)
         try:
             if graph_mode:
                 send_graph(to_addr=em, subject=subj, body=body, from_upn=from_email)
@@ -439,12 +586,13 @@ def run_send(
                     from_name=from_name,
                 )
                 src = "smtp"
+            src_tag = f"{src}_pixid" if pixid_photo_studios else src
             conn.execute(
                 """
                 INSERT INTO outreach_sent (email, lead_id, sent_at, subject, source)
                 VALUES (?, ?, ?, ?, ?)
                 """,
-                (em.lower(), lead_id, utc_now_iso(), subj, src),
+                (em.lower(), lead_id, utc_now_iso(), subj, src_tag),
             )
             conn.commit()
             sent += 1
@@ -514,6 +662,18 @@ def main() -> None:
         default=55,
         help="Порог для --psi-slow-only (по умолчанию 55)",
     )
+    p_send.add_argument(
+        "--pixid-photo-studios",
+        action="store_true",
+        help="PixID: тема/тело (в т.ч. 5 trial exports, ответом — ключ); очередь из --db; запись в outreach_sent, source=*_pixid",
+    )
+    p_send.add_argument(
+        "--min-daily-cap",
+        type=int,
+        default=None,
+        metavar="N",
+        help="Поднять дневной лимит хотя бы до N (например 30, если штатный лимит 20). Осторожно с репутацией домена.",
+    )
 
     p_mark = sub.add_parser("mark-sent", help="Отметить адреса как уже отправленные (ручная рассылка)")
     p_mark.add_argument("--emails", default="", help="Список через запятую")
@@ -574,6 +734,8 @@ def main() -> None:
                 no_delay=args.no_delay,
                 psi_slow_only=bool(args.psi_slow_only or env_psi),
                 psi_threshold=int(args.psi_threshold),
+                pixid_photo_studios=bool(args.pixid_photo_studios),
+                min_daily_cap=args.min_daily_cap,
             )
             return
     finally:

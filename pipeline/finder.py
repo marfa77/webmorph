@@ -46,6 +46,7 @@ _SKIP_HOST_SUBSTR = (
     "x.com",
     "youtube.com",
     "google.com",
+    "bing.com",
     "maps.google",
     "goo.gl",
     "yelp.com",
@@ -456,6 +457,7 @@ def build_search_queries(
     *,
     single_region: bool = False,
     global_english: bool = False,
+    lite_global: bool = False,
 ) -> list[str]:
     """
     single_region=False (по умолчанию): запросы по ниши для USA, Dubai, UK, AU, CA, …
@@ -467,7 +469,7 @@ def build_search_queries(
         return []
 
     if global_english:
-        queries = [
+        full = [
             f"{niche} contact email",
             f"{niche} contact us",
             f'{niche} "powered by WordPress"',
@@ -481,6 +483,14 @@ def build_search_queries(
             f'"{niche}" @gmail.com',
             f"{niche} ltd contact",
         ]
+        lite = [
+            f"{niche} contact email",
+            f"{niche} contact us",
+            f'{niche} "powered by WordPress"',
+            f"{niche} small business website",
+            f"{niche} professional services",
+        ]
+        queries = lite if lite_global else full
         return list(dict.fromkeys(queries))
 
     if single_region and region.strip():
@@ -661,16 +671,22 @@ def search_leads(
     limit: int | None = None,
     single_region: bool = False,
     global_english: bool = False,
+    skip_engine_filter: bool = False,
+    lite_global_queries: bool = False,
+    max_url_checks: int | None = None,
+    allow_any_page_email: bool = False,
 ) -> list[LeadRow]:
     queries = build_search_queries(
         niche,
         region,
         single_region=single_region,
         global_english=global_english,
+        lite_global=lite_global_queries and global_english,
     )
     urls = _ddg_collect(queries, per_query)
     rows: list[LeadRow] = []
     seen_hosts: set[str] = set()
+    url_checks = 0
 
     for url in urls:
         try:
@@ -683,11 +699,15 @@ def search_leads(
         except Exception:
             continue
 
+        if max_url_checks is not None and url_checks >= max_url_checks:
+            break
+        url_checks += 1
+
         time.sleep(delay_s)
         html, meta = _fetch(url)
         if html and global_english and not _page_likely_english(html):
             continue
-        if html and _looks_like_non_static_brochure(html):
+        if html and not skip_engine_filter and _looks_like_non_static_brochure(html):
             continue
         score, reasons = _score_page(html, meta)
         if score < min_score:
@@ -703,7 +723,9 @@ def search_leads(
             contact = "—"
 
         if require_email:
-            if "@" not in contact or not _email_matches_site(url, contact):
+            if "@" not in contact:
+                continue
+            if not allow_any_page_email and not _email_matches_site(url, contact):
                 continue
 
         rows.append(
@@ -766,6 +788,11 @@ def main(argv: list[str] | None = None) -> None:
         help="Только лиды, где на странице найден email (не телефон)",
     )
     ap.add_argument(
+        "--allow-any-email",
+        action="store_true",
+        help="С --require-email: принять любой email со страницы (не только @домен-сайта); больше лидов, часть ящиков чужие/общие",
+    )
+    ap.add_argument(
         "--limit",
         type=int,
         default=None,
@@ -776,6 +803,23 @@ def main(argv: list[str] | None = None) -> None:
         "--global-english",
         action="store_true",
         help="Поиск без привязки к стране; отсекаем сайты с явным не-англ. lang и сильной кириллицей/CJK в тексте",
+    )
+    ap.add_argument(
+        "--skip-engine-filter",
+        action="store_true",
+        help="Не отсекать WP/Wix/магазины/SPA (как refilter_leads --skip-engine-filter): больше лидов, не только «чистый статик»",
+    )
+    ap.add_argument(
+        "--max-url-checks",
+        type=int,
+        default=0,
+        metavar="N",
+        help="Макс. уникальных хостов проверить за запуск (0 = без лимита; collect_leads задаёт свой дефолт)",
+    )
+    ap.add_argument(
+        "--lite-global-queries",
+        action="store_true",
+        help="С --global-english: только 5 DDG-запросов вместо 12 (быстрее)",
     )
     ap.add_argument(
         "--db",
@@ -800,11 +844,18 @@ def main(argv: list[str] | None = None) -> None:
         region,
         single_region=single_region,
         global_english=args.global_english,
+        lite_global=args.lite_global_queries,
     )
     if args.dry_search:
         for i, sq in enumerate(queries, 1):
             print(f"{i}. {sq}")
         return
+
+    if args.allow_any_email and not args.require_email:
+        print(
+            "Предупреждение: --allow-any-email имеет смысл только с --require-email",
+            file=sys.stderr,
+        )
 
     if args.global_english:
         scope = "глобально, страница на англ. (эвристика lang + текст)"
@@ -813,9 +864,11 @@ def main(argv: list[str] | None = None) -> None:
     print(
         f"Запросы: {len(queries)} DDG | {scope} | min_score≥{args.min_score}"
         f"{' | только email' if args.require_email else ''}"
+        f"{' | any-email' if args.require_email and args.allow_any_email else ''}"
         f"{f' | limit {args.limit}' if args.limit else ''}\n",
         file=sys.stderr,
     )
+    max_uc = args.max_url_checks if args.max_url_checks > 0 else None
     rows = search_leads(
         niche,
         region,
@@ -825,6 +878,10 @@ def main(argv: list[str] | None = None) -> None:
         limit=args.limit,
         single_region=single_region,
         global_english=args.global_english,
+        skip_engine_filter=args.skip_engine_filter,
+        lite_global_queries=args.lite_global_queries,
+        max_url_checks=max_uc,
+        allow_any_page_email=args.allow_any_email,
     )
     for r in rows:
         print(r.line())

@@ -10,6 +10,8 @@
 Пример:
   python collect_leads.py --target 1000
   python collect_leads.py --personal-only --target 200 --global-english
+  python collect_leads.py --target 500 --global-english --skip-engine-filter
+  python collect_leads.py --target 200 --global-english --max-url-checks 25 --per-query 8
 """
 
 from __future__ import annotations
@@ -185,6 +187,11 @@ def main() -> None:
         action="store_true",
         help="Сохранять лиды без email; по умолчанию только с email (для рассылки)",
     )
+    ap.add_argument(
+        "--allow-any-email",
+        action="store_true",
+        help="С email на странице, но не требовать @домен-сайта (как finder --allow-any-email)",
+    )
     ap.add_argument("--per-query", type=int, default=10, help="Результатов DDG на подзапрос")
     ap.add_argument("--delay", type=float, default=0.35, help="Пауза между запросами к сайтам (finder)")
     ap.add_argument(
@@ -204,6 +211,23 @@ def main() -> None:
         "--global-english",
         action="store_true",
         help="Как finder --global-english: поиск без привязки к стране + проверка англ. страницы",
+    )
+    ap.add_argument(
+        "--skip-engine-filter",
+        action="store_true",
+        help="Как finder --skip-engine-filter: не отсекать WP/Wix/магазины — иначе выдача DDG почти пустая (мало «чистого» статика)",
+    )
+    ap.add_argument(
+        "--max-url-checks",
+        type=int,
+        default=40,
+        metavar="N",
+        help="Уникальных сайтов проверить на нишу за проход (меньше = быстрее; 0 = без лимита, как раньше — очень долго)",
+    )
+    ap.add_argument(
+        "--full-queries",
+        action="store_true",
+        help="С --global-english: все 12 подзапросов DDG (медленнее; по умолчанию 5)",
     )
     ap.add_argument(
         "--personal-only",
@@ -260,6 +284,21 @@ def main() -> None:
         f"База {db_path}: сейчас лидов с email: {start_count}. Цель: {args.target}.",
         file=sys.stderr,
     )
+    if args.skip_engine_filter:
+        print(
+            "Режим --skip-engine-filter: в базу попадут и сайты на CMS/конструкторах (объём выше, ICP шире).",
+            file=sys.stderr,
+        )
+    if args.max_url_checks > 0:
+        print(
+            f"Скорость: до {args.max_url_checks} URL на нишу (--max-url-checks 0 = без лимита, очень долго).",
+            file=sys.stderr,
+        )
+    if args.global_english and not args.full_queries:
+        print(
+            "DDG: укороченные запросы (5 вместо 12) — быстрее; полный охват: --full-queries.",
+            file=sys.stderr,
+        )
     if start_count >= args.target:
         print("Цель уже достигнута.", file=sys.stderr)
         return
@@ -294,6 +333,12 @@ def main() -> None:
                     limit=lim,
                     single_region=False,
                     global_english=args.global_english,
+                    skip_engine_filter=args.skip_engine_filter,
+                    lite_global_queries=args.global_english and not args.full_queries,
+                    max_url_checks=(
+                        None if args.max_url_checks <= 0 else args.max_url_checks
+                    ),
+                    allow_any_page_email=args.allow_any_email,
                 )
             except Exception as e:
                 print(f"Ошибка search_leads({niche!r}): {e}", file=sys.stderr)
@@ -301,6 +346,12 @@ def main() -> None:
                 continue
 
             if not rows:
+                if not args.skip_engine_filter:
+                    print(
+                        "  → 0 кандидатов (часто вся выдача — WP/Wix; для объёма запустите с --skip-engine-filter)",
+                        file=sys.stderr,
+                        flush=True,
+                    )
                 time.sleep(args.sleep_between)
                 continue
 

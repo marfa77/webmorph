@@ -21,6 +21,7 @@ npm-debug.log*
 pipeline/.venv/
 pipeline/.webmorp_run/
 pipeline/leads.db
+pipeline/leads_pixid_studios.db
 pipeline/collect_leads.pid
 pipeline/.env
 __pycache__/
