@@ -1,3 +1,6 @@
+# Root `npm install` (package.json at repo root for Vercel)
+node_modules/
+
 # OS files
 .DS_Store
 Thumbs.db

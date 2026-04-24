@@ -14,7 +14,9 @@ Next.js-приложение OGKit туда **само не попадает**: 
 
 **Деплой OGKit — на Vercel** (или другой хостинг для Next.js), **не** на GitHub Pages для этого приложения.
 
-1. В Vercel: **New Project** → импорт **`marfa77/webmorph`** (или отдельный репо, если вынесете `ogkit`), **Root Directory** = `ogkit`, если приложение лежит в подпапке.
+1. В Vercel: **New Project** → импорт **`marfa77/webmorph`**.  
+   - **Предпочтительно:** **Settings → General → Root Directory** = **`ogkit`**. Тогда Vercel ищет `package.json` в `ogkit/`, `npm install` / билд — там же; используется `ogkit/vercel.json` (кроны и т.д.).  
+   - **Если Root Directory = корень репо** (пусто / `.`), в **корне** лежат `package.json` (чтобы `npm install` не давал `ENOENT: package.json`) и **`vercel.json`**: `installCommand` = `cd ogkit && npm ci`, `buildCommand` = `cd ogkit && npm run build` — сборка всё равно идёт из `ogkit/`.
 2. Env: как в `README` / `.env.example` — в т.ч.  
    `NEXT_PUBLIC_BASE_PATH=/ogkit`,  
    `NEXT_PUBLIC_APP_URL=https://www.webmorp.art/ogkit`
