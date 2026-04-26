@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { isTemplateId, type TemplateId } from '@/config/templates'
 import { authenticateKey } from '@/lib/api/authenticate'
 import { checkQuota, recordUsage } from '@/lib/api/quota'
-import { sendTelegramMessage } from '@/lib/notifications/telegram'
+import { trackFunnelEvent } from '@/lib/analytics/funnel'
 import { ArticleTemplate } from '@/components/og-templates/article'
 import { ProductTemplate } from '@/components/og-templates/product'
 import { QuoteTemplate } from '@/components/og-templates/quote'
@@ -120,16 +120,24 @@ export async function GET(req: Request, context: RouteCtx) {
     cacheHit: false,
     status: 200,
   })
-    .then(({ isFirstUsage }) => {
+    .then(async ({ isFirstUsage }) => {
+      await trackFunnelEvent({
+        eventName: 'og_image_generated',
+        userId: auth.userId,
+        email: auth.userEmail,
+        source: isPlaygroundPreview ? 'playground' : 'api',
+        properties: { template, plan: auth.plan, apiKeyId: auth.apiKeyId, firstUsage: isFirstUsage },
+      })
+
       if (!isPlaygroundPreview || !isFirstUsage) return
-      return sendTelegramMessage({
-        text: [
-          'New OGKit user generated a preview',
-          `Email: ${auth.userEmail}`,
-          `Plan: ${auth.plan}`,
-          `Template: ${template}`,
-          `Time: ${new Date().toISOString()}`,
-        ].join('\n'),
+
+      await trackFunnelEvent({
+        eventName: 'first_preview_generated',
+        userId: auth.userId,
+        email: auth.userEmail,
+        source: 'playground',
+        properties: { template, plan: auth.plan, apiKeyId: auth.apiKeyId },
+        notify: true,
       })
     })
     .catch(() => {})

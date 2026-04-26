@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import { siteConfig } from '@/config/site'
+import { withBasePath } from '@/config/paths'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
 
@@ -22,14 +24,106 @@ type Props = { params: { framework: string } }
 
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.framework)) return {}
+  if (params.framework === 'nextjs') {
+    return {
+      title: `Next.js OG image generator — ${siteConfig.name}`,
+      description:
+        'Generate dynamic Open Graph images for Next.js App Router metadata with the OGKit hosted OG image API.',
+    }
+  }
   return {
     title: `Dynamic Open Graph images for ${params.framework} — ${siteConfig.name}`,
     description: `Generate branded social preview images for ${params.framework} with the OGKit Open Graph image API.`,
   }
 }
 
+function CodeBlock({ children }: { children: string }) {
+  return (
+    <pre className="overflow-x-auto rounded-lg border bg-muted/40 p-4 text-xs leading-relaxed">
+      <code className="font-mono">{children}</code>
+    </pre>
+  )
+}
+
+function NextJsGuide() {
+  return (
+    <div className="space-y-12">
+      <section>
+        <p className="text-sm font-medium text-muted-foreground">Next.js guide</p>
+        <h1 className="mt-1 text-4xl font-bold tracking-tight">Next.js OG image generator</h1>
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+          OGKit is for Next.js Open Graph images when you want a hosted generator instead of maintaining custom
+          `opengraph-image.tsx` routes, Satori layouts, font loading, and render debugging yourself.
+        </p>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Use OGKit in App Router metadata</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          Build the image URL on the server, then pass it to <code className="font-mono">metadata.openGraph.images</code>.
+          Keep the API key in server-side env vars or generate URLs during build.
+        </p>
+        <div className="mt-4">
+          <CodeBlock>{`const ogImage = new URL("https://webmorp.art/api/og/article");
+ogImage.searchParams.set("key", process.env.OGKIT_KEY!);
+ogImage.searchParams.set("title", "How we shipped faster");
+ogImage.searchParams.set("author", "Acme");
+
+export const metadata = {
+  title: "How we shipped faster",
+  openGraph: {
+    images: [ogImage.toString()]
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [ogImage.toString()]
+  }
+};`}</CodeBlock>
+        </div>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-3">
+        {[
+          ['No image route to maintain', 'Use templates instead of owning Satori JSX, CSS constraints, and rendering edge cases.'],
+          ['Metadata-ready URLs', 'Every image is a normal HTTPS URL that works in Open Graph, Twitter cards, Slack, Discord, and iMessage.'],
+          ['Good fit for launches', 'Generate cards for docs, changelogs, blogs, SaaS landing pages, and product launch pages.'],
+        ].map(([title, copy]) => (
+          <div key={title} className="rounded-lg border p-5">
+            <h2 className="font-semibold">{title}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
+          </div>
+        ))}
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Related Next.js SEO pages</h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+          {[
+            ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
+            ['Open Graph image API docs', '/docs'],
+            ['Try the Playground', '/playground'],
+          ].map(([label, href]) => (
+            <Link key={href} href={withBasePath(href)} className="rounded-lg border p-4 text-sm font-medium hover:bg-muted/50">
+              {label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <FinishCta />
+    </div>
+  )
+}
+
 export default function ForFrameworkPage({ params }: Props) {
   if (!ALLOWED.has(params.framework)) notFound()
+  if (params.framework === 'nextjs') {
+    return (
+      <div className="container max-w-4xl py-12">
+        <NextJsGuide />
+      </div>
+    )
+  }
   const f = params.framework
   return (
     <div className="container max-w-3xl py-12">

@@ -4,7 +4,8 @@
  */
 import { NextResponse } from 'next/server'
 import { verifyWebhookSign } from '@/lib/cryptomus'
-import { completeCryptoOrderFromWebhook } from '@/lib/crypto-billing-orders'
+import { completeCryptoOrderFromWebhook, getCryptoBillingOrderByOrderId } from '@/lib/crypto-billing-orders'
+import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -35,9 +36,19 @@ export async function POST(request: Request) {
   }
 
   if (PAID_STATUSES.includes(status as (typeof PAID_STATUSES)[number])) {
+    const order = await getCryptoBillingOrderByOrderId(orderId)
     const ok = await completeCryptoOrderFromWebhook(orderId)
     if (!ok) {
       return NextResponse.json({ error: 'Failed to apply payment' }, { status: 500 })
+    }
+    if (order) {
+      trackFunnelEventSoon({
+        eventName: 'payment_completed',
+        userId: order.user_id,
+        source: 'cryptomus_webhook',
+        properties: { orderId, plan: order.plan, status: String(status) },
+        notify: true,
+      })
     }
   }
 

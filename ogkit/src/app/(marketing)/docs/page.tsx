@@ -44,9 +44,35 @@ function CodeBlock({ children }: { children: string }) {
 export default function ApiDocsPage() {
   const base = siteConfig.url
   const og = (t: string, qs: string) => `${base}${getApiUrl(`/api/og/${t}`)}?${qs}`
+  const faq = [
+    {
+      question: 'What endpoint generates Open Graph images?',
+      answer: `Use GET ${base}${getApiUrl('/api/og/{template}')} with an API key and URL-encoded query parameters.`,
+    },
+    {
+      question: 'Can I use OGKit from Next.js metadata?',
+      answer:
+        'Yes. Build a full OGKit image URL on the server and pass it to metadata.openGraph.images and twitter.images.',
+    },
+    {
+      question: 'Is OGKit a screenshot API?',
+      answer:
+        'No. OGKit generates designed Open Graph cards from template fields. Use screenshot APIs when you need to capture an existing webpage.',
+    },
+  ]
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  }
 
   return (
     <div className="container max-w-3xl space-y-12 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <div>
         <p className="text-sm font-medium text-muted-foreground">Reference</p>
         <h1 className="mt-1 text-3xl font-bold">OG image API</h1>
@@ -168,6 +194,22 @@ export default function ApiDocsPage() {
     images: ["${og('article', 'key=KEY&title=My+post&author=ACME')}"]
   }
 }`}</CodeBlock>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold">Guides and comparisons</h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {[
+            ['Next.js OG image generator guide', '/for/nextjs'],
+            ['Dynamic social preview images', '/use-case/dynamic-social-preview-images'],
+            ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
+            ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
+          ].map(([label, href]) => (
+            <Link key={href} href={withBasePath(href)} className="rounded-lg border p-4 text-sm font-medium hover:bg-muted/50">
+              {label}
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section>

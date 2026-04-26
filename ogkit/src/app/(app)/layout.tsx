@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { createClient } from '@/lib/supabase/server'
+import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
 import { signOut } from '@/lib/auth/signout'
 import { Button } from '@/components/ui/button'
 
@@ -10,6 +11,17 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const {
     data: { user },
   } = await supabase.auth.getUser()
+
+  if (user) {
+    trackFunnelEventSoon({
+      eventName: 'user_registered',
+      userId: user.id,
+      email: user.email,
+      source: 'app_layout',
+      properties: { observed: true },
+      notify: true,
+    })
+  }
 
   return (
     <div className="flex min-h-screen flex-col">

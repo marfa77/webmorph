@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { sendTelegramMessage } from '@/lib/notifications/telegram'
+import { trackFunnelEvent } from '@/lib/analytics/funnel'
 
 const Body = z.object({
   email: z.string().email().max(320),
@@ -12,13 +12,12 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 async function notifyWaitlistRequest(email: string, plan: 'pro' | 'scale', already: boolean) {
-  await sendTelegramMessage({
-    text: [
-      already ? 'OGKit waitlist request (already listed)' : 'New OGKit waitlist request',
-      `Plan: ${plan}`,
-      `Email: ${email}`,
-      `Time: ${new Date().toISOString()}`,
-    ].join('\n'),
+  await trackFunnelEvent({
+    eventName: 'waitlist_requested',
+    email,
+    source: 'pricing',
+    properties: { plan, already },
+    notify: true,
   })
 }
 

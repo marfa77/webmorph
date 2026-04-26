@@ -7,6 +7,7 @@ import { isCryptoBillingLive, cryptoBillingNotConfiguredBody } from '@/config/bi
 import { createClient } from '@/lib/supabase/server'
 import { createPaymentInvoice } from '@/lib/cryptomus'
 import { insertCryptoBillingOrder } from '@/lib/crypto-billing-orders'
+import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
 import { PLANS } from '@/config/plans'
 import { publicBasePath, withBasePath } from '@/config/paths'
 
@@ -79,6 +80,15 @@ export async function GET(request: NextRequest) {
     console.error('[conv] crypto_checkout_error', { reason: 'order_persist', userId: user.id, orderId })
     return new NextResponse('Unable to create order. Please try again shortly.', { status: 503 })
   }
+
+  trackFunnelEventSoon({
+    eventName: 'checkout_started',
+    userId: user.id,
+    email: user.email,
+    source: 'crypto_checkout',
+    properties: { plan, orderId, amount: price },
+    notify: true,
+  })
 
   return NextResponse.redirect(result.url, 302)
 }

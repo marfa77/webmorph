@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/server'
+import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
 import { generateKey } from '@/lib/api/keys'
 
 const CreateSchema = z.object({ name: z.string().min(1).max(64).default('default') })
@@ -42,5 +43,13 @@ export async function POST(req: Request) {
   })
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  trackFunnelEventSoon({
+    eventName: 'api_key_created',
+    userId: user.id,
+    email: user.email,
+    source: 'dashboard_keys',
+    properties: { keyName: parsed.data.name, prefix },
+    notify: true,
+  })
   return NextResponse.json({ key: fullKey, prefix })
 }
