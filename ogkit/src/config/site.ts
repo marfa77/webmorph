@@ -10,11 +10,11 @@ export const siteConfig = {
   domain: process.env.NEXT_PUBLIC_SITE_HOST || 'webmorp.art',
   /** Full public URL of this Next app, no trailing slash. */
   url: canonicalUrl,
-  tagline: 'Open Graph image API for every framework',
+  tagline: 'Crypto-native Open Graph image API for AI-built sites',
   description:
-    'Generate dynamic Open Graph images and social preview cards from one URL. Built for Next.js, SaaS landing pages, blogs, docs, and product launches.',
+    'Generate dynamic Open Graph images and social preview cards from one URL. Built for AI-assisted developers, Next.js, SaaS landing pages, blogs, docs, and product launches.',
   author: 'OGKit',
-  supportEmail: 'support@ogkit.dev',
+  supportEmail: 'support@webmorph.art',
   twitter: '@ogkitdev',
   /** Source for webmorp.art deploy — [marfa77/webmorph](https://github.com/marfa77/webmorph) */
   github: 'https://github.com/marfa77/webmorph',

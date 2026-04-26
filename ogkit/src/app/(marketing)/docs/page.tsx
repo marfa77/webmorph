@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 export const metadata = { title: `API reference — ${siteConfig.name}` }
 
 const PARAM_ROWS: { name: string; required: string; desc: string }[] = [
-  { name: 'key', required: 'Yes', desc: 'API key (`ogk_live_…`); also accepted as `Authorization: Bearer`.' },
+  { name: 'key', required: 'Production', desc: 'API key (`ogk_live_…`); also accepted as `Authorization: Bearer`.' },
+  { name: 'demo', required: 'Demo only', desc: 'Use `demo=1` without a key for watermarked evaluation images.' },
   { name: 'title', required: 'Yes', desc: 'Title text (1–300 chars). Required for the image to render.' },
   { name: 'subtitle', required: 'No', desc: 'Subheading (article, minimal, gradient).' },
   { name: 'author', required: 'No', desc: 'Author (article, quote).' },
@@ -24,6 +25,13 @@ const PARAM_ROWS: { name: string; required: string; desc: string }[] = [
   { name: 'tagline', required: 'No', desc: 'Tagline (brand).' },
   { name: 'code', required: 'No', desc: 'Code snippet (dark-code).' },
   { name: 'language', required: 'No', desc: 'e.g. ts, js (dark-code).' },
+  { name: 'theme', required: 'No', desc: '`light`, `dark`, or `classic` for supported templates.' },
+  { name: 'accent', required: 'No', desc: 'Accent color as `#RRGGBB` for supported templates.' },
+  { name: 'bg', required: 'No', desc: 'Background color as `#RRGGBB` for supported templates.' },
+  { name: 'font', required: 'No', desc: 'Font family name for supported templates.' },
+  { name: 'pattern', required: 'No', desc: '`none`, `dots`, or `grid` for supported templates.' },
+  { name: 'domain', required: 'Security', desc: 'Optional domain claim checked against the API key allowlist.' },
+  { name: 'sig', required: 'Security', desc: 'HMAC-SHA256 signature when a key requires signed URLs.' },
 ]
 
 const ERRORS: { code: string; when: string }[] = [
@@ -48,6 +56,14 @@ export default function ApiDocsPage() {
     {
       question: 'What endpoint generates Open Graph images?',
       answer: `Use GET ${base}${getApiUrl('/api/og/{template}')} with an API key and URL-encoded query parameters.`,
+    },
+    {
+      question: 'Can I try OGKit without an API key?',
+      answer: `Yes. Add demo=1 for a watermarked evaluation image, for example ${base}${getApiUrl('/api/og/minimal')}?demo=1&title=Hello.`,
+    },
+    {
+      question: 'Can OGKit generate from an existing page URL?',
+      answer: `Yes. Use GET ${base}${getApiUrl('/api/og/auto')}?url=https://example.com&key=KEY to extract title, description, favicon, theme color, and image metadata.`,
     },
     {
       question: 'Can I use OGKit from Next.js metadata?',
@@ -99,13 +115,14 @@ export default function ApiDocsPage() {
 
       <section>
         <h2 className="text-xl font-semibold">Authentication</h2>
-        <p className="mt-2 text-sm text-muted-foreground">Choose one of:</p>
+        <p className="mt-2 text-sm text-muted-foreground">Choose one of for production usage:</p>
         <ul className="mt-2 list-inside list-disc text-sm text-muted-foreground">
           <li>Query: <code className="font-mono text-foreground">?key=ogk_live_…</code></li>
           <li>Header: <code className="font-mono text-foreground">Authorization: Bearer ogk_live_…</code></li>
         </ul>
         <p className="mt-2 text-sm text-muted-foreground">
           Create keys from the <Link className="underline" href={withBasePath('/dashboard/keys')}>dashboard</Link> after you sign in.
+          For evaluation, add <code className="font-mono">demo=1</code> and omit the key. Demo images are watermarked.
         </p>
       </section>
 
@@ -120,6 +137,19 @@ export default function ApiDocsPage() {
           <p className="text-xs text-muted-foreground">Minimal example (replace KEY and use your key):</p>
           <CodeBlock>{og('minimal', 'key=KEY&title=My+Page')}</CodeBlock>
         </div>
+        <div className="mt-3">
+          <p className="text-xs text-muted-foreground">No-key demo example:</p>
+          <CodeBlock>{og('minimal', 'demo=1&title=My+Page&theme=dark&accent=%232563eb')}</CodeBlock>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold">Auto-generate from a URL</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Use <code className="font-mono">/api/og/auto</code> when you want OGKit to fetch a page, extract metadata, and
+          choose an article or minimal card. You can still override fields with query parameters.
+        </p>
+        <CodeBlock>{`${base}${getApiUrl('/api/og/auto')}?key=KEY&url=https%3A%2F%2Fexample.com&template=article`}</CodeBlock>
       </section>
 
       <section>
@@ -197,11 +227,26 @@ export default function ApiDocsPage() {
       </section>
 
       <section>
+        <h2 className="text-xl font-semibold">Signed URLs and domain allowlists</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Paid keys can require signed URLs and domain claims from the dashboard. Sign the canonical path and sorted query
+          string, excluding <code className="font-mono">sig</code>, with HMAC-SHA256 using the full API key as the secret.
+        </p>
+        <CodeBlock>{`// pseudo-code
+const url = new URL("${base}${getApiUrl('/api/og/minimal')}?key=KEY&title=Hello&domain=example.com");
+url.searchParams.sort();
+const sig = hmacSha256(fullApiKey, url.pathname + "?" + url.searchParams.toString());
+url.searchParams.set("sig", sig);`}</CodeBlock>
+      </section>
+
+      <section>
         <h2 className="text-xl font-semibold">Guides and comparisons</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {[
             ['Next.js OG image generator guide', '/for/nextjs'],
             ['Dynamic social preview images', '/use-case/dynamic-social-preview-images'],
+            ['OGKit vs MetaShot', '/compare/ogkit-vs-metashot'],
+            ['OGKit vs OGMagic', '/compare/ogkit-vs-ogmagic'],
             ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
             ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
           ].map(([label, href]) => (

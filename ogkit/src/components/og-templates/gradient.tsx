@@ -1,6 +1,14 @@
 import { OG_WATERMARK_TEXT } from '@/config/og-constants'
 
-type Props = { title: string; subtitle?: string; watermark: boolean }
+type Props = {
+  title: string
+  subtitle?: string
+  watermark: boolean
+  accent?: string
+  bg?: string
+  font?: string
+  pattern?: 'none' | 'dots' | 'grid'
+}
 
 function hueFromString(s: string) {
   let h = 0
@@ -37,11 +45,11 @@ function hslToHex(h: number, s: number, l: number) {
     .replace(/^/, '#')
 }
 
-export function GradientTemplate({ title, subtitle, watermark }: Props) {
+export function GradientTemplate({ title, subtitle, watermark, accent, bg, font, pattern = 'none' }: Props) {
   const h = hueFromString(title)
-  const from = hslToHex(h, 70, 45)
-  const to = hslToHex((h + 40) % 360, 65, 35)
-  const bg = `linear-gradient(135deg, ${from} 0%, ${to} 100%)`
+  const from = bg ?? hslToHex(h, 70, 45)
+  const to = accent ?? hslToHex((h + 40) % 360, 65, 35)
+  const background = `linear-gradient(135deg, ${from} 0%, ${to} 100%)`
   return (
     <div
       style={{
@@ -51,12 +59,27 @@ export function GradientTemplate({ title, subtitle, watermark }: Props) {
         flexDirection: 'column',
         justifyContent: 'center',
         padding: 60,
-        background: bg,
+        background,
         color: 'white',
-        fontFamily: 'Inter, system-ui, sans-serif',
+        fontFamily: font ? `${font}, Inter, system-ui, sans-serif` : 'Inter, system-ui, sans-serif',
         position: 'relative',
+        overflow: 'hidden',
       }}
     >
+      {pattern !== 'none' && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: 0.2,
+            background:
+              pattern === 'dots'
+                ? 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)'
+                : 'linear-gradient(rgba(255,255,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.35) 1px, transparent 1px)',
+            backgroundSize: '34px 34px',
+          }}
+        />
+      )}
       <div style={{ fontSize: 56, fontWeight: 800, lineHeight: 1.1, textShadow: '0 2px 24px rgba(0,0,0,0.25)' }}>{title}</div>
       {subtitle && (
         <div style={{ fontSize: 28, marginTop: 20, opacity: 0.95, lineHeight: 1.35, textShadow: '0 1px 12px rgba(0,0,0,0.2)' }}>

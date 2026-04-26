@@ -78,6 +78,8 @@ export type Database = {
           name: string
           prefix: string
           hash: string
+          allowed_domains: string[]
+          require_signed_urls: boolean
           last_used_at: string | null
           revoked_at: string | null
           created_at: string
@@ -88,6 +90,8 @@ export type Database = {
           name?: string
           prefix: string
           hash: string
+          allowed_domains?: string[]
+          require_signed_urls?: boolean
           last_used_at?: string | null
           revoked_at?: string | null
           created_at?: string
@@ -98,6 +102,8 @@ export type Database = {
           name?: string
           prefix?: string
           hash?: string
+          allowed_domains?: string[]
+          require_signed_urls?: boolean
           last_used_at?: string | null
           revoked_at?: string | null
           created_at?: string

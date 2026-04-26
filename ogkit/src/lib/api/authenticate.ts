@@ -3,7 +3,17 @@ import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
 import { extractPrefix, verifyKey } from './keys'
 
 export type AuthResult =
-  | { ok: true; userId: string; userEmail: string; apiKeyId: string; plan: 'free' | 'pro' | 'scale'; watermark: boolean }
+  | {
+      ok: true
+      userId: string
+      userEmail: string
+      apiKeyId: string
+      plan: 'free' | 'pro' | 'scale'
+      watermark: boolean
+      allowedDomains: string[]
+      requireSignedUrls: boolean
+      rawKey: string
+    }
   | { ok: false; status: number; error: string }
 
 export async function authenticateKey(key: string | null): Promise<AuthResult> {
@@ -15,7 +25,7 @@ export async function authenticateKey(key: string | null): Promise<AuthResult> {
   const supabase = createAdminClient()
   const { data: keyRow } = await supabase
     .from('api_keys')
-    .select('id, user_id, hash, revoked_at')
+    .select('id, user_id, hash, revoked_at, allowed_domains, require_signed_urls')
     .eq('prefix', prefix)
     .is('revoked_at', null)
     .maybeSingle()
@@ -37,5 +47,8 @@ export async function authenticateKey(key: string | null): Promise<AuthResult> {
     apiKeyId: keyRow.id,
     plan,
     watermark: plan === 'free',
+    allowedDomains: keyRow.allowed_domains ?? [],
+    requireSignedUrls: keyRow.require_signed_urls ?? false,
+    rawKey: key,
   }
 }

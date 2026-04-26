@@ -5,7 +5,7 @@ import { siteConfig } from '@/config/site'
 import { createClient } from '@/lib/supabase/server'
 import { signOut } from '@/lib/auth/signout'
 import { PLANS } from '@/config/plans'
-import { isBillingLive, isCryptoBillingLive } from '@/config/billing'
+import { isCryptoBillingLive } from '@/config/billing'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -33,11 +33,9 @@ export default async function AccountPage() {
         <CardHeader>
           <CardTitle>Plan</CardTitle>
           <CardDescription>
-            {isBillingLive()
-              ? 'Manage subscription in the app when card checkout is connected.'
-              : isCryptoBillingLive()
-                ? 'Pro and Scale are available with crypto (Cryptomus) from the pricing page. Card checkout is coming when Lemon Squeezy is fully wired.'
-                : 'Paid plans will be available with checkout. Until then, everyone uses the free tier (with waitlist for Pro / Scale on the pricing page).'}
+            {isCryptoBillingLive()
+              ? 'Pro and Scale are available through crypto checkout on the pricing page.'
+              : 'Crypto checkout is not configured in this environment. Until then, everyone uses the free tier with waitlist access for Pro and Scale.'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">

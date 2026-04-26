@@ -9,7 +9,12 @@ export default function HomePage() {
     {
       question: 'What is OGKit?',
       answer:
-        'OGKit is a hosted Open Graph image API that returns dynamic 1200x630 PNG social preview images from template and query parameters.',
+        'OGKit is a crypto-native Open Graph image API that returns dynamic 1200x630 PNG social preview images from template and query parameters.',
+    },
+    {
+      question: 'Why crypto-only checkout?',
+      answer:
+        'Crypto checkout keeps OGKit available to global developers without card processors, regional billing blocks, or subscription lock-in.',
     },
     {
       question: 'Is OGKit a Vercel OG alternative?',
@@ -63,12 +68,19 @@ export default function HomePage() {
         <div>
           <p className="text-sm font-medium text-muted-foreground">{siteConfig.tagline}</p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-6xl">
-            Dynamic Open Graph images from one API URL
+            Open Graph images for AI-built sites
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
             {siteConfig.description} Use OGKit as a hosted alternative to custom Vercel OG routes, screenshot services, and
-            hand-designed social cards.
+            hand-designed social cards. Pay globally with crypto when you need production quota.
           </p>
+          <div className="mt-5 flex flex-wrap gap-2 text-xs font-medium text-muted-foreground">
+            {['No-login demo previews', 'Crypto-native checkout', 'Cursor-friendly docs', 'Signed production URLs'].map((item) => (
+              <span key={item} className="rounded-full border bg-muted/40 px-3 py-1">
+                {item}
+              </span>
+            ))}
+          </div>
           <div className="mt-8 flex flex-wrap gap-4">
             <Button asChild>
               <Link href={withBasePath('/playground')}>Try the OG image playground</Link>
@@ -124,15 +136,31 @@ export default function HomePage() {
 
       <section className="mt-16 grid gap-4 md:grid-cols-3">
         {[
-          ['For developers', 'Generate 1200x630 PNG cards for Next.js, React, Remix, Astro, Rails, Django, and any stack that can build a URL.'],
-          ['For launch pages', 'Create branded social previews for SaaS landing pages, product launches, changelogs, blogs, and documentation.'],
-          ['For production', 'API keys, monthly quota, cache-friendly responses, watermark-free paid plans, and a Playground for testing every template.'],
+          ['For AI-assisted developers', 'Paste the docs into Cursor or Claude and build deterministic 1200x630 PNG URLs for Next.js, Astro, Rails, Django, and any stack.'],
+          ['For global indie teams', 'Start with watermarked demo previews, then upgrade through crypto checkout when you need production quota and no watermark.'],
+          ['For production', 'API keys, monthly quota, cache-friendly responses, signed URLs, domain allowlists, and a Playground for testing every template.'],
         ].map(([title, copy]) => (
           <div key={title} className="rounded-lg border bg-card p-5">
             <h2 className="text-lg font-semibold">{title}</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
           </div>
         ))}
+      </section>
+
+      <section className="mt-16 space-y-4">
+        <h2 className="text-2xl font-bold">Built for crypto-native developer workflows</h2>
+        <div className="grid gap-4 md:grid-cols-3">
+          {[
+            ['Try first', 'Generate watermarked demo images without creating an account or entering a card.'],
+            ['Pay globally', 'Crypto checkout avoids card processor limits and keeps paid access simple for international builders.'],
+            ['Ship safely', 'Use signed URLs and domain allowlists when public pages need controlled image generation.'],
+          ].map(([title, copy]) => (
+            <div key={title} className="rounded-lg border bg-card p-5">
+              <h3 className="font-semibold">{title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="mt-16 space-y-4">
@@ -157,13 +185,16 @@ export default function HomePage() {
       <section className="mt-16 space-y-4">
         <h2 className="text-2xl font-bold">Compare OGKit</h2>
         <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
-          Short decision pages for teams evaluating OGKit against custom Vercel OG routes, Bannerbear-style template tools,
-          and browser screenshot APIs.
+          Short decision pages for teams evaluating OGKit against custom Vercel OG routes, MetaShot, OGMagic,
+          Bannerbear-style template tools, and browser screenshot APIs.
         </p>
-        <div className="grid gap-3 sm:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
+            ['OGKit vs MetaShot', '/compare/ogkit-vs-metashot'],
+            ['OGKit vs OGMagic', '/compare/ogkit-vs-ogmagic'],
             ['OGKit vs Bannerbear', '/compare/ogkit-vs-bannerbear'],
+            ['OGKit vs Placid', '/compare/ogkit-vs-placid'],
             ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
           ].map(([label, href]) => (
             <Link key={href} href={withBasePath(href)} className="rounded-md border p-4 text-sm font-medium hover:bg-muted/50">

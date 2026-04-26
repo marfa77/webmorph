@@ -15,7 +15,7 @@ export async function GET() {
 
   const { data, error } = await supabase
     .from('api_keys')
-    .select('id,name,prefix,last_used_at,created_at,revoked_at')
+    .select('id,name,prefix,last_used_at,created_at,revoked_at,allowed_domains,require_signed_urls')
     .eq('user_id', user.id)
     .order('created_at', { ascending: false })
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })

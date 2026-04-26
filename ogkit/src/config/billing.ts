@@ -1,6 +1,6 @@
 /**
- * When all Lemon env vars are set, marketing can link to real card checkout.
- * Cryptomus (crypto) is a separate path: invoice + webhook, no card processor.
+ * OGKit is crypto-native: Cryptomus handles paid checkout with no card processor.
+ * Lemon support remains in code for compatibility, but marketing should lead with crypto.
  * The app is feature-complete without either: auth, API keys, OG API, Playground, waitlist.
  */
 const LEMON_CHECKOUT_VARS = [
@@ -21,7 +21,7 @@ export function isCryptoBillingLive(): boolean {
 }
 
 export function billingNotConfiguredBody() {
-  return { error: 'billing_disabled' as const, message: 'Paid checkout is not configured. Use the waitlist on the pricing page.' }
+  return { error: 'billing_disabled' as const, message: 'Card checkout is not used for OGKit. Use crypto checkout on the pricing page.' }
 }
 
 export function cryptoBillingNotConfiguredBody() {

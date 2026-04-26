@@ -91,6 +91,70 @@ url.searchParams.set("price", "$19/mo");`,
       ['Pricing', '/pricing'],
     ],
   },
+  'ogkit-vs-metashot': {
+    h1: 'OGKit vs MetaShot',
+    title: `OGKit vs MetaShot — crypto-native Open Graph image API`,
+    description:
+      'Compare OGKit and MetaShot for developer-focused Open Graph images, AI-assisted setup, crypto checkout, templates, signed URLs, and dynamic social previews.',
+    intro:
+      'MetaShot is a strong developer-first OG image API. OGKit takes a sharper angle for teams that want crypto-native checkout, AI-friendly docs, and a compact Open Graph image workflow.',
+    statement:
+      'Use MetaShot when custom SVG templates and live JSON data are your priority. Use OGKit when you want crypto-paid production quota, signed OG URLs, and an API contract optimized for AI-assisted developers.',
+    rows: [
+      ['Payment model', 'Crypto-native checkout for global developers.', 'Traditional SaaS pricing with free and paid tiers.'],
+      ['Workflow', 'Template URL, Playground, llms.txt, and docs intended for Cursor/Claude-style implementation.', 'Template URL with edge cache, custom SVG templates, and data_url support.'],
+      ['Security', 'API keys, quota, signed URLs, domain allowlists, and revocation controls.', 'API keys, signed URLs, and domain restrictions on paid plans.'],
+      ['Best fit', 'AI-built SaaS, docs, launches, and indie products that prefer crypto checkout.', 'Teams that need uploaded SVG templates or live JSON-fed OG cards.'],
+    ],
+    ogkitFit: [
+      'You want crypto-only checkout to be a feature, not an afterthought.',
+      'Your implementation happens in Cursor, Claude, or another coding agent.',
+      'You need reliable OG cards more than a broader template design system.',
+    ],
+    otherFit: [
+      'You need custom SVG upload as the main template workflow.',
+      'You need live JSON endpoint binding today.',
+      'You prefer conventional card-based SaaS billing.',
+    ],
+    code: `https://webmorp.art/api/og/minimal?demo=1&title=Hello+from+OGKit&theme=dark&accent=%232563eb`,
+    links: [
+      ['AI-friendly docs', '/llms.txt'],
+      ['Try demo previews', '/playground'],
+      ['Crypto pricing', '/pricing'],
+    ],
+  },
+  'ogkit-vs-ogmagic': {
+    h1: 'OGKit vs OGMagic',
+    title: `OGKit vs OGMagic — production Open Graph image API`,
+    description:
+      'Compare OGKit and OGMagic for no-code previews, template count, API keys, crypto checkout, signed URLs, and production Open Graph image generation.',
+    intro:
+      'OGMagic is excellent when you want many inexpensive templates and a no-signup trial. OGKit is built for production teams that want API keys, quota visibility, crypto checkout, and controlled public URLs.',
+    statement:
+      'Use OGMagic when template variety and low one-time pricing matter most. Use OGKit when operational controls and global crypto-paid production usage matter more.',
+    rows: [
+      ['Template strategy', 'Focused templates for SaaS, docs, launch pages, products, and developer content.', 'Large template library with many visual styles.'],
+      ['Trial experience', 'Watermarked demo URLs from the Playground without a key.', 'No-signup free API calls and visual editor.'],
+      ['Production controls', 'API keys, quota, signed URLs, domain allowlists, revocation, and dashboard usage.', 'Simple license-key style access for higher usage.'],
+      ['Positioning', 'Crypto-native, AI-friendly OG infrastructure for developer-owned sites.', 'Fast, template-heavy OG generator for indie developers.'],
+    ],
+    ogkitFit: [
+      'You need production controls around public image URLs.',
+      'Your team wants a crypto-native billing path.',
+      'You want docs that AI coding agents can consume safely.',
+    ],
+    otherFit: [
+      'You mainly want dozens of visual styles.',
+      'You are optimizing for the cheapest possible entry price.',
+      'You do not need signed URLs or domain-level controls.',
+    ],
+    code: `https://webmorp.art/api/og/gradient?demo=1&title=Launch+notes&subtitle=Built+with+OGKit&pattern=dots`,
+    links: [
+      ['Open Playground', '/playground'],
+      ['API reference', '/docs'],
+      ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
+    ],
+  },
   'ogkit-vs-placid': {
     h1: 'OGKit vs Placid',
     title: `OGKit vs Placid — developer Open Graph image API`,
@@ -113,6 +177,54 @@ url.searchParams.set("price", "$19/mo");`,
       ['Changelog preview images', '/use-case/changelog'],
       ['Docs preview images', '/use-case/docs'],
       ['API reference', '/docs'],
+    ],
+  },
+  'ogkit-vs-cloudinary': {
+    h1: 'OGKit vs Cloudinary',
+    title: `OGKit vs Cloudinary — focused Open Graph image API`,
+    description:
+      'Compare OGKit and Cloudinary for dynamic Open Graph images, media transformations, developer setup, and social preview card generation.',
+    intro:
+      'Cloudinary is a powerful media platform. OGKit is intentionally narrower: a hosted Open Graph image API for teams that want predictable social cards from simple URL parameters.',
+    statement:
+      'Use Cloudinary when you need a full media pipeline. Use OGKit when you need production-ready `og:image` URLs without designing transformation chains.',
+    rows: [
+      ['Scope', 'Open Graph and Twitter-card image generation only.', 'Broad media storage, transformations, delivery, and optimization.'],
+      ['Setup', 'Pick a template, pass fields, use the returned PNG URL in metadata.', 'Design transformation URLs, overlays, asset rules, and delivery settings.'],
+      ['Best fit', 'Developer docs, SaaS launches, changelogs, blogs, and public share pages.', 'Applications with complex media libraries and many asset transformations.'],
+      ['Billing fit', 'Crypto-native paid quota for global developers.', 'Conventional cloud media billing.'],
+    ],
+    ogkitFit: ['You only need OG/social preview images.', 'You want simpler URLs.', 'You prefer crypto-native checkout.'],
+    otherFit: ['You need image/video storage and delivery.', 'You already use Cloudinary as your media pipeline.', 'You need advanced transformations beyond social cards.'],
+    code: `https://webmorp.art/api/og/product?demo=1&title=Pro+Plan&price=%2419%2Fmo`,
+    links: [
+      ['Product launch images', '/use-case/product-launch'],
+      ['API reference', '/docs'],
+      ['Pricing', '/pricing'],
+    ],
+  },
+  'ogkit-vs-ogforge': {
+    h1: 'OGKit vs OGForge and OGPix',
+    title: `OGKit vs OGForge and OGPix — production OG image API`,
+    description:
+      'Compare OGKit with free and low-cost Open Graph image APIs such as OGForge and OGPix for production social previews.',
+    intro:
+      'Free OG image APIs are great for experiments. OGKit is built for teams that want demo previews plus production controls when public image URLs become part of a real product.',
+    statement:
+      'Use free OG APIs for quick prototypes. Use OGKit when you need API keys, quota, crypto checkout, signed URLs, and a product surface your team can operate.',
+    rows: [
+      ['Entry point', 'No-key watermarked demo previews, then API-key production usage.', 'Often no signup or very low-cost API access.'],
+      ['Controls', 'Quota, revocation, signed URLs, and domain allowlists.', 'Usually fewer production governance controls.'],
+      ['Positioning', 'Focused developer SaaS for OG image infrastructure.', 'Lightweight generators for fast experiments.'],
+      ['Best fit', 'Public share images attached to products, docs, and SaaS pages.', 'Side projects, tests, and low-risk pages.'],
+    ],
+    ogkitFit: ['You need operational controls.', 'You want crypto-paid production usage.', 'You need stable docs and dashboard workflows.'],
+    otherFit: ['You need a completely free utility.', 'You do not need accounts, keys, or quota.', 'You are generating low-risk prototype images.'],
+    code: `https://webmorp.art/api/og/auto?demo=1&url=https%3A%2F%2Fexample.com`,
+    links: [
+      ['Try demo previews', '/playground'],
+      ['API reference', '/docs'],
+      ['Crypto pricing', '/pricing'],
     ],
   },
   'ogkit-vs-screenshot-apis': {

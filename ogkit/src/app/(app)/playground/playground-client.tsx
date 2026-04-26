@@ -30,6 +30,11 @@ type FieldKey =
   | 'code'
   | 'language'
   | 'avatar'
+  | 'theme'
+  | 'accent'
+  | 'bg'
+  | 'font'
+  | 'pattern'
 
 const TEMPLATE_FIELDS: Record<TemplateId, FieldKey[]> = {
   article: ['title', 'subtitle', 'author', 'image'],
@@ -60,6 +65,11 @@ const FIELD_LABEL: Record<FieldKey, string> = {
   code: 'Code',
   language: 'Language',
   avatar: 'Avatar URL',
+  theme: 'Theme',
+  accent: 'Accent color',
+  bg: 'Background color',
+  font: 'Font family',
+  pattern: 'Pattern',
 }
 
 const DEFAULT_VALUES: Record<string, string> = {
@@ -78,6 +88,11 @@ const DEFAULT_VALUES: Record<string, string> = {
   image: 'https://placehold.co/200x200/png',
   logo: 'https://placehold.co/120x40/png',
   avatar: 'https://placehold.co/200x200/png',
+  theme: 'light',
+  accent: '#2563eb',
+  bg: '#ffffff',
+  font: 'Inter',
+  pattern: 'none',
 }
 
 function buildImageUrl(
@@ -88,9 +103,10 @@ function buildImageUrl(
   bust: number,
 ): string | null {
   const t = (fields.title ?? '').trim()
-  if (!t || !apiKey.trim()) return null
+  if (!t) return null
   const params = new URLSearchParams()
-  params.set('key', apiKey.trim())
+  if (apiKey.trim()) params.set('key', apiKey.trim())
+  else params.set('demo', '1')
   for (const [k, v] of Object.entries(fields)) {
     const s = (v ?? '').trim()
     if (s) params.set(k, s)
@@ -203,6 +219,7 @@ export function PlaygroundClient() {
   }, [])
 
   const fieldKeys = TEMPLATE_FIELDS[template]
+  const appearanceFields: FieldKey[] = template === 'minimal' || template === 'gradient' ? ['theme', 'accent', 'bg', 'font', 'pattern'] : []
   const meta = TEMPLATE_META[template]
 
   async function copyUrl() {
@@ -267,12 +284,15 @@ export function PlaygroundClient() {
                   id="og-key"
                   type="password"
                   autoComplete="off"
-                  placeholder="ogk_live_…"
+                  placeholder="Optional for demo previews"
                   value={apiKey}
                   onChange={(e) => {
                     setApiKey(e.target.value)
                   }}
                 />
+                <p className="text-xs text-muted-foreground">
+                  Leave blank to generate a watermarked demo URL. Add a key when you want quota tracking and production use.
+                </p>
               </div>
               {fieldKeys.map((key) => {
                 const multiline = key === 'code'
@@ -301,6 +321,25 @@ export function PlaygroundClient() {
                   </div>
                 )
               })}
+              {appearanceFields.length > 0 && (
+                <div className="rounded-md border bg-muted/20 p-3">
+                  <div className="text-sm font-medium">Appearance</div>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    {appearanceFields.map((key) => (
+                      <div key={key} className="space-y-2">
+                        <Label htmlFor={`og-f-${key}`}>{FIELD_LABEL[key]}</Label>
+                        <Input
+                          id={`og-f-${key}`}
+                          value={fields[key] ?? ''}
+                          placeholder={DEFAULT_VALUES[key]}
+                          onChange={(e) => onField(key, e.target.value)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">Supported values: theme light/dark/classic, pattern none/dots/grid, colors as #RRGGBB.</p>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -312,9 +351,11 @@ export function PlaygroundClient() {
             </CardHeader>
             <CardContent className="space-y-3">
               {!apiKey.trim() && (
-                <p className="text-sm text-muted-foreground">Enter an API key, then generate a preview.</p>
+                <p className="rounded-md border border-dashed bg-muted/30 p-3 text-sm text-muted-foreground">
+                  Demo mode is active. Generated images include a watermark and are meant for evaluation before checkout.
+                </p>
               )}
-              {apiKey.trim() && !(fields.title ?? '').trim() && (
+              {!(fields.title ?? '').trim() && (
                 <p className="text-sm text-destructive">Title is required by the API.</p>
               )}
               {previewStatus === 'loading' && (
@@ -353,7 +394,7 @@ export function PlaygroundClient() {
                   type="button"
                   variant="outline"
                   size="sm"
-                  disabled={!apiKey.trim() || !(fields.title ?? '').trim()}
+                  disabled={!(fields.title ?? '').trim()}
                   onClick={generatePreview}
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
