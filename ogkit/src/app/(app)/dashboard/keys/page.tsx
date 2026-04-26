@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { getApiUrl } from '@/config/paths'
+import { getApiUrl, withBasePath } from '@/config/paths'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -55,7 +55,7 @@ export default function KeysPage() {
   return (
     <div className="container max-w-4xl space-y-6 py-8">
       <p>
-        <Link href="/dashboard" className="text-sm text-muted-foreground underline">
+        <Link href={withBasePath('/dashboard')} className="text-sm text-muted-foreground underline">
           ← Dashboard
         </Link>
       </p>
@@ -71,8 +71,8 @@ export default function KeysPage() {
             </div>
           )}
           <p className="text-sm text-muted-foreground">
-            See <Link href="/docs" className="underline hover:text-foreground">API reference</Link> and{' '}
-            <Link href="/playground" className="underline hover:text-foreground">
+            See <Link href={withBasePath('/docs')} className="underline hover:text-foreground">API reference</Link> and{' '}
+            <Link href={withBasePath('/playground')} className="underline hover:text-foreground">
               Playground
             </Link>
             .

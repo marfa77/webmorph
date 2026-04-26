@@ -19,8 +19,7 @@ export function DarkCodeTemplate({ title, code, language, watermark }: Props) {
       }}
     >
       <div style={{ fontSize: 18, color: '#a1a1aa', fontFamily: 'Inter, system-ui, sans-serif', marginBottom: 20 }}>
-        {title}
-        {language && <span style={{ color: '#52525b' }}> · {language}</span>}
+        {language ? `${title} · ${language}` : title}
       </div>
       <div
         style={{

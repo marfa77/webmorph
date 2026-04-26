@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getApiUrl } from '@/config/paths'
+import { getApiUrl, withBasePath } from '@/config/paths'
 import { TEMPLATE_IDS, TEMPLATE_META } from '@/config/templates'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
@@ -55,7 +55,7 @@ export default function ApiDocsPage() {
           slug and query string change.
         </p>
         <Button asChild className="mt-4" variant="outline" size="sm">
-          <Link href="/playground">Open Playground</Link>
+          <Link href={withBasePath('/playground')}>Open Playground</Link>
         </Button>
       </div>
 
@@ -79,7 +79,7 @@ export default function ApiDocsPage() {
           <li>Header: <code className="font-mono text-foreground">Authorization: Bearer ogk_live_…</code></li>
         </ul>
         <p className="mt-2 text-sm text-muted-foreground">
-          Create keys from the <Link className="underline" href="/dashboard/keys">dashboard</Link> after you sign in.
+          Create keys from the <Link className="underline" href={withBasePath('/dashboard/keys')}>dashboard</Link> after you sign in.
         </p>
       </section>
 
@@ -190,7 +190,7 @@ const buf = await r.arrayBuffer();
             Use the Playground to pick a template, fill fields, and copy the final URL.
           </p>
           <Button asChild className="mt-4" size="sm">
-            <Link href="/playground">Go to Playground</Link>
+            <Link href={withBasePath('/playground')}>Go to Playground</Link>
           </Button>
         </CardContent>
       </Card>

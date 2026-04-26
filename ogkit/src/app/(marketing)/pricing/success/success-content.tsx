@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { getApiUrl } from '@/config/paths'
+import { getApiUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -70,11 +70,11 @@ export function PricingSuccessContent() {
             </p>
           )}
           <div className="flex flex-wrap gap-2">
-            <Link href="/dashboard" className="text-primary underline">
+            <Link href={withBasePath('/dashboard')} className="text-primary underline">
               Open dashboard
             </Link>
             <span>·</span>
-            <Link href="/" className="text-primary underline">
+            <Link href={withBasePath('/')} className="text-primary underline">
               {siteConfig.name} home
             </Link>
           </div>

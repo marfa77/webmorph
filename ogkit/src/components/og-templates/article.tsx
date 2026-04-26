@@ -26,7 +26,7 @@ export function ArticleTemplate({ title, subtitle, author, image, watermark }: P
       <div style={{ display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'center' }}>
         <div style={{ fontSize: 64, fontWeight: 700, lineHeight: 1.1 }}>{title}</div>
         {subtitle && <div style={{ fontSize: 28, color: '#a1a1aa', marginTop: 20, lineHeight: 1.3 }}>{subtitle}</div>}
-        {author && <div style={{ fontSize: 22, color: '#71717a', marginTop: 40 }}>by {author}</div>}
+        {author && <div style={{ fontSize: 22, color: '#71717a', marginTop: 40 }}>{`by ${author}`}</div>}
       </div>
       {image && (
         <img

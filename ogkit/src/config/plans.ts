@@ -7,7 +7,7 @@ export const PLANS = {
     priceMonthly: 0,
     lemonVariantId: null,
     monthlyCap: 100,
-    dailyCap: 10,
+    dailyCap: null,
     watermark: true,
     features: ['100 images / month', 'Watermark on free tier', '10 templates', 'Community support'],
   },

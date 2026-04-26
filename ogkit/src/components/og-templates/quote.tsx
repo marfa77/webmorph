@@ -20,11 +20,11 @@ export function QuoteTemplate({ title, author, avatar, watermark }: Props) {
         textAlign: 'center',
       }}
     >
-      <div style={{ fontSize: 48, lineHeight: 1.35, fontWeight: 500, maxWidth: 1000 }}>“{title}”</div>
+      <div style={{ fontSize: 48, lineHeight: 1.35, fontWeight: 500, maxWidth: 1000 }}>{`"${title}"`}</div>
       {author && (
         <div style={{ display: 'flex', alignItems: 'center', marginTop: 40, gap: 16 }}>
           {avatar && <img src={avatar} alt="" style={{ width: 56, height: 56, borderRadius: 28, objectFit: 'cover' }} />}
-          <div style={{ fontSize: 24, color: '#c7d2fe' }}>— {author}</div>
+          <div style={{ fontSize: 24, color: '#c7d2fe' }}>{`- ${author}`}</div>
         </div>
       )}
       {watermark && (

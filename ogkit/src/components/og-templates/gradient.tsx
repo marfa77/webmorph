@@ -8,9 +8,40 @@ function hueFromString(s: string) {
   return Math.abs(h) % 360
 }
 
+function hslToHex(h: number, s: number, l: number) {
+  const saturation = s / 100
+  const lightness = l / 100
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation
+  const x = chroma * (1 - Math.abs(((h / 60) % 2) - 1))
+  const match = lightness - chroma / 2
+  const [r, g, b] =
+    h < 60
+      ? [chroma, x, 0]
+      : h < 120
+        ? [x, chroma, 0]
+        : h < 180
+          ? [0, chroma, x]
+          : h < 240
+            ? [0, x, chroma]
+            : h < 300
+              ? [x, 0, chroma]
+              : [chroma, 0, x]
+
+  return [r, g, b]
+    .map((channel) =>
+      Math.round((channel + match) * 255)
+        .toString(16)
+        .padStart(2, '0'),
+    )
+    .join('')
+    .replace(/^/, '#')
+}
+
 export function GradientTemplate({ title, subtitle, watermark }: Props) {
   const h = hueFromString(title)
-  const bg = `linear-gradient(135deg, hsl(${h}, 70%, 45%) 0%, hsl(${(h + 40) % 360}, 65%, 35%) 100%)`
+  const from = hslToHex(h, 70, 45)
+  const to = hslToHex((h + 40) % 360, 65, 35)
+  const bg = `linear-gradient(135deg, ${from} 0%, ${to} 100%)`
   return (
     <div
       style={{

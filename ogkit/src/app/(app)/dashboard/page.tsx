@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { createClient } from '@/lib/supabase/server'
 import { PLANS, type Plan } from '@/config/plans'
@@ -58,7 +59,7 @@ export default async function DashboardPage() {
             Plan: <span className="text-foreground">{planLabel}</span>
             {isBillingLive() || isCryptoBillingLive() ? null : ' · Pro / Scale: join waitlist on the pricing page'}
             {' · '}
-            <Link className="underline" href="/account">
+            <Link className="underline" href={withBasePath('/account')}>
               Account
             </Link>
           </p>
@@ -66,20 +67,20 @@ export default async function DashboardPage() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <NavCard
-          href="/dashboard/keys"
+          href={withBasePath('/dashboard/keys')}
           title="API keys"
           desc="Create and revoke keys. Use the full secret in the key= query or Authorization header."
           hint="Open →"
         />
         <NavCard
-          href="/playground"
+          href={withBasePath('/playground')}
           title="Playground"
           desc="Choose a template, set fields, and preview a real OG image."
           hint="Open →"
         />
-        <NavCard href="/docs" title="API reference" desc="Endpoints, query parameters, and template slugs for your stack." hint="Read docs →" />
+        <NavCard href={withBasePath('/docs')} title="API reference" desc="Endpoints, query parameters, and template slugs for your stack." hint="Read docs →" />
         <NavCard
-          href="/pricing"
+          href={withBasePath('/pricing')}
           title="Pricing & limits"
           desc="Free tier, Pro, Scale. Paid checkout: waitlist until enabled."
           hint="View →"

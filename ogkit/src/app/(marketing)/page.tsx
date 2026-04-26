@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
 
@@ -12,13 +13,13 @@ export default function HomePage() {
       <p className="mt-4 text-lg text-muted-foreground">{siteConfig.description}</p>
       <div className="mt-8 flex flex-wrap gap-4">
         <Button asChild>
-          <Link href="/playground">Try playground</Link>
+          <Link href={withBasePath('/playground')}>Try playground</Link>
         </Button>
         <Button asChild variant="outline">
-          <Link href="/docs">API reference</Link>
+          <Link href={withBasePath('/docs')}>API reference</Link>
         </Button>
         <Button asChild variant="outline">
-          <Link href="/pricing">View pricing</Link>
+          <Link href={withBasePath('/pricing')}>View pricing</Link>
         </Button>
       </div>
     </div>

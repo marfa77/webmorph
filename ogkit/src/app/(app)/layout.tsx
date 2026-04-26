@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { createClient } from '@/lib/supabase/server'
 import { signOut } from '@/lib/auth/signout'
@@ -14,14 +15,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <div className="flex min-h-screen flex-col">
       <header className="border-b">
         <div className="container flex h-14 max-w-6xl items-center justify-between">
-          <Link href="/" className="text-sm font-semibold">
+          <Link href={withBasePath('/')} className="text-sm font-semibold">
             {siteConfig.name}
           </Link>
           <nav className="flex items-center gap-3 text-sm">
-            <Link href="/dashboard" className="text-muted-foreground hover:text-foreground">
+            <Link href={withBasePath('/dashboard')} className="text-muted-foreground hover:text-foreground">
               Dashboard
             </Link>
-            <Link href="/playground" className="text-muted-foreground hover:text-foreground">
+            <Link href={withBasePath('/playground')} className="text-muted-foreground hover:text-foreground">
               Playground
             </Link>
             {user ? (
@@ -33,10 +34,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             ) : (
               <>
                 <Button asChild size="sm" variant="ghost">
-                  <Link href="/login">Sign in</Link>
+                  <Link href={withBasePath('/login')}>Sign in</Link>
                 </Button>
                 <Button asChild size="sm" variant="ghost">
-                  <Link href="/">Home</Link>
+                  <Link href={withBasePath('/')}>Home</Link>
                 </Button>
               </>
             )}

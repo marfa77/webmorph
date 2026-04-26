@@ -45,8 +45,13 @@ export async function recordUsage(e: {
   template: string
   cacheHit: boolean
   status: number
-}): Promise<void> {
+}): Promise<{ isFirstUsage: boolean }> {
   const supabase = createAdminClient()
+  const { count } = await supabase
+    .from('usage_events')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', e.userId)
+
   await supabase.from('usage_events').insert({
     user_id: e.userId,
     api_key_id: e.apiKeyId,
@@ -54,4 +59,6 @@ export async function recordUsage(e: {
     cache_hit: e.cacheHit,
     status: e.status,
   })
+
+  return { isFirstUsage: (count ?? 0) === 0 }
 }

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { getApiUrl } from '@/config/paths'
+import { getApiUrl, withBasePath } from '@/config/paths'
 import { TEMPLATE_IDS, TEMPLATE_META, type TemplateId } from '@/config/templates'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
@@ -103,9 +103,11 @@ export function PlaygroundClient() {
   const [template, setTemplate] = useState<TemplateId>('minimal')
   const [apiKey, setApiKey] = useState('')
   const [fields, setFields] = useState<Record<string, string>>({ title: DEFAULT_VALUES.title! })
-  const [bust, setBust] = useState(0)
   const [copyDone, setCopyDone] = useState(false)
-  const [loadError, setLoadError] = useState(false)
+  const [requestedImageUrl, setRequestedImageUrl] = useState<string | null>(null)
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [previewStatus, setPreviewStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
+  const [previewError, setPreviewError] = useState<string | null>(null)
 
   useEffect(() => {
     try {
@@ -130,8 +132,8 @@ export function PlaygroundClient() {
 
   const imageUrl = useMemo(() => {
     if (typeof window === 'undefined') return null
-    return buildImageUrl(window.location.origin, template, apiKey, fields, bust)
-  }, [template, apiKey, fields, bust])
+    return buildImageUrl(window.location.origin, template, apiKey, fields, 0)
+  }, [template, apiKey, fields])
 
   const cleanImageUrl = useMemo(() => {
     if (!imageUrl) return ''
@@ -140,13 +142,64 @@ export function PlaygroundClient() {
     return u.toString()
   }, [imageUrl])
 
+  useEffect(() => {
+    if (!requestedImageUrl) {
+      setPreviewUrl(null)
+      setPreviewStatus('idle')
+      setPreviewError(null)
+      return
+    }
+
+    const controller = new AbortController()
+    let objectUrl: string | null = null
+    setPreviewStatus('loading')
+    setPreviewError(null)
+
+    const timeout = setTimeout(async () => {
+      try {
+        const response = await fetch(requestedImageUrl, { signal: controller.signal })
+        if (!response.ok) {
+          let error = `Preview failed with ${response.status}.`
+          const contentType = response.headers.get('content-type') ?? ''
+          if (contentType.includes('application/json')) {
+            const data = (await response.json()) as { error?: string; cap?: number; period?: string }
+            if (data.error === 'quota_exceeded') {
+              error = `Quota exceeded${data.cap ? ` (${data.cap}/${data.period ?? 'period'})` : ''}. Create a new key or upgrade the plan.`
+            } else if (data.error) {
+              error = `Preview failed: ${data.error}.`
+            }
+          }
+          setPreviewUrl(null)
+          setPreviewStatus('error')
+          setPreviewError(error)
+          return
+        }
+
+        const blob = await response.blob()
+        objectUrl = URL.createObjectURL(blob)
+        setPreviewUrl(objectUrl)
+        setPreviewStatus('ready')
+      } catch (error) {
+        if ((error as Error).name === 'AbortError') return
+        setPreviewUrl(null)
+        setPreviewStatus('error')
+        setPreviewError('Could not load the image. Check the key, quota, and that URLs in fields are valid (http(s)).')
+      }
+    }, 600)
+
+    return () => {
+      clearTimeout(timeout)
+      controller.abort()
+      if (objectUrl) URL.revokeObjectURL(objectUrl)
+    }
+  }, [requestedImageUrl])
+
   const onField = useCallback((key: string, value: string) => {
     setFields((f) => ({ ...f, [key]: value }))
   }, [])
 
   const onTemplate = useCallback((t: string) => {
     setTemplate(t as TemplateId)
-    setLoadError(false)
   }, [])
 
   const fieldKeys = TEMPLATE_FIELDS[template]
@@ -157,6 +210,14 @@ export function PlaygroundClient() {
     await navigator.clipboard.writeText(cleanImageUrl)
     setCopyDone(true)
     setTimeout(() => setCopyDone(false), 2000)
+  }
+
+  function generatePreview() {
+    if (!imageUrl) return
+    const url = new URL(imageUrl)
+    url.searchParams.set('source', 'playground')
+    url.searchParams.set('_t', String(Date.now()))
+    setRequestedImageUrl(url.toString())
   }
 
   return (
@@ -196,7 +257,7 @@ export function PlaygroundClient() {
                 <div className="flex items-baseline justify-between gap-2">
                   <Label htmlFor="og-key">API key</Label>
                   <Link
-                    href="/dashboard/keys"
+                    href={withBasePath('/dashboard/keys')}
                     className="text-xs text-muted-foreground underline hover:text-foreground"
                   >
                     Get a key
@@ -210,7 +271,6 @@ export function PlaygroundClient() {
                   value={apiKey}
                   onChange={(e) => {
                     setApiKey(e.target.value)
-                    setLoadError(false)
                   }}
                 />
               </div>
@@ -252,27 +312,30 @@ export function PlaygroundClient() {
             </CardHeader>
             <CardContent className="space-y-3">
               {!apiKey.trim() && (
-                <p className="text-sm text-muted-foreground">Enter an API key to load the image.</p>
+                <p className="text-sm text-muted-foreground">Enter an API key, then generate a preview.</p>
               )}
               {apiKey.trim() && !(fields.title ?? '').trim() && (
                 <p className="text-sm text-destructive">Title is required by the API.</p>
               )}
-              {imageUrl && (
+              {previewStatus === 'loading' && (
+                <div className="flex w-full items-center justify-center rounded-md border bg-muted/30 text-sm text-muted-foreground" style={{ aspectRatio: '1200/630' }}>
+                  Loading preview...
+                </div>
+              )}
+              {previewUrl && previewStatus === 'ready' && (
                 <div className="relative w-full overflow-hidden rounded-md border bg-muted/30" style={{ aspectRatio: '1200/630' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element -- dynamic OG response URL, not a static import */}
                   <img
-                    key={imageUrl}
-                    src={imageUrl}
+                    key={requestedImageUrl}
+                    src={previewUrl}
                     alt="OG preview"
                     className="h-full w-full object-contain object-top"
-                    onLoad={() => setLoadError(false)}
-                    onError={() => setLoadError(true)}
                   />
                 </div>
               )}
-              {loadError && (
+              {previewStatus === 'error' && previewError && (
                 <p className="text-sm text-destructive">
-                  Could not load the image. Check the key, quota, and that URLs in fields are valid (http(s)).
+                  {previewError}
                 </p>
               )}
               <div className="flex flex-wrap gap-2">
@@ -291,13 +354,10 @@ export function PlaygroundClient() {
                   variant="outline"
                   size="sm"
                   disabled={!apiKey.trim() || !(fields.title ?? '').trim()}
-                  onClick={() => {
-                    setBust((n) => n + 1)
-                    setLoadError(false)
-                  }}
+                  onClick={generatePreview}
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
-                  Refresh
+                  Generate preview
                 </Button>
               </div>
               {cleanImageUrl && (

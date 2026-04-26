@@ -34,10 +34,10 @@ Open [http://localhost:3000](http://localhost:3000). See **[/docs](http://localh
 
 **Source control:** you push to that repo; Vercel builds from it. Typical setup: `main` → **Production**; PRs → **Preview**.
 
-The app is built to be served under the **`/ogkit` path** on **`www.webmorp.art`** (see `next.config.mjs` + `config/paths.ts`).
+**Single deployment, one Vercel project, one domain:** the same Next.js app under **`ogkit/`** serves the static **webmorp** landing at **`/`** and **OGKit** at **`/ogkit/`** (see `middleware.ts`, `config/paths.ts`, and `scripts/copy-webmorph-assets.mjs` — `prebuild` copies the repo-root landing and assets into `public/`, and middleware rewrites `/ogkit/*` to the internal app routes). You do **not** need a second Vercel project or cross-project rewrites.
 
-1. **Repo layout** — in the **`marfa77/webmorph`** monorepo this app lives in **`ogkit/`**. Set Vercel **Settings → General → Root Directory = `ogkit`** (required). Otherwise `npm install` / `.next` run in the wrong place (`ENOENT`, missing `routes-manifest.json`). If you import a repo that is **only** this app at the repository root, leave Root Directory empty.
-2. **Vercel** — **Add New Project** → **Import** that GitHub repo → **Framework: Next.js**, **Install:** `pnpm install` (or auto-detect pnpm from lockfile), **Build:** `pnpm run build` (default).
+1. **Repo layout** — in **`marfa77/webmorph`** the app lives in **`ogkit/`**. Set Vercel **Settings → General → Root Directory = `ogkit`**, **Framework: Next.js**. This is required so the install/build run in `ogkit` (avoids `ENOENT` on `package.json` and `routes-manifest.json` issues). If the repository is **only** this app with files at the repo root, you can leave Root Directory empty.
+2. **Vercel** — import the GitHub repo → **Framework: Next.js**, **Install** / **Build** from `ogkit` (e.g. `pnpm install` + `pnpm run build`).
 3. **Environment variables (Production)** — copy from `.env.example` and set at least:
 
    - `NEXT_PUBLIC_BASE_PATH=/ogkit`
@@ -48,8 +48,8 @@ The app is built to be served under the **`/ogkit` path** on **`www.webmorp.art`
    - `API_KEY_SALT`  
    - Optional: Lemon, Cryptomus, Telegram, crons, etc.
 
-4. **Custom domain** — `www.webmorp.art` / `webmorp.art` is often attached to a **parent** Vercel project; this Next app may be a **separate** project and exposed at `/ogkit` via **rewrites**, or the same project serves multiple routes. Use the **`https://www.webmorp.art/ogkit`** base in env and **Supabase Auth redirect URLs**, so links and `callback` match production.
-5. **Redeploy** after changing env. **Crons** are defined in `vercel.json` (paths are relative to `basePath`; the app rewrites them internally).
+4. **Custom domain** — attach `www.webmorph.art` (and `webmorph.art` if you use a redirect) to **this** project. Use the **`https://www.webmorph.art/ogkit`** base in env and **Supabase Auth → Redirect URLs**, so links and `callback` match production.
+5. **Redeploy** after changing env. **Crons** in `vercel.json` use the **full** path including the app prefix, e.g. `/ogkit/api/cron/...`.
 
 **Cryptomus webhook (if used):** `https://www.webmorp.art/ogkit/api/billing/cryptomus/webhook` — add the same in the Cryptomus dashboard.
 

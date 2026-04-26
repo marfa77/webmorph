@@ -3,7 +3,7 @@ import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
 import { extractPrefix, verifyKey } from './keys'
 
 export type AuthResult =
-  | { ok: true; userId: string; apiKeyId: string; plan: 'free' | 'pro' | 'scale'; watermark: boolean }
+  | { ok: true; userId: string; userEmail: string; apiKeyId: string; plan: 'free' | 'pro' | 'scale'; watermark: boolean }
   | { ok: false; status: number; error: string }
 
 export async function authenticateKey(key: string | null): Promise<AuthResult> {
@@ -23,7 +23,7 @@ export async function authenticateKey(key: string | null): Promise<AuthResult> {
   if (!keyRow) return { ok: false, status: 401, error: 'key_not_found' }
   if (!verifyKey(key, keyRow.hash)) return { ok: false, status: 401, error: 'key_invalid' }
 
-  const { data: userRow } = await supabase.from('users').select('id').eq('id', keyRow.user_id).single()
+  const { data: userRow } = await supabase.from('users').select('id, email').eq('id', keyRow.user_id).single()
   if (!userRow) return { ok: false, status: 401, error: 'user_not_found' }
 
   const plan = await getResolvedUserPlanForUserId(keyRow.user_id)
@@ -33,6 +33,7 @@ export async function authenticateKey(key: string | null): Promise<AuthResult> {
   return {
     ok: true,
     userId: keyRow.user_id,
+    userEmail: userRow.email,
     apiKeyId: keyRow.id,
     plan,
     watermark: plan === 'free',

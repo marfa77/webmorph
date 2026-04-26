@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sendTelegramMessage } from '@/lib/notifications/telegram'
 
 const Body = z.object({
   email: z.string().email().max(320),
@@ -30,6 +31,15 @@ export async function POST(req: Request) {
     }
     return NextResponse.json({ error: 'server_error' }, { status: 500 })
   }
+
+  await sendTelegramMessage({
+    text: [
+      'New OGKit waitlist request',
+      `Plan: ${parsed.data.plan}`,
+      `Email: ${parsed.data.email.trim().toLowerCase()}`,
+      `Time: ${new Date().toISOString()}`,
+    ].join('\n'),
+  })
 
   return NextResponse.json({ ok: true })
 }

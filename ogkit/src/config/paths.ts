@@ -1,6 +1,6 @@
 /**
- * Set NEXT_PUBLIC_BASE_PATH=/ogkit when the app is served at https://www.webmorp.art/ogkit
- * (leave empty for local: http://localhost:3000).
+ * Leave empty when OGKit owns the site root. Set only if the app is mounted
+ * below another path by the hosting layer.
  */
 export const publicBasePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
 

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -32,7 +33,7 @@ export default function ToolsPage() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         {items.map((i) => (
-          <Link key={i.href} href={i.href}>
+          <Link key={i.href} href={withBasePath(i.href)}>
             <Card className="h-full transition-colors hover:bg-muted/40">
               <CardHeader>
                 <CardTitle>{i.title}</CardTitle>
@@ -61,7 +62,7 @@ export default function ToolsPage() {
           you deploy.
         </p>
         <Button asChild className="mt-4" variant="outline" size="sm">
-          <Link href="/login">Sign in for API keys</Link>
+          <Link href={withBasePath('/login')}>Sign in for API keys</Link>
         </Button>
       </div>
     </div>

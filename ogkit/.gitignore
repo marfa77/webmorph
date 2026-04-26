@@ -15,6 +15,21 @@
 
 # production
 /build
+/public/webmorph.html
+/public/privacy.html
+/public/terms.html
+/public/robots.txt
+/public/sitemap.xml
+/public/llms.txt
+/public/favicon.svg
+/public/favicon.png
+/public/apple-touch-icon.png
+/public/og-image.jpg
+/public/previews/**
+/public/freelancer/**
+/public/restaurant/**
+/public/small-business/**
+/public/startup/**
 
 # misc
 .DS_Store

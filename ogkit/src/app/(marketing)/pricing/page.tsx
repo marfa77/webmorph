@@ -53,7 +53,7 @@ export default function PricingPage() {
               <CardFooter className="flex flex-col gap-2">
                 {id === 'free' ? (
                   <Button asChild className="w-full" variant="outline">
-                    <Link href="/login">Get started</Link>
+                    <Link href={withBasePath('/login')}>Get started</Link>
                   </Button>
                 ) : (
                   <>

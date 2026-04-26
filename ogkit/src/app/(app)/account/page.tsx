@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { createClient } from '@/lib/supabase/server'
 import { signOut } from '@/lib/auth/signout'
@@ -16,7 +17,7 @@ export default async function AccountPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
+  if (!user) redirect(withBasePath('/login'))
 
   const plan = await getResolvedUserPlanForUserId(user.id)
   const planLabel = PLANS[plan].name
@@ -45,7 +46,7 @@ export default async function AccountPage() {
             <span className="font-medium">{planLabel}</span>
           </p>
           <p>
-            <Link href="/pricing" className="text-primary underline">
+            <Link href={withBasePath('/pricing')} className="text-primary underline">
               View pricing
             </Link>
           </p>
@@ -59,10 +60,10 @@ export default async function AccountPage() {
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           <Button asChild size="sm" variant="outline">
-            <Link href="/dashboard/keys">API keys</Link>
+            <Link href={withBasePath('/dashboard/keys')}>API keys</Link>
           </Button>
           <Button asChild size="sm" variant="outline">
-            <Link href="/playground">Playground</Link>
+            <Link href={withBasePath('/playground')}>Playground</Link>
           </Button>
         </CardContent>
       </Card>

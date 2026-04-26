@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { isTemplateId, type TemplateId } from '@/config/templates'
 import { authenticateKey } from '@/lib/api/authenticate'
 import { checkQuota, recordUsage } from '@/lib/api/quota'
+import { sendTelegramMessage } from '@/lib/notifications/telegram'
 import { ArticleTemplate } from '@/components/og-templates/article'
 import { ProductTemplate } from '@/components/og-templates/product'
 import { QuoteTemplate } from '@/components/og-templates/quote'
@@ -79,6 +80,7 @@ export async function GET(req: Request, context: RouteCtx) {
 
   const url = new URL(req.url)
   const key = url.searchParams.get('key') || req.headers.get('authorization')?.replace(/^Bearer\s+/i, '') || null
+  const isPlaygroundPreview = url.searchParams.get('source') === 'playground'
 
   const auth = await authenticateKey(key)
   if (!auth.ok) {
@@ -92,7 +94,7 @@ export async function GET(req: Request, context: RouteCtx) {
 
   const rawParams: Record<string, string> = {}
   url.searchParams.forEach((v, k) => {
-    if (k !== 'key' && v !== '') rawParams[k] = v
+    if (k !== 'key' && k !== 'source' && !k.startsWith('_') && v !== '') rawParams[k] = v
   })
 
   const parsed = ParamsSchema.safeParse(rawParams)
@@ -102,19 +104,38 @@ export async function GET(req: Request, context: RouteCtx) {
 
   const element = render(template, parsed.data, auth.watermark)
 
+  const imageResponse = new ImageResponse(element, {
+    width: 1200,
+    height: 630,
+    headers: {
+      'Cache-Control': 'public, max-age=0, s-maxage=31536000, stale-while-revalidate=86400',
+    },
+  })
+  const image = await imageResponse.arrayBuffer()
+
   void recordUsage({
     userId: auth.userId,
     apiKeyId: auth.apiKeyId,
     template,
     cacheHit: false,
     status: 200,
-  }).catch(() => {})
+  })
+    .then(({ isFirstUsage }) => {
+      if (!isPlaygroundPreview || !isFirstUsage) return
+      return sendTelegramMessage({
+        text: [
+          'New OGKit user generated a preview',
+          `Email: ${auth.userEmail}`,
+          `Plan: ${auth.plan}`,
+          `Template: ${template}`,
+          `Time: ${new Date().toISOString()}`,
+        ].join('\n'),
+      })
+    })
+    .catch(() => {})
 
-  return new ImageResponse(element, {
-    width: 1200,
-    height: 630,
-    headers: {
-      'Cache-Control': 'public, max-age=0, s-maxage=31536000, stale-while-revalidate=86400',
-    },
+  return new Response(image, {
+    status: imageResponse.status,
+    headers: imageResponse.headers,
   })
 }

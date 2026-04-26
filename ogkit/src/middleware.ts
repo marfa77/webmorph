@@ -1,13 +1,24 @@
 import { createServerClient } from '@supabase/ssr'
-import { publicBasePath, withBasePath } from '@/config/paths'
+import { withBasePath } from '@/config/paths'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const landingStaticPrefixes = ['/previews/', '/freelancer/', '/restaurant/', '/small-business/', '/startup/']
+const landingStaticExtensions = ['.html', '.txt', '.xml', '.svg', '.png', '.jpg', '.jpeg', '.gif', '.webp']
+
+function isLandingStaticPath(pathname: string) {
+  return landingStaticPrefixes.some((prefix) => pathname.startsWith(prefix)) || landingStaticExtensions.some((ext) => pathname.endsWith(ext))
+}
+
 export async function middleware(request: NextRequest) {
-  if (request.nextUrl.pathname.includes('/api/og')) {
+  const { pathname } = request.nextUrl
+
+  if (isLandingStaticPath(pathname)) {
     return NextResponse.next()
   }
 
-  let supabaseResponse = NextResponse.next({ request })
+  const makeAppResponse = () => NextResponse.next({ request })
+
+  let supabaseResponse = makeAppResponse()
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -18,7 +29,7 @@ export async function middleware(request: NextRequest) {
         },
         setAll(cookiesToSet: { name: string; value: string; options?: Record<string, unknown> }[]) {
           cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
+          supabaseResponse = makeAppResponse()
           cookiesToSet.forEach(({ name, value, options }) => supabaseResponse.cookies.set(name, value, options))
         },
       },
@@ -29,10 +40,8 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const path = request.nextUrl.pathname
-  const rel = publicBasePath && path.startsWith(publicBasePath) ? path.slice(publicBasePath.length) || '/' : path
   const protectedPaths = ['/dashboard', '/account']
-  const isProtected = protectedPaths.some((p) => rel === p || rel.startsWith(`${p}/`))
+  const isProtected = protectedPaths.some((p) => pathname === p || pathname.startsWith(`${p}/`))
 
   if (isProtected && !user) {
     return NextResponse.redirect(new URL(withBasePath('/login'), request.url))
@@ -42,6 +51,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|api/og|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|api/og).*)',
   ],
 }

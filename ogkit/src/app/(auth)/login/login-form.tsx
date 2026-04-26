@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
-import { getAuthCallbackUrl } from '@/config/paths'
+import { getAuthCallbackUrl, withBasePath } from '@/config/paths'
 import { createClient } from '@/lib/supabase/client'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
@@ -92,7 +92,7 @@ export function LoginForm() {
             </form>
           )}
           <p className="mt-4 text-center text-sm text-muted-foreground">
-            <Link href="/" className="underline">
+            <Link href={withBasePath('/')} className="underline">
               Back to home
             </Link>
           </p>
