@@ -1,8 +1,4 @@
-const publicUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL
-const canonicalUrl =
-  publicUrl && !publicUrl.includes('localhost') && !publicUrl.includes('127.0.0.1')
-    ? publicUrl.replace(/\/$/, '')
-    : 'https://webmorp.art'
+const canonicalUrl = 'https://webmorp.art'
 
 export const siteConfig = {
   name: 'OGKit',

@@ -18,6 +18,93 @@ const HINT: Record<string, string> = {
   hugo: 'Set `images` in front-matter, or a partial that builds a query string to your external OG service URL, including your API key in server-side only builds.',
 }
 
+const DETAILS: Record<string, { label: string; example: string; checklist: string[]; pitfalls: string[] }> = {
+  nextjs: {
+    label: 'Next.js App Router',
+    example: `export async function generateMetadata() {
+  const image = new URL("https://webmorp.art/api/og/article");
+  image.searchParams.set("key", process.env.OGKIT_KEY!);
+  image.searchParams.set("title", "My Next.js post");
+  return { openGraph: { images: [image.toString()] } };
+}`,
+    checklist: ['Build URLs in Server Components or metadata functions.', 'Keep OGKIT_KEY out of client components.', 'Use absolute HTTPS URLs.'],
+    pitfalls: ['Using relative og:image URLs in production', 'Putting secrets in bundled JavaScript', 'Maintaining Satori routes when templates are enough'],
+  },
+  react: {
+    label: 'React',
+    example: `<meta property="og:image" content="https://webmorp.art/api/og/minimal?key=KEY&title=React+Launch" />`,
+    checklist: ['Set metadata from your hosting framework, CMS, or SSR layer.', 'Generate the URL before HTML is served.', 'Use one image per important route.'],
+    pitfalls: ['Trying to update OG tags after hydration', 'Expecting crawlers to run client-side React', 'Using one generic image for every route'],
+  },
+  remix: {
+    label: 'Remix',
+    example: `export const meta = () => {
+  const image = new URL("https://webmorp.art/api/og/article");
+  image.searchParams.set("key", process.env.OGKIT_KEY!);
+  image.searchParams.set("title", "Remix guide");
+  return [{ property: "og:image", content: image.toString() }];
+};`,
+    checklist: ['Build the image in loader/meta code.', 'Share the same URL in Twitter metadata.', 'Avoid client-only metadata updates.'],
+    pitfalls: ['Missing twitter:image', 'Leaking keys to browser code', 'Not URL-encoding dynamic route data'],
+  },
+  astro: {
+    label: 'Astro',
+    example: `---
+const image = new URL("https://webmorp.art/api/og/minimal");
+image.searchParams.set("key", import.meta.env.OGKIT_KEY);
+image.searchParams.set("title", Astro.props.title);
+---
+<meta property="og:image" content={image.toString()} />`,
+    checklist: ['Build URLs in layouts or content collections.', 'Use environment variables during SSR/build.', 'Set image width and height metadata.'],
+    pitfalls: ['Hardcoding one preview for all markdown pages', 'Forgetting collection-specific titles', 'Using local-only URLs in production'],
+  },
+  nuxt: {
+    label: 'Nuxt',
+    example: `const image = new URL("https://webmorp.art/api/og/minimal")
+image.searchParams.set("key", useRuntimeConfig().ogkitKey)
+image.searchParams.set("title", page.title)
+useSeoMeta({ ogImage: image.toString(), twitterImage: image.toString() })`,
+    checklist: ['Use runtime config for secrets.', 'Set ogImage and twitterImage together.', 'Build URLs before crawler HTML is returned.'],
+    pitfalls: ['Using public runtime config for secret keys', 'Relying on client-only composables', 'Skipping per-page titles'],
+  },
+  svelte: {
+    label: 'SvelteKit',
+    example: `<svelte:head>
+  <meta property="og:image" content={ogImageUrl} />
+  <meta name="twitter:image" content={ogImageUrl} />
+</svelte:head>`,
+    checklist: ['Create ogImageUrl in load or server code.', 'Pass final URLs into head tags.', 'Use absolute production origins.'],
+    pitfalls: ['Computing metadata only in the browser', 'Missing canonical titles', 'Sharing one card across all routes'],
+  },
+  rails: {
+    label: 'Rails',
+    example: `<meta property="og:image" content="<%= ogkit_image_url(title: @post.title) %>">`,
+    checklist: ['Build a helper for OGKit URLs.', 'Keep keys in Rails credentials or ENV.', 'Escape and encode dynamic values.'],
+    pitfalls: ['Rendering unencoded query strings', 'Putting keys into frontend packs', 'Forgetting background jobs are unnecessary for simple cards'],
+  },
+  django: {
+    label: 'Django',
+    example: `<meta property="og:image" content="{{ og_image_url }}">
+<meta name="twitter:image" content="{{ og_image_url }}">`,
+    checklist: ['Build og_image_url in the view/context.', 'Store keys in environment variables.', 'Use urllib.parse for query strings.'],
+    pitfalls: ['Concatenating URLs by hand', 'Not passing page-specific descriptions', 'Using private media URLs as card images'],
+  },
+  laravel: {
+    label: 'Laravel',
+    example: `<meta property="og:image" content="{{ $ogImage }}">
+<meta name="twitter:image" content="{{ $ogImage }}">`,
+    checklist: ['Build URLs in controllers or view models.', 'Store keys in env/config.', 'Use signed URLs for public pages when needed.'],
+    pitfalls: ['Leaking env values into compiled assets', 'Skipping URL encoding', 'Using one preview for all Blade templates'],
+  },
+  hugo: {
+    label: 'Hugo',
+    example: `<meta property="og:image" content="{{ .Params.og_image }}">
+<meta name="twitter:image" content="{{ .Params.og_image }}">`,
+    checklist: ['Generate OGKit URLs during static builds.', 'Use front matter titles and descriptions.', 'Avoid exposing keys in public source repos.'],
+    pitfalls: ['Committing production keys to config files', 'Forgetting taxonomy pages', 'Using relative URLs in generated HTML'],
+  },
+}
+
 const ALLOWED = new Set(Object.keys(HINT))
 
 type Props = { params: { framework: string } }
@@ -82,6 +169,25 @@ export const metadata = {
         </div>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">Why not always build a custom route?</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Custom <code className="font-mono">opengraph-image.tsx</code> routes are great when every pixel needs bespoke
+            layout control. They also make you own font loading, JSX-to-image constraints, render failures, and template QA.
+            OGKit is the simpler path when the page needs a reliable social card, not a custom image renderer.
+          </p>
+        </div>
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">Production checklist</h2>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+            {DETAILS.nextjs!.checklist.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
       <section className="grid gap-4 md:grid-cols-3">
         {[
           ['No image route to maintain', 'Use templates instead of owning Satori JSX, CSS constraints, and rendering edge cases.'],
@@ -125,14 +231,59 @@ export default function ForFrameworkPage({ params }: Props) {
     )
   }
   const f = params.framework
+  const details = DETAILS[f]!
   return (
-    <div className="container max-w-3xl py-12">
-      <h1 className="text-3xl font-bold">Dynamic Open Graph images for {f}</h1>
-      <p className="mt-4 text-muted-foreground leading-relaxed">{HINT[f]!}</p>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Every framework only needs a stable, absolute HTTPS `og:image`. OGKit gives you one URL, production templates,
-        and query parameters for titles, images, logos, authors, products, events, jobs, and code snippets.
-      </p>
+    <div className="container max-w-4xl space-y-12 py-12">
+      <section>
+        <p className="text-sm font-medium text-muted-foreground">Framework guide</p>
+        <h1 className="mt-1 text-4xl font-bold tracking-tight">Dynamic Open Graph images for {details.label}</h1>
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{HINT[f]!}</p>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          Every framework only needs a stable, absolute HTTPS <code className="font-mono">og:image</code>. OGKit gives you one
+          URL, production templates, and query parameters for titles, images, logos, authors, products, events, jobs, and code
+          snippets.
+        </p>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Implementation pattern</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          Generate the OGKit URL before the crawler sees the HTML. That can happen during static generation, in a server
+          route, or in the framework metadata layer.
+        </p>
+        <div className="mt-4">
+          <CodeBlock>{details.example}</CodeBlock>
+        </div>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">Checklist</h2>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+            {details.checklist.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">Common pitfalls</h2>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+            {details.pitfalls.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">When a hosted OG API makes sense</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          A hosted Open Graph image API is useful when you need consistent cards across many pages but do not want to maintain
+          a custom renderer in every app. It is especially useful for docs, changelogs, launch pages, public customer pages,
+          and content collections where the title and summary change often.
+        </p>
+      </section>
+
       <FinishCta />
     </div>
   )

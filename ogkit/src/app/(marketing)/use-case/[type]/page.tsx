@@ -24,6 +24,72 @@ const COPY: Record<string, string> = {
     'Dynamic social preview images are Open Graph and Twitter card images generated from page data instead of designed manually. OGKit turns titles, subtitles, logos, product names, authors, and hero images into stable 1200x630 PNG URLs.',
 }
 
+const DETAILS: Record<string, { template: string; fields: string[]; exampleTitle: string; exampleSubtitle: string; mistakes: string[] }> = {
+  blog: {
+    template: 'article',
+    fields: ['title', 'subtitle', 'author', 'image'],
+    exampleTitle: 'How we shipped faster',
+    exampleSubtitle: 'A practical launch note for builders',
+    mistakes: ['Reusing the homepage image for every post', 'Putting the API key in client-side JavaScript', 'Forgetting twitter:image'],
+  },
+  blogs: {
+    template: 'article',
+    fields: ['title', 'subtitle', 'author', 'image'],
+    exampleTitle: 'How we shipped faster',
+    exampleSubtitle: 'A practical launch note for builders',
+    mistakes: ['Reusing one generic card', 'Generating images at build time with stale copy', 'Skipping image width and height metadata'],
+  },
+  changelog: {
+    template: 'gradient',
+    fields: ['title', 'subtitle', 'accent', 'pattern'],
+    exampleTitle: 'Changelog v2.4',
+    exampleSubtitle: 'New templates, signed URLs, and faster previews',
+    mistakes: ['Using internal release names as public titles', 'Writing summaries that are too long for link previews', 'Not giving each release a unique image'],
+  },
+  'product-launch': {
+    template: 'product',
+    fields: ['title', 'price', 'image', 'logo'],
+    exampleTitle: 'OGKit Pro',
+    exampleSubtitle: 'Crypto-native Open Graph images',
+    mistakes: ['Using screenshots that crop badly in Slack', 'Forgetting product logo contrast', 'Making the card depend on a slow webpage screenshot'],
+  },
+  ecommerce: {
+    template: 'product',
+    fields: ['title', 'price', 'image', 'logo'],
+    exampleTitle: 'Portuguese A2 Practice Pack',
+    exampleSubtitle: 'Digital product card',
+    mistakes: ['Not URL-encoding product names', 'Embedding secret keys in storefront HTML', 'Using tiny product photos that blur at 1200x630'],
+  },
+  docs: {
+    template: 'dark-code',
+    fields: ['title', 'code', 'language'],
+    exampleTitle: 'API reference',
+    exampleSubtitle: 'GET /api/og/{template}',
+    mistakes: ['Sharing every docs page with the same logo card', 'Putting too much code in the preview', 'Forgetting docs-site navigation titles'],
+  },
+  saas: {
+    template: 'brand',
+    fields: ['title', 'tagline', 'logo'],
+    exampleTitle: 'Acme Launch',
+    exampleSubtitle: 'Ship customer-facing pages faster',
+    mistakes: ['Letting customer pages share the generic homepage preview', 'Skipping domain controls for public URLs', 'Using marketing copy that is unreadable at small preview sizes'],
+  },
+  portfolios: {
+    template: 'minimal',
+    fields: ['title', 'subtitle', 'accent'],
+    exampleTitle: 'Selected Work',
+    exampleSubtitle: 'Product design and engineering',
+    mistakes: ['Using one preview for every case study', 'Writing vague project titles', 'Not matching accent colors to the portfolio brand'],
+  },
+  'dynamic-social-preview-images': {
+    template: 'minimal',
+    fields: ['title', 'subtitle', 'accent', 'theme'],
+    exampleTitle: 'Dynamic social preview images',
+    exampleSubtitle: 'Generate a unique card for every page',
+    mistakes: ['Treating OG images as static brand assets', 'Depending on browser screenshots for simple cards', 'Not testing previews in Slack and LinkedIn'],
+  },
+}
+
 const ALLOWED = new Set(Object.keys(COPY))
 type Props = { params: { type: string } }
 
@@ -48,6 +114,13 @@ function CodeBlock({ children }: { children: string }) {
       <code className="font-mono">{children}</code>
     </pre>
   )
+}
+
+function humanize(value: string) {
+  return value
+    .split('-')
+    .join(' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
 function DynamicSocialPreviewGuide() {
@@ -112,6 +185,26 @@ const meta = {
         </div>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">Common implementation mistakes</h2>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+            {DETAILS['dynamic-social-preview-images']!.mistakes.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">Production checklist</h2>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+            <li>Generate the image URL on the server or during static generation.</li>
+            <li>Set both Open Graph and Twitter card images.</li>
+            <li>Use signed URLs or domain allowlists for public production pages.</li>
+            <li>Keep every generated image at the standard 1200x630 size.</li>
+          </ul>
+        </div>
+      </section>
+
       <FinishCta />
     </div>
   )
@@ -127,16 +220,74 @@ export default function UseCasePage({ params }: Props) {
     )
   }
   const t = params.type
+  const details = DETAILS[t]!
+  const title = humanize(t)
   return (
-    <div className="container max-w-3xl py-12">
-      <h1 className="text-3xl font-bold">
-        {t.charAt(0).toUpperCase() + t.slice(1).replace('-', ' ')} Open Graph images
-      </h1>
-      <p className="mt-4 text-muted-foreground leading-relaxed">{COPY[t]!}</p>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Add the generated URL to `og:image` and `twitter:image` so search previews, social networks, chat apps, and LLM
-        browsing tools see a consistent branded card.
-      </p>
+    <div className="container max-w-4xl space-y-12 py-12">
+      <section>
+        <p className="text-sm font-medium text-muted-foreground">Use case</p>
+        <h1 className="mt-1 text-4xl font-bold tracking-tight">{title} Open Graph images</h1>
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{COPY[t]!}</p>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          Add the generated URL to <code className="font-mono">og:image</code> and{' '}
+          <code className="font-mono">twitter:image</code> so search previews, social networks, chat apps, and LLM browsing
+          tools see a consistent branded card.
+        </p>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Recommended OGKit template</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          Start with the <code className="font-mono">{details.template}</code> template. It keeps the request predictable while
+          still giving each {title.toLowerCase()} page its own image, headline, and visual context.
+        </p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {details.fields.map((field) => (
+            <div key={field} className="rounded-lg border p-4 text-sm">
+              <code className="font-mono">{field}</code>
+              <p className="mt-1 text-muted-foreground">Use this query field when building the image URL server-side.</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Copy-paste example</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          This pattern works in any framework that can output metadata. Keep the key in server-side code, then place the final
+          HTTPS URL in both Open Graph and Twitter metadata.
+        </p>
+        <div className="mt-4">
+          <CodeBlock>{`const image = new URL("https://webmorp.art/api/og/${details.template}");
+image.searchParams.set("key", process.env.OGKIT_KEY!);
+image.searchParams.set("title", "${details.exampleTitle}");
+image.searchParams.set("subtitle", "${details.exampleSubtitle}");
+
+export const metadata = {
+  openGraph: { images: [image.toString()] },
+  twitter: { card: "summary_large_image", images: [image.toString()] }
+};`}</CodeBlock>
+        </div>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">Common mistakes</h2>
+          <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+            {details.mistakes.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-lg border p-5">
+          <h2 className="text-xl font-semibold">When to use dynamic images</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Use dynamic images when every page has a different title, release, product, guide, or author. Static social cards
+            are fine for a homepage, but they waste clicks when shared links point to specific content.
+          </p>
+        </div>
+      </section>
+
       <FinishCta />
     </div>
   )
