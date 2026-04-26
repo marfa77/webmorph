@@ -41,9 +41,18 @@ type Props = { params: { platform: string } }
 
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.platform)) return {}
+  const label = params.platform.replace('-', ' ')
+  const title = `Open Graph image API on ${label} — ${siteConfig.name}`
+  const description = `Deploy OGKit on ${label} with canonical URL guidance, cache setup, crawler notes, and dynamic social preview image examples.`
+  const image = new URL(`${siteConfig.url}/api/og/minimal`)
+  image.searchParams.set('demo', '1')
+  image.searchParams.set('title', `OG image API on ${label}`)
+  image.searchParams.set('subtitle', 'Deployment guide')
   return {
-    title: `Open Graph image API on ${params.platform} — ${siteConfig.name}`,
-    description: `Deploy OGKit on ${params.platform} and generate dynamic social preview images from one URL.`,
+    title,
+    description,
+    openGraph: { title, description, images: [image.toString()] },
+    twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
   }
 }
 
@@ -51,8 +60,44 @@ export default function PlatformPage({ params }: Props) {
   if (!ALLOWED.has(params.platform)) notFound()
   const p = params.platform
   const details = DETAILS[p]!
+  const label = p.replace('-', ' ')
+  const faq = [
+    {
+      question: `How do I deploy an Open Graph image API on ${label}?`,
+      answer: `Deploy OGKit with a final HTTPS public URL, set the required environment variables, and generate image URLs from server-side code or build-time metadata.`,
+    },
+    {
+      question: 'Should sitemap and canonical URLs use the deployment URL or final domain?',
+      answer: 'They should use the final canonical HTTPS domain. Preview URLs, http URLs, and www variants can create redirect and indexability issues.',
+    },
+    {
+      question: 'Can I cache generated OG images?',
+      answer: 'Yes. OGKit image URLs are deterministic, and generated PNG responses include cache headers. Keep query strings intact when caching.',
+    },
+  ]
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      headline: `Open Graph image API on ${label}`,
+      description: COPY[p],
+      author: { '@type': 'Organization', name: siteConfig.name },
+      publisher: { '@type': 'Organization', name: siteConfig.name },
+      mainEntityOfPage: `${siteConfig.url}/platform/${p}`,
+    },
+  ]
   return (
     <div className="container max-w-4xl space-y-12 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section>
         <p className="text-sm font-medium text-muted-foreground">Deployment guide</p>
         <h1 className="mt-1 text-4xl font-bold tracking-tight capitalize">Open Graph image API on {p.replace('-', ' ')}</h1>
@@ -93,6 +138,18 @@ export default function PlatformPage({ params }: Props) {
           <code className="font-mono">sitemap.xml</code>. If a crawler sees a challenge page or a redirect chain, it may mark
           otherwise valid pages as non-indexable.
         </p>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {faq.map((item) => (
+            <div key={item.question} className="rounded-lg border p-4">
+              <h3 className="font-semibold">{item.question}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <FinishCta />

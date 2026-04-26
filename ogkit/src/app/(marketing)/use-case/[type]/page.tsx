@@ -95,16 +95,31 @@ type Props = { params: { type: string } }
 
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.type)) return {}
+  const details = DETAILS[params.type]!
+  const label = humanize(params.type)
+  const image = new URL(`${siteConfig.url}/api/og/minimal`)
+  image.searchParams.set('demo', '1')
+  image.searchParams.set('title', `${label} Open Graph images`)
+  image.searchParams.set('subtitle', `Template: ${details.template}`)
+  image.searchParams.set('accent', '#2563eb')
   if (params.type === 'dynamic-social-preview-images') {
+    const title = `Dynamic social preview images — ${siteConfig.name}`
+    const description =
+      'Generate dynamic social preview images for Open Graph and Twitter cards with code examples, metadata setup, reusable templates, and production pitfalls.'
     return {
-      title: `Dynamic social preview images — ${siteConfig.name}`,
-      description:
-        'Generate dynamic social preview images for Open Graph and Twitter cards with code examples, metadata setup, and reusable OGKit templates.',
+      title,
+      description,
+      openGraph: { title, description, images: [image.toString()] },
+      twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
     }
   }
+  const title = `${label} Open Graph images — ${siteConfig.name}`
+  const description = `Generate dynamic Open Graph images for ${label.toLowerCase()} pages with OGKit. Includes template recommendations, code examples, and common mistakes.`
   return {
-    title: `${params.type} Open Graph images — ${siteConfig.name}`,
-    description: `Generate dynamic Open Graph images for ${params.type} pages with the OGKit social preview image API.`,
+    title,
+    description,
+    openGraph: { title, description, images: [image.toString()] },
+    twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
   }
 }
 
@@ -205,6 +220,31 @@ const meta = {
         </div>
       </section>
 
+      <section>
+        <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {[
+            {
+              question: 'What is a dynamic social preview image?',
+              answer: 'It is an Open Graph or Twitter card image generated from page data such as title, subtitle, author, product, or changelog details instead of one static image reused everywhere.',
+            },
+            {
+              question: 'Where should I use the generated image URL?',
+              answer: 'Use the same final HTTPS image URL in og:image and twitter:image metadata so social platforms and chat apps render a consistent preview.',
+            },
+            {
+              question: 'Is OGKit a screenshot API?',
+              answer: 'No. OGKit generates designed 1200x630 cards from structured fields. Screenshot APIs capture already-rendered webpages.',
+            },
+          ].map((item) => (
+            <div key={item.question} className="rounded-lg border p-4">
+              <h3 className="font-semibold">{item.question}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       <FinishCta />
     </div>
   )
@@ -212,18 +252,54 @@ const meta = {
 
 export default function UseCasePage({ params }: Props) {
   if (!ALLOWED.has(params.type)) notFound()
+  const details = DETAILS[params.type]!
+  const title = humanize(params.type)
+  const faq = [
+    {
+      question: `What is the best OGKit template for ${title.toLowerCase()} pages?`,
+      answer: `Start with the ${details.template} template and pass ${details.fields.join(', ')} as query fields when building the image URL.`,
+    },
+    {
+      question: 'Should I generate Open Graph images dynamically or use one static card?',
+      answer: 'Use dynamic images when each page has a different title, product, release, author, or summary. Static cards are fine for homepages but weak for specific shared links.',
+    },
+    {
+      question: 'Where should I place the generated image URL?',
+      answer: 'Use the final HTTPS image URL in both og:image and twitter:image metadata so social networks, chat apps, and search previews show the same branded card.',
+    },
+  ]
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      headline: `${title} Open Graph images`,
+      description: COPY[params.type],
+      author: { '@type': 'Organization', name: siteConfig.name },
+      publisher: { '@type': 'Organization', name: siteConfig.name },
+      mainEntityOfPage: `${siteConfig.url}/use-case/${params.type}`,
+    },
+  ]
   if (params.type === 'dynamic-social-preview-images') {
     return (
       <div className="container max-w-4xl py-12">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <DynamicSocialPreviewGuide />
       </div>
     )
   }
   const t = params.type
-  const details = DETAILS[t]!
-  const title = humanize(t)
   return (
     <div className="container max-w-4xl space-y-12 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section>
         <p className="text-sm font-medium text-muted-foreground">Use case</p>
         <h1 className="mt-1 text-4xl font-bold tracking-tight">{title} Open Graph images</h1>
@@ -285,6 +361,18 @@ export const metadata = {
             Use dynamic images when every page has a different title, release, product, guide, or author. Static social cards
             are fine for a homepage, but they waste clicks when shared links point to specific content.
           </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {faq.map((item) => (
+            <div key={item.question} className="rounded-lg border p-4">
+              <h3 className="font-semibold">{item.question}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+            </div>
+          ))}
         </div>
       </section>
 

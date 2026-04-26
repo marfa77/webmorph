@@ -109,18 +109,37 @@ const ALLOWED = new Set(Object.keys(HINT))
 
 type Props = { params: { framework: string } }
 
+function pageOgImage(title: string, subtitle = 'Framework guide') {
+  const url = new URL(`${siteConfig.url}/api/og/minimal`)
+  url.searchParams.set('demo', '1')
+  url.searchParams.set('title', title)
+  url.searchParams.set('subtitle', subtitle)
+  url.searchParams.set('accent', '#2563eb')
+  return url.toString()
+}
+
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.framework)) return {}
+  const details = DETAILS[params.framework]!
+  const title = params.framework === 'nextjs' ? `Next.js OG image generator — ${siteConfig.name}` : `Dynamic Open Graph images for ${details.label} — ${siteConfig.name}`
+  const description =
+    params.framework === 'nextjs'
+      ? 'Generate dynamic Open Graph images for Next.js App Router metadata with OGKit, code examples, pitfalls, and hosted API guidance.'
+      : `Generate branded Open Graph images for ${details.label} with OGKit. Includes implementation examples, metadata checklist, and common pitfalls.`
+  const image = pageOgImage(title.replace(` — ${siteConfig.name}`, ''), 'Open Graph image API guide')
   if (params.framework === 'nextjs') {
     return {
-      title: `Next.js OG image generator — ${siteConfig.name}`,
-      description:
-        'Generate dynamic Open Graph images for Next.js App Router metadata with the OGKit hosted OG image API.',
+      title,
+      description,
+      openGraph: { title, description, images: [image] },
+      twitter: { card: 'summary_large_image', title, description, images: [image] },
     }
   }
   return {
-    title: `Dynamic Open Graph images for ${params.framework} — ${siteConfig.name}`,
-    description: `Generate branded social preview images for ${params.framework} with the OGKit Open Graph image API.`,
+    title,
+    description,
+    openGraph: { title, description, images: [image] },
+    twitter: { card: 'summary_large_image', title, description, images: [image] },
   }
 }
 
@@ -216,6 +235,32 @@ export const metadata = {
         </div>
       </section>
 
+      <section>
+        <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {DETAILS.nextjs &&
+            [
+              {
+                question: 'How do I add dynamic Open Graph images to Next.js App Router?',
+                answer: 'Build an absolute OGKit image URL inside generateMetadata or server-side code, then assign it to metadata.openGraph.images and twitter.images.',
+              },
+              {
+                question: 'Can OGKit replace a custom opengraph-image.tsx route?',
+                answer: 'Yes, when you want hosted templates and stable image URLs instead of maintaining a custom Satori route, font loading, and renderer debugging.',
+              },
+              {
+                question: 'Where should I keep the OGKit API key?',
+                answer: 'Keep the API key in server-side environment variables. Do not expose it in client components or public JavaScript bundles.',
+              },
+            ].map((item) => (
+              <div key={item.question} className="rounded-lg border p-4">
+                <h3 className="font-semibold">{item.question}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+              </div>
+            ))}
+        </div>
+      </section>
+
       <FinishCta />
     </div>
   )
@@ -223,17 +268,53 @@ export const metadata = {
 
 export default function ForFrameworkPage({ params }: Props) {
   if (!ALLOWED.has(params.framework)) notFound()
+  const details = DETAILS[params.framework]!
+  const faq = [
+    {
+      question: `How do I add dynamic Open Graph images to ${details.label}?`,
+      answer: `Build an absolute OGKit image URL on the server or during static generation, then place it in og:image and twitter:image metadata for each important page.`,
+    },
+    {
+      question: `Can I use OGKit with ${details.label} without a custom image route?`,
+      answer: 'Yes. OGKit returns a normal 1200x630 PNG URL from template and query parameters, so you do not need to maintain a Satori, Puppeteer, or screenshot pipeline.',
+    },
+    {
+      question: 'Where should I keep the OGKit API key?',
+      answer: 'Keep the API key in server-side environment variables, framework runtime config, or build-time secrets. Do not bundle it into client-side JavaScript.',
+    },
+  ]
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faq.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'TechArticle',
+      headline: `Dynamic Open Graph images for ${details.label}`,
+      description: HINT[params.framework],
+      author: { '@type': 'Organization', name: siteConfig.name },
+      publisher: { '@type': 'Organization', name: siteConfig.name },
+      mainEntityOfPage: `${siteConfig.url}/for/${params.framework}`,
+    },
+  ]
   if (params.framework === 'nextjs') {
     return (
       <div className="container max-w-4xl py-12">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <NextJsGuide />
       </div>
     )
   }
   const f = params.framework
-  const details = DETAILS[f]!
   return (
     <div className="container max-w-4xl space-y-12 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section>
         <p className="text-sm font-medium text-muted-foreground">Framework guide</p>
         <h1 className="mt-1 text-4xl font-bold tracking-tight">Dynamic Open Graph images for {details.label}</h1>
@@ -282,6 +363,18 @@ export default function ForFrameworkPage({ params }: Props) {
           a custom renderer in every app. It is especially useful for docs, changelogs, launch pages, public customer pages,
           and content collections where the title and summary change often.
         </p>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {faq.map((item) => (
+            <div key={item.question} className="rounded-lg border p-4">
+              <h3 className="font-semibold">{item.question}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <FinishCta />

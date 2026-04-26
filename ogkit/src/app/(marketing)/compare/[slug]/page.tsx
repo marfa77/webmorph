@@ -301,17 +301,48 @@ type Props = { params: { slug: string } }
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.slug)) return {}
   const c = COPY[params.slug]!
+  const image = new URL(`${siteConfig.url}/api/og/minimal`)
+  image.searchParams.set('demo', '1')
+  image.searchParams.set('title', c.h1)
+  image.searchParams.set('subtitle', 'Open Graph image API comparison')
+  image.searchParams.set('accent', '#2563eb')
   return {
     title: c.title,
     description: c.description,
+    openGraph: { title: c.title, description: c.description, images: [image.toString()] },
+    twitter: { card: 'summary_large_image', title: c.title, description: c.description, images: [image.toString()] },
   }
 }
 
 export default function ComparePage({ params }: Props) {
   if (!ALLOWED.has(params.slug)) notFound()
   const c = COPY[params.slug]!
+  const faq = [
+    {
+      question: `When should I choose OGKit for ${c.h1.replace('OGKit vs ', '').toLowerCase()}?`,
+      answer: c.ogkitFit.join(' '),
+    },
+    {
+      question: 'Is OGKit a screenshot API?',
+      answer: 'No. OGKit generates designed 1200x630 Open Graph cards from structured fields. Screenshot APIs capture rendered webpages or HTML.',
+    },
+    {
+      question: 'Can I try OGKit without an API key?',
+      answer: 'Yes. Use demo=1 in the Playground or API URL to generate watermarked evaluation images before creating a production key.',
+    },
+  ]
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((item) => ({
+      '@type': 'Question',
+      name: item.question,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    })),
+  }
   return (
     <div className="container max-w-4xl space-y-12 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section>
         <p className="text-sm font-medium text-muted-foreground">Comparison</p>
         <h1 className="mt-1 text-4xl font-bold tracking-tight">{c.h1}</h1>
@@ -367,6 +398,18 @@ export default function ComparePage({ params }: Props) {
         <pre className="mt-4 overflow-x-auto rounded-lg border bg-muted/40 p-4 text-xs leading-relaxed">
           <code>{c.code}</code>
         </pre>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {faq.map((item) => (
+            <div key={item.question} className="rounded-lg border p-4">
+              <h3 className="font-semibold">{item.question}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section>
