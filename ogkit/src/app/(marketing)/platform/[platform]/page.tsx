@@ -18,7 +18,10 @@ type Props = { params: { platform: string } }
 
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.platform)) return {}
-  return { title: `OG images on ${params.platform} — ${siteConfig.name}` }
+  return {
+    title: `Open Graph image API on ${params.platform} — ${siteConfig.name}`,
+    description: `Deploy OGKit on ${params.platform} and generate dynamic social preview images from one URL.`,
+  }
 }
 
 export default function PlatformPage({ params }: Props) {
@@ -26,8 +29,12 @@ export default function PlatformPage({ params }: Props) {
   const p = params.platform
   return (
     <div className="container max-w-3xl py-12">
-      <h1 className="text-3xl font-bold capitalize">Open Graph on {p.replace('-', ' ')}</h1>
+      <h1 className="text-3xl font-bold capitalize">Open Graph image API on {p.replace('-', ' ')}</h1>
       <p className="mt-4 text-muted-foreground leading-relaxed">{COPY[p]!}</p>
+      <p className="mt-3 text-sm text-muted-foreground">
+        Use these pages when evaluating OGKit as a hosted Vercel OG alternative, screenshot-service alternative, or
+        framework-neutral social preview image API.
+      </p>
       <FinishCta />
     </div>
   )

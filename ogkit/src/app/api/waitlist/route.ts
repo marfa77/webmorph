@@ -11,6 +11,17 @@ const Body = z.object({
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+async function notifyWaitlistRequest(email: string, plan: 'pro' | 'scale', already: boolean) {
+  await sendTelegramMessage({
+    text: [
+      already ? 'OGKit waitlist request (already listed)' : 'New OGKit waitlist request',
+      `Plan: ${plan}`,
+      `Email: ${email}`,
+      `Time: ${new Date().toISOString()}`,
+    ].join('\n'),
+  })
+}
+
 export async function POST(req: Request) {
   const json = await req.json().catch(() => null)
   const parsed = Body.safeParse(json)
@@ -33,20 +44,14 @@ export async function POST(req: Request) {
     const code = (error as { code?: string }).code
     const msg = (error as { message?: string }).message ?? ''
     if (code === '23505' || /unique|duplicate/i.test(msg)) {
+      await notifyWaitlistRequest(parsed.data.email.trim().toLowerCase(), parsed.data.plan, true)
       return NextResponse.json({ ok: true, already: true })
     }
     console.error('Waitlist insert failed', { code, message: msg })
     return NextResponse.json({ error: 'server_error' }, { status: 500 })
   }
 
-  await sendTelegramMessage({
-    text: [
-      'New OGKit waitlist request',
-      `Plan: ${parsed.data.plan}`,
-      `Email: ${parsed.data.email.trim().toLowerCase()}`,
-      `Time: ${new Date().toISOString()}`,
-    ].join('\n'),
-  })
+  await notifyWaitlistRequest(parsed.data.email.trim().toLowerCase(), parsed.data.plan, false)
 
   return NextResponse.json({ ok: true })
 }

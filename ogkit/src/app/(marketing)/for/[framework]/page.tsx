@@ -3,7 +3,9 @@ import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
 
 const HINT: Record<string, string> = {
+  nextjs: 'In Next.js App Router, set `metadata.openGraph.images` to a full OGKit image URL. Generate the URL on the server, pass title and subtitle as query parameters, and keep your API key outside client components.',
   next: 'In the App Router, set `metadata.openGraph.images` to your full OGKit image URL, or add an `og:image` head tag that points to `/api/og/...` on your app host.',
+  react: 'React apps can use OGKit from the server, framework metadata layer, or static generation step. Build a full HTTPS image URL and place it in `og:image` plus `twitter:image`.',
   nuxt: 'In Nuxt 3, set `ogImage` / `og:image` in `defineOgImage` or in `nuxt.config` by resolving the OGKit URL from runtime config.',
   svelte: 'Use a link tag or SvelteKit `handle` to emit `og:image` pointing to your generated OG URL.',
   astro: 'Use `<meta property="og:image" content={ogUrl} />` in your layout, where `ogUrl` comes from the OGKit request URL.',
@@ -20,7 +22,10 @@ type Props = { params: { framework: string } }
 
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.framework)) return {}
-  return { title: `Open Graph for ${params.framework} — ${siteConfig.name}` }
+  return {
+    title: `Dynamic Open Graph images for ${params.framework} — ${siteConfig.name}`,
+    description: `Generate branded social preview images for ${params.framework} with the OGKit Open Graph image API.`,
+  }
 }
 
 export default function ForFrameworkPage({ params }: Props) {
@@ -28,11 +33,11 @@ export default function ForFrameworkPage({ params }: Props) {
   const f = params.framework
   return (
     <div className="container max-w-3xl py-12">
-      <h1 className="text-3xl font-bold">Open Graph for {f}</h1>
+      <h1 className="text-3xl font-bold">Dynamic Open Graph images for {f}</h1>
       <p className="mt-4 text-muted-foreground leading-relaxed">{HINT[f]!}</p>
       <p className="mt-3 text-sm text-muted-foreground">
-        Every framework only needs a stable, absolute HTTPS `og:image`—OGKit gives you a single image URL and query parameters
-        (see the API).
+        Every framework only needs a stable, absolute HTTPS `og:image`. OGKit gives you one URL, production templates,
+        and query parameters for titles, images, logos, authors, products, events, jobs, and code snippets.
       </p>
       <FinishCta />
     </div>

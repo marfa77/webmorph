@@ -31,8 +31,6 @@ function copyDir(from, to) {
   console.log(`[copy-webmorph-assets] ${path.relative(root, to)}/`)
 }
 
-// Served at / via rewrite in next.config.mjs when using NEXT_PUBLIC_BASE_PATH=/ogkit
-copyFile(path.join(root, 'index.html'), path.join(publicDir, 'webmorph.html'))
 copyFile(path.join(root, 'favicon.svg'), path.join(publicDir, 'favicon.svg'))
 for (const name of ['favicon.png', 'apple-touch-icon.png']) {
   const p = path.join(root, name)
@@ -41,11 +39,3 @@ for (const name of ['favicon.png', 'apple-touch-icon.png']) {
 copyFile(path.join(root, 'og-image.jpg'), path.join(publicDir, 'og-image.jpg'))
 copyFile(path.join(root, 'privacy.html'), path.join(publicDir, 'privacy.html'))
 copyFile(path.join(root, 'terms.html'), path.join(publicDir, 'terms.html'))
-copyFile(path.join(root, 'robots.txt'), path.join(publicDir, 'robots.txt'))
-copyFile(path.join(root, 'sitemap.xml'), path.join(publicDir, 'sitemap.xml'))
-copyFile(path.join(root, 'llms.txt'), path.join(publicDir, 'llms.txt'))
-copyDir(path.join(root, 'previews'), path.join(publicDir, 'previews'))
-copyDir(path.join(root, 'freelancer'), path.join(publicDir, 'freelancer'))
-copyDir(path.join(root, 'restaurant'), path.join(publicDir, 'restaurant'))
-copyDir(path.join(root, 'small-business'), path.join(publicDir, 'small-business'))
-copyDir(path.join(root, 'startup'), path.join(publicDir, 'startup'))
