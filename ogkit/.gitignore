@@ -26,6 +26,10 @@
 /public/apple-touch-icon.png
 /public/og-image.jpg
 /public/previews/**
+!/public/previews/
+!/public/previews/article-preview.png
+!/public/previews/product-preview.png
+!/public/previews/code-preview.png
 /public/freelancer/**
 /public/restaurant/**
 /public/small-business/**
