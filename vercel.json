@@ -1,0 +1,8 @@
+{
+  "installCommand": "cd ogkit && npm ci",
+  "buildCommand": "cd ogkit && npm run build",
+  "crons": [
+    { "path": "/api/cron/indexnow", "schedule": "0 3 * * 0" },
+    { "path": "/api/cron/daily-summary", "schedule": "0 7 * * *" }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "name": "webmorph",
+  "private": true,
+  "description": "Repo root deployment shim. The Next.js app lives in ogkit/.",
+  "scripts": {
+    "build": "cd ogkit && npm run build"
+  }
+}
