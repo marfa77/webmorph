@@ -17,6 +17,12 @@ export async function POST(req: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
   }
+
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error('Waitlist insert failed: missing_server_env')
+    return NextResponse.json({ error: 'server_error' }, { status: 500 })
+  }
+
   const supabase = createAdminClient()
   const { error } = await supabase.from('subscription_waitlist').insert({
     email: parsed.data.email.trim().toLowerCase(),
@@ -29,6 +35,7 @@ export async function POST(req: Request) {
     if (code === '23505' || /unique|duplicate/i.test(msg)) {
       return NextResponse.json({ ok: true, already: true })
     }
+    console.error('Waitlist insert failed', { code, message: msg })
     return NextResponse.json({ error: 'server_error' }, { status: 500 })
   }
 
