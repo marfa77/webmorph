@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
-  alternates: { canonical: '/' },
   keywords: [
     'Open Graph image API',
     'dynamic OG images',
@@ -18,7 +17,6 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: 'website',
-    url: siteConfig.url,
     siteName: siteConfig.name,
     title: 'OGKit - Open Graph image API',
     description: siteConfig.description,

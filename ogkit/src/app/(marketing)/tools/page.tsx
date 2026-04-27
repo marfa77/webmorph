@@ -4,7 +4,10 @@ import { siteConfig } from '@/config/site'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
-export const metadata = { title: `Tools — ${siteConfig.name}` }
+export const metadata = {
+  title: `Tools — ${siteConfig.name}`,
+  alternates: { canonical: `${siteConfig.url}/tools` },
+}
 
 const items = [
   {

@@ -127,18 +127,21 @@ export function generateMetadata({ params }: Props) {
       ? 'Generate dynamic Open Graph images for Next.js App Router metadata with OGKit, code examples, pitfalls, and hosted API guidance.'
       : `Generate branded Open Graph images for ${details.label} with OGKit. Includes implementation examples, metadata checklist, and common pitfalls.`
   const image = pageOgImage(title.replace(` — ${siteConfig.name}`, ''), 'Open Graph image API guide')
+  const canonical = `${siteConfig.url}/for/${params.framework}`
   if (params.framework === 'nextjs') {
     return {
       title,
       description,
-      openGraph: { title, description, images: [image] },
+      alternates: { canonical },
+      openGraph: { title, description, url: canonical, images: [image] },
       twitter: { card: 'summary_large_image', title, description, images: [image] },
     }
   }
   return {
     title,
     description,
-    openGraph: { title, description, images: [image] },
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical, images: [image] },
     twitter: { card: 'summary_large_image', title, description, images: [image] },
   }
 }

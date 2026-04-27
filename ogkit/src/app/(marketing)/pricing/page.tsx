@@ -8,7 +8,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
-export const metadata = { title: `Pricing — ${siteConfig.name}` }
+export const metadata = {
+  title: `Pricing — ${siteConfig.name}`,
+  alternates: { canonical: `${siteConfig.url}/pricing` },
+}
 
 export default function PricingPage() {
   const crypto = isCryptoBillingLive()

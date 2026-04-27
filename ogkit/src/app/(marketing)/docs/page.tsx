@@ -5,7 +5,10 @@ import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-export const metadata = { title: `API reference — ${siteConfig.name}` }
+export const metadata = {
+  title: `API reference — ${siteConfig.name}`,
+  alternates: { canonical: `${siteConfig.url}/docs` },
+}
 
 const PARAM_ROWS: { name: string; required: string; desc: string }[] = [
   { name: 'key', required: 'Production', desc: 'API key (`ogk_live_…`); also accepted as `Authorization: Bearer`.' },

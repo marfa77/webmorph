@@ -48,10 +48,12 @@ export function generateMetadata({ params }: Props) {
   image.searchParams.set('demo', '1')
   image.searchParams.set('title', `OG image API on ${label}`)
   image.searchParams.set('subtitle', 'Deployment guide')
+  const canonical = `${siteConfig.url}/platform/${params.platform}`
   return {
     title,
     description,
-    openGraph: { title, description, images: [image.toString()] },
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical, images: [image.toString()] },
     twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
   }
 }

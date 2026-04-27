@@ -4,6 +4,18 @@ import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
 
+export const metadata = {
+  alternates: { canonical: siteConfig.url },
+  openGraph: {
+    type: 'website',
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: 'OGKit - Open Graph image API',
+    description: siteConfig.description,
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'OGKit dynamic Open Graph image API' }],
+  },
+}
+
 export default function HomePage() {
   const faq = [
     {

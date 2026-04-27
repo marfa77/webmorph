@@ -306,10 +306,12 @@ export function generateMetadata({ params }: Props) {
   image.searchParams.set('title', c.h1)
   image.searchParams.set('subtitle', 'Open Graph image API comparison')
   image.searchParams.set('accent', '#2563eb')
+  const canonical = `${siteConfig.url}/compare/${params.slug}`
   return {
     title: c.title,
     description: c.description,
-    openGraph: { title: c.title, description: c.description, images: [image.toString()] },
+    alternates: { canonical },
+    openGraph: { title: c.title, description: c.description, url: canonical, images: [image.toString()] },
     twitter: { card: 'summary_large_image', title: c.title, description: c.description, images: [image.toString()] },
   }
 }

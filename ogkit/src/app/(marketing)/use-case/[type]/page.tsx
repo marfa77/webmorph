@@ -102,6 +102,7 @@ export function generateMetadata({ params }: Props) {
   image.searchParams.set('title', `${label} Open Graph images`)
   image.searchParams.set('subtitle', `Template: ${details.template}`)
   image.searchParams.set('accent', '#2563eb')
+  const canonical = `${siteConfig.url}/use-case/${params.type}`
   if (params.type === 'dynamic-social-preview-images') {
     const title = `Dynamic social preview images — ${siteConfig.name}`
     const description =
@@ -109,7 +110,8 @@ export function generateMetadata({ params }: Props) {
     return {
       title,
       description,
-      openGraph: { title, description, images: [image.toString()] },
+      alternates: { canonical },
+      openGraph: { title, description, url: canonical, images: [image.toString()] },
       twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
     }
   }
@@ -118,7 +120,8 @@ export function generateMetadata({ params }: Props) {
   return {
     title,
     description,
-    openGraph: { title, description, images: [image.toString()] },
+    alternates: { canonical },
+    openGraph: { title, description, url: canonical, images: [image.toString()] },
     twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
   }
 }
