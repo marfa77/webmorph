@@ -12,7 +12,6 @@ export const siteConfig = {
     'Generate dynamic Open Graph images and social preview cards from one URL. Built for AI-assisted developers, Next.js, SaaS landing pages, blogs, docs, and product launches.',
   author: 'OGKit',
   supportEmail: 'support@webmorph.art',
-  twitter: '@ogkitdev',
   /** Source for webmorp.art deploy — [marfa77/webmorph](https://github.com/marfa77/webmorph) */
   github: 'https://github.com/marfa77/webmorph',
 }

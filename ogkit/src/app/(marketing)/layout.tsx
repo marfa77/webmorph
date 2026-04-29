@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
+import { CookieBanner } from '@/components/marketing/cookie-banner'
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -31,12 +32,14 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         </div>
       </header>
       <main className="flex-1">{children}</main>
+      <CookieBanner />
       <footer className="border-t py-8 text-sm text-muted-foreground">
         <div className="container max-w-6xl flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} {siteConfig.name}</p>
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             <Link href={withBasePath('/pricing')} className="hover:text-foreground">Pricing</Link>
             <Link href={withBasePath('/docs')} className="hover:text-foreground">API docs</Link>
+            <Link href={withBasePath('/contact')} className="hover:text-foreground">Contact</Link>
             <Link href={withBasePath('/terms')} className="hover:text-foreground">Terms</Link>
             <Link href={withBasePath('/privacy')} className="hover:text-foreground">Privacy</Link>
             <a href={`mailto:${siteConfig.supportEmail}`} className="hover:text-foreground">

@@ -58,6 +58,23 @@ export default function PricingPage() {
           )
         })}
       </div>
+
+      <div className="mt-12 rounded-lg border bg-muted/30 p-6 text-sm text-muted-foreground space-y-2">
+        <p className="font-medium text-foreground">Payment & refund policy</p>
+        <p>
+          All payments are processed in cryptocurrency via Cryptomus and are <strong>non-refundable</strong> once the
+          monthly quota has been activated. If you experience a technical failure on our end before quota is granted,
+          contact <a href={`mailto:${siteConfig.supportEmail}`} className="underline hover:text-foreground">{siteConfig.supportEmail}</a> within 7 days and we will investigate.
+        </p>
+        <p>
+          Subscriptions are one-time monthly payments — there is no automatic renewal. You pay again when you need
+          quota for the next month.
+        </p>
+        <p>
+          Questions? Read the <Link href={withBasePath('/terms')} className="underline hover:text-foreground">Terms of Service</Link> or
+          {' '}<Link href={withBasePath('/contact')} className="underline hover:text-foreground">contact support</Link>.
+        </p>
+      </div>
     </div>
   )
 }
