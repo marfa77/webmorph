@@ -35,7 +35,7 @@ export default function TermsPage() {
       <p>
         You are responsible for maintaining the confidentiality of your API key. All activity that
         occurs under your API key is your responsibility. Notify us immediately at{' '}
-        <a href="/contact">contact support</a> if you suspect
+        <a href="/contact">use the contact form</a> if you suspect
         unauthorized use.
       </p>
 

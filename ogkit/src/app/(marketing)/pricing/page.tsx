@@ -72,7 +72,7 @@ export default function PricingPage() {
         </p>
         <p>
           Questions? Read the <Link href={withBasePath('/terms')} className="underline hover:text-foreground">Terms of Service</Link> or
-          {' '}<Link href={withBasePath('/contact')} className="underline hover:text-foreground">contact support</Link>.
+          {' '}<Link href={withBasePath('/contact')} className="underline hover:text-foreground">use the contact form</Link>.
         </p>
       </div>
     </div>

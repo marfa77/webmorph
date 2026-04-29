@@ -9,7 +9,7 @@ export const PLANS = {
     monthlyCap: 1_000,
     dailyCap: null,
     watermark: true,
-    features: ['1,000 images / month', 'Watermark on free tier', '10 templates', 'No-login demo previews', 'Community support'],
+    features: ['1,000 images / month', 'Watermark on free tier', '10 templates', 'No-login demo previews', 'API documentation'],
   },
   pro: {
     id: 'pro' as const,
@@ -24,8 +24,8 @@ export const PLANS = {
       'No watermark',
       'All templates',
       'Signed URLs and domain allowlists',
-      'Email support',
       'Custom fonts (Google Fonts)',
+      'Usage dashboard',
     ],
   },
   scale: {
@@ -42,7 +42,7 @@ export const PLANS = {
       'Priority CDN',
       'All templates',
       'Signed URLs and domain allowlists',
-      'Priority support',
+      'Higher production quota',
     ],
   },
 } as const

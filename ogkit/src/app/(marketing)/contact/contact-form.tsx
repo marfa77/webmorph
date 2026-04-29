@@ -49,7 +49,7 @@ export function ContactForm() {
       <div className="rounded-lg border bg-muted/30 p-6 text-center">
         <p className="text-lg font-semibold">Message sent ✓</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          We&apos;ll get back to you within 1 business day.
+          Thanks. We&apos;ll review your message when possible.
         </p>
       </div>
     )

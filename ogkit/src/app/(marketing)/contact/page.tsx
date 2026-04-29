@@ -11,8 +11,8 @@ export default function ContactPage() {
     <div className="container max-w-2xl py-16">
       <h1 className="text-3xl font-bold">Contact us</h1>
       <p className="mt-2 text-muted-foreground">
-        Have a question about {siteConfig.name}, your API key, or a payment issue? Send us a message and
-        we&apos;ll get back to you within 1 business day.
+        Have a question about {siteConfig.name}, billing, or a product issue? Send a message and we&apos;ll
+        review it when possible.
       </p>
 
       <div className="mt-8">
