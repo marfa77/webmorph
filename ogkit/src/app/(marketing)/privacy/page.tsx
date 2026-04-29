@@ -14,7 +14,7 @@ export default function PrivacyPage() {
 
       <h2>1. Overview</h2>
       <p>
-        {siteConfig.name} ("we", "us", "our") operates {siteConfig.url}. This Privacy Policy explains
+        {siteConfig.name} (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) operates {siteConfig.url}. This Privacy Policy explains
         what information we collect, how we use it, and your rights regarding that information.
       </p>
 

@@ -14,7 +14,7 @@ export default function TermsPage() {
 
       <h2>1. Acceptance of Terms</h2>
       <p>
-        By accessing or using {siteConfig.name} ("Service") at {siteConfig.url}, you agree to be bound
+        By accessing or using {siteConfig.name} (&ldquo;Service&rdquo;) at {siteConfig.url}, you agree to be bound
         by these Terms of Service. If you do not agree, please do not use the Service.
       </p>
 
@@ -64,7 +64,7 @@ export default function TermsPage() {
 
       <h2>8. Disclaimer of Warranties</h2>
       <p>
-        The Service is provided "as is" without warranty of any kind. {siteConfig.name} does not warrant
+        The Service is provided &ldquo;as is&rdquo; without warranty of any kind. {siteConfig.name} does not warrant
         that the Service will be uninterrupted, error-free, or free of harmful components.
       </p>
 
