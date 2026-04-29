@@ -15,10 +15,11 @@ export function ContactForm() {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const form = event.currentTarget
     setPending(true)
     setStatus({ type: 'idle' })
 
-    const formData = new FormData(event.currentTarget)
+    const formData = new FormData(form)
     const payload = Object.fromEntries(formData.entries())
 
     try {
@@ -35,7 +36,7 @@ export function ContactForm() {
       }
 
       setStatus({ type: 'success' })
-      event.currentTarget.reset()
+      form.reset()
     } catch {
       setStatus({ type: 'error', message: 'Network error. Please try again.' })
     } finally {
