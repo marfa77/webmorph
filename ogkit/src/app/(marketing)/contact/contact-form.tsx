@@ -1,28 +1,49 @@
 'use client'
 
-import { useFormState, useFormStatus } from 'react-dom'
-import { submitContact, type ContactState } from './actions'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
-const initial: ContactState = { status: 'idle' }
-
-function SubmitButton() {
-  const { pending } = useFormStatus()
-  return (
-    <Button type="submit" disabled={pending} className="w-full sm:w-auto">
-      {pending ? 'Sending…' : 'Send message'}
-    </Button>
-  )
-}
+type Status = { type: 'idle' | 'success' | 'error'; message?: string }
 
 export function ContactForm() {
-  const [state, action] = useFormState(submitContact, initial)
+  const [status, setStatus] = useState<Status>({ type: 'idle' })
+  const [pending, setPending] = useState(false)
 
-  if (state.status === 'success') {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setPending(true)
+    setStatus({ type: 'idle' })
+
+    const formData = new FormData(event.currentTarget)
+    const payload = Object.fromEntries(formData.entries())
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const result = (await response.json().catch(() => ({}))) as { message?: string }
+
+      if (!response.ok) {
+        setStatus({ type: 'error', message: result.message ?? 'Message could not be sent. Please try again.' })
+        return
+      }
+
+      setStatus({ type: 'success' })
+      event.currentTarget.reset()
+    } catch {
+      setStatus({ type: 'error', message: 'Network error. Please try again.' })
+    } finally {
+      setPending(false)
+    }
+  }
+
+  if (status.type === 'success') {
     return (
       <div className="rounded-lg border bg-muted/30 p-6 text-center">
         <p className="text-lg font-semibold">Message sent ✓</p>
@@ -34,7 +55,7 @@ export function ContactForm() {
   }
 
   return (
-    <form action={action} className="space-y-4">
+    <form onSubmit={(event) => void onSubmit(event)} className="space-y-4">
       {/* honeypot */}
       <input type="text" name="company" tabIndex={-1} className="absolute h-0 w-0 overflow-hidden p-0 opacity-0" autoComplete="off" aria-hidden />
 
@@ -77,11 +98,13 @@ export function ContactForm() {
         />
       </div>
 
-      {state.status === 'error' && (
-        <p className="text-sm text-destructive">{state.message}</p>
+      {status.type === 'error' && (
+        <p className="text-sm text-destructive">{status.message}</p>
       )}
 
-      <SubmitButton />
+      <Button type="submit" disabled={pending} className="w-full sm:w-auto">
+        {pending ? 'Sending…' : 'Send message'}
+      </Button>
     </form>
   )
 }
