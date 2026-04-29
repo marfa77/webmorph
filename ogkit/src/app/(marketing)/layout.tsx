@@ -42,9 +42,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             <Link href={withBasePath('/contact')} className="hover:text-foreground">Contact</Link>
             <Link href={withBasePath('/terms')} className="hover:text-foreground">Terms</Link>
             <Link href={withBasePath('/privacy')} className="hover:text-foreground">Privacy</Link>
-            <a href={`mailto:${siteConfig.supportEmail}`} className="hover:text-foreground">
-              {siteConfig.supportEmail}
-            </a>
+            <Link href={withBasePath('/contact')} className="hover:text-foreground">Support</Link>
           </nav>
         </div>
       </footer>

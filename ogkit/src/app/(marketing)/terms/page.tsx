@@ -35,7 +35,7 @@ export default function TermsPage() {
       <p>
         You are responsible for maintaining the confidentiality of your API key. All activity that
         occurs under your API key is your responsibility. Notify us immediately at{' '}
-        <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a> if you suspect
+        <a href="/contact">contact support</a> if you suspect
         unauthorized use.
       </p>
 
@@ -82,8 +82,8 @@ export default function TermsPage() {
 
       <h2>11. Contact</h2>
       <p>
-        Questions about these Terms should be sent to{' '}
-        <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>.
+        Questions about these Terms should be directed to our{' '}
+        <a href="/contact">contact form</a>.
       </p>
     </div>
   )

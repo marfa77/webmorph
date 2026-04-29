@@ -71,8 +71,8 @@ export default function PrivacyPage() {
       <h2>7. Your Rights</h2>
       <p>
         Depending on your jurisdiction you may have the right to access, correct, or delete your
-        personal data. To exercise these rights, contact us at{' '}
-        <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>.
+        personal data.         To exercise these rights, use our{' '}
+        <a href="/contact">contact form</a>.
       </p>
 
       <h2>8. Changes to This Policy</h2>
@@ -83,8 +83,8 @@ export default function PrivacyPage() {
 
       <h2>9. Contact</h2>
       <p>
-        Privacy questions should be directed to{' '}
-        <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>.
+        Privacy questions should be directed to our{' '}
+        <a href="/contact">contact form</a>.
       </p>
     </div>
   )
