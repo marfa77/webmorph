@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
   other: { cryptomus: cryptomusSiteVerify },
+  icons: {
+    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    shortcut: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+  },
   keywords: [
     'Open Graph image API',
     'dynamic OG images',

@@ -44,8 +44,8 @@ export function ContactForm() {
           <Input id="name" name="name" placeholder="Your name" required />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="email">Email (optional)</Label>
-          <Input id="email" name="email" type="email" placeholder="you@example.com" />
+          <Label htmlFor="email">Email *</Label>
+          <Input id="email" name="email" type="email" placeholder="you@example.com" required />
         </div>
       </div>
 
