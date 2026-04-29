@@ -41,15 +41,15 @@ Open [http://localhost:3000](http://localhost:3000). See **[/docs](http://localh
 3. **Environment variables (Production)** — copy from `.env.example` and set at least:
 
    - `NEXT_PUBLIC_BASE_PATH=`
-   - `NEXT_PUBLIC_APP_URL=https://webmorp.art`
-   - `NEXT_PUBLIC_SITE_URL=https://webmorp.art`
-   - `NEXT_PUBLIC_SITE_HOST=webmorp.art`
+   - `NEXT_PUBLIC_APP_URL=https://www.webmorp.art`
+   - `NEXT_PUBLIC_SITE_URL=https://www.webmorp.art`
+   - `NEXT_PUBLIC_SITE_HOST=www.webmorp.art`
    - Supabase: `NEXT_PUBLIC_SUPABASE_*`, `SUPABASE_SERVICE_ROLE_KEY`
    - `API_KEY_SALT`  
    - Telegram: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
    - Optional: Lemon, Cryptomus, crons, etc.
 
-4. **Custom domain** — attach `webmorp.art` (and `www.webmorp.art` if you use a redirect) to **this** project. Use `https://webmorp.art/callback` in **Supabase Auth → Redirect URLs**.
+4. **Custom domain** — attach `webmorp.art` and `www.webmorp.art` to **this** project; set apex → `www` redirect in Vercel so the canonical host matches `site.ts`. Use `https://www.webmorp.art/callback` in **Supabase Auth → Redirect URLs** (add apex too if you keep both hosts).
 5. **Redeploy** after changing env. **Crons** in `vercel.json` use root paths, e.g. `/api/cron/...`.
 
 **Cryptomus webhook (if used):** `https://webmorp.art/api/billing/cryptomus/webhook` — add the same in the Cryptomus dashboard.

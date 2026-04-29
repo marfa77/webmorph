@@ -1,9 +1,10 @@
-const canonicalUrl = 'https://webmorp.art'
+/** Must match the primary host Google indexes (avoid apex vs www duplicate cluster). */
+const canonicalUrl = 'https://www.webmorp.art'
 
 export const siteConfig = {
   name: 'OGKit',
   /** Main site hostname (for display / links) */
-  domain: process.env.NEXT_PUBLIC_SITE_HOST || 'webmorp.art',
+  domain: process.env.NEXT_PUBLIC_SITE_HOST || 'www.webmorp.art',
   /** Full public URL of this Next app, no trailing slash. */
   url: canonicalUrl,
   tagline: 'Crypto-native Open Graph image API for AI-built sites',
