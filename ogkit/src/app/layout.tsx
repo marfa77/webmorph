@@ -3,10 +3,13 @@ import { Toaster } from 'sonner'
 import { siteConfig } from '@/config/site'
 import './globals.css'
 
+const cryptomusSiteVerify = process.env.NEXT_PUBLIC_CRYPTOMUS_SITE_VERIFICATION?.trim()
+
 export const metadata: Metadata = {
   title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
+  ...(cryptomusSiteVerify ? { other: { cryptomus: cryptomusSiteVerify } } : {}),
   keywords: [
     'Open Graph image API',
     'dynamic OG images',
