@@ -52,7 +52,7 @@ Open [http://localhost:3000](http://localhost:3000). See **[/docs](http://localh
 4. **Custom domain** — attach `webmorp.art` and `www.webmorp.art` to **this** project; set apex → `www` redirect in Vercel so the canonical host matches `site.ts`. Use `https://www.webmorp.art/callback` in **Supabase Auth → Redirect URLs** (add apex too if you keep both hosts).
 5. **Redeploy** after changing env. **Crons** in `vercel.json` use root paths, e.g. `/api/cron/...`.
 
-**Cryptomus webhook (if used):** `https://webmorp.art/api/billing/cryptomus/webhook` — add the same in the Cryptomus dashboard.
+**Cryptomus webhook (if used):** `https://www.webmorp.art/api/billing/cryptomus/webhook` — add the same URL in the Cryptomus project / webhook settings.
 
 ## Funnel analytics
 
