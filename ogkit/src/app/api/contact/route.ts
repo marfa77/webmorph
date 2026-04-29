@@ -6,7 +6,6 @@ type ContactPayload = {
   email?: string
   subject?: string
   body?: string
-  company?: string
 }
 
 export async function POST(request: Request) {
@@ -21,9 +20,6 @@ export async function POST(request: Request) {
   const email = payload.email?.trim() ?? ''
   const subject = payload.subject?.trim() || 'General'
   const body = payload.body?.trim() ?? ''
-  const company = payload.company?.trim()
-
-  if (company) return NextResponse.json({ ok: true })
 
   if (!name || !email || body.length < 10) {
     return NextResponse.json(
@@ -51,11 +47,11 @@ export async function POST(request: Request) {
         error: notification.skipped ? 'telegram_not_configured' : 'telegram_failed',
         message: notification.skipped
           ? 'Contact form is not configured yet.'
-          : 'Message could not be sent. Please try again later.',
+          : notification.error ?? 'Message could not be sent. Please try again later.',
       },
       { status: 502 },
     )
   }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({ ok: true, chat: notification.chat })
 }

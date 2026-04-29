@@ -57,9 +57,6 @@ export function ContactForm() {
 
   return (
     <form onSubmit={(event) => void onSubmit(event)} className="space-y-4">
-      {/* honeypot */}
-      <input type="text" name="company" tabIndex={-1} className="absolute h-0 w-0 overflow-hidden p-0 opacity-0" autoComplete="off" aria-hidden />
-
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="name">Name *</Label>
