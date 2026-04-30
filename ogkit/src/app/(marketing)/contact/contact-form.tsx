@@ -49,7 +49,7 @@ export function ContactForm() {
       <div className="rounded-lg border bg-muted/30 p-6 text-center">
         <p className="text-lg font-semibold">Message sent ✓</p>
         <p className="mt-1 text-sm text-muted-foreground">
-          Thanks. We&apos;ll review your message when possible.
+          Your message has been delivered. If a reply is needed, we&apos;ll use the email address you provided.
         </p>
       </div>
     )

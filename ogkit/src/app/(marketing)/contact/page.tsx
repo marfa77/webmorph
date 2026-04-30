@@ -11,9 +11,14 @@ export default function ContactPage() {
     <div className="container max-w-2xl py-16">
       <h1 className="text-3xl font-bold">Contact us</h1>
       <p className="mt-2 text-muted-foreground">
-        Have a question about {siteConfig.name}, billing, or a product issue? Send a message and we&apos;ll
-        review it when possible.
+        Have a question about {siteConfig.name}, billing, or a product issue? Use the form below.
+        Email is required so we can reply when a response is needed.
       </p>
+
+      <div className="mt-5 rounded-lg border bg-muted/30 p-4 text-sm text-muted-foreground">
+        After a successful submission, the page shows a delivery confirmation. Messages are routed to
+        our operations channel and reviewed when possible.
+      </div>
 
       <div className="mt-8">
         <ContactForm />
