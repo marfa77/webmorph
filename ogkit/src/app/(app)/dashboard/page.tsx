@@ -6,8 +6,14 @@ import { PLANS, type Plan } from '@/config/plans'
 import { isCryptoBillingLive } from '@/config/billing'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { privateAppMetadata } from '@/lib/app-route-metadata'
 
-export const metadata = { title: `Dashboard — ${siteConfig.name}` }
+export const metadata = privateAppMetadata({
+  title: 'OGKit dashboard — usage quota, API keys & documentation',
+  description:
+    'Signed-in OGKit dashboard: monthly Open Graph image usage, plan summary, links to API keys, Playground, and full HTTP API reference. Crypto-native SaaS for social preview images.',
+  pathname: '/dashboard',
+})
 
 function NavCard({
   href,

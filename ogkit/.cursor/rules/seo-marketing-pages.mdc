@@ -1,0 +1,18 @@
+---
+description: Run OGKit marketing/SEO pages through the perfection checklist before shipping.
+globs: ogkit/src/app/(marketing)/**/*.{tsx,ts}
+alwaysApply: false
+---
+
+# SEO & GEO checklist for marketing pages
+
+When editing or adding pages under `src/app/(marketing)/` (and related `sitemap.ts`, `robots.ts`, `llms.txt`, `lib/llms-txt-body.ts`, `lib/marketing-metadata.ts`):
+
+1. Open **`docs/seo-page-perfection-checklist.md`** and run the affected URLs through **all 11 sections** (69 items), skipping only items that clearly do not apply (e.g. IndexNow until implemented).
+2. **E-E-A-T**: keep org/contact/legal consistent; no inflated support or pricing claims; competitor copy factual.
+3. **Core Web Vitals**: avoid heavy client JS on marketing routes; reserve space for banner/fonts; check mobile layout.
+4. **GEO**: after factual or URL changes, update **`buildLlmsTxtBody()`** and verify **`/llms.txt`** and **`/llm.txt`** stay in sync with **`sitemap.ts`**.
+5. **Code examples**: use **`siteConfig.url`** (or `getAppBaseUrl` / `withBasePath` per context), not hardcoded production domains.
+6. **Structured data**: FAQ visible text must match **FAQPage** JSON-LD; add **BreadcrumbList** for new guide hierarchies when appropriate.
+
+If IndexNow or GA4 LLM dimensions are not wired yet, document the gap in the PR and add checklist items 7.x / 10.x to the implementation backlog rather than silently ignoring them.

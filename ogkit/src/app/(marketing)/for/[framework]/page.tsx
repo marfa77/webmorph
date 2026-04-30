@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { siteConfig } from '@/config/site'
-import { withBasePath } from '@/config/paths'
+import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
+import { clipMetaDescription } from '@/lib/seo-meta'
 
 const HINT: Record<string, string> = {
   nextjs: 'In Next.js App Router, set `metadata.openGraph.images` to a full OGKit image URL. Generate the URL on the server, pass title and subtitle as query parameters, and keep your API key outside client components.',
@@ -22,7 +23,7 @@ const DETAILS: Record<string, { label: string; example: string; checklist: strin
   nextjs: {
     label: 'Next.js App Router',
     example: `export async function generateMetadata() {
-  const image = new URL("https://webmorp.art/api/og/article");
+  const image = new URL("${siteConfig.url}/api/og/article");
   image.searchParams.set("key", process.env.OGKIT_KEY!);
   image.searchParams.set("title", "My Next.js post");
   return { openGraph: { images: [image.toString()] } };
@@ -32,14 +33,14 @@ const DETAILS: Record<string, { label: string; example: string; checklist: strin
   },
   react: {
     label: 'React',
-    example: `<meta property="og:image" content="https://webmorp.art/api/og/minimal?key=KEY&title=React+Launch" />`,
+    example: `<meta property="og:image" content="${siteConfig.url}/api/og/minimal?key=KEY&title=React+Launch" />`,
     checklist: ['Set metadata from your hosting framework, CMS, or SSR layer.', 'Generate the URL before HTML is served.', 'Use one image per important route.'],
     pitfalls: ['Trying to update OG tags after hydration', 'Expecting crawlers to run client-side React', 'Using one generic image for every route'],
   },
   remix: {
     label: 'Remix',
     example: `export const meta = () => {
-  const image = new URL("https://webmorp.art/api/og/article");
+  const image = new URL("${siteConfig.url}/api/og/article");
   image.searchParams.set("key", process.env.OGKIT_KEY!);
   image.searchParams.set("title", "Remix guide");
   return [{ property: "og:image", content: image.toString() }];
@@ -50,7 +51,7 @@ const DETAILS: Record<string, { label: string; example: string; checklist: strin
   astro: {
     label: 'Astro',
     example: `---
-const image = new URL("https://webmorp.art/api/og/minimal");
+const image = new URL("${siteConfig.url}/api/og/minimal");
 image.searchParams.set("key", import.meta.env.OGKIT_KEY);
 image.searchParams.set("title", Astro.props.title);
 ---
@@ -60,7 +61,7 @@ image.searchParams.set("title", Astro.props.title);
   },
   nuxt: {
     label: 'Nuxt',
-    example: `const image = new URL("https://webmorp.art/api/og/minimal")
+    example: `const image = new URL("${siteConfig.url}/api/og/minimal")
 image.searchParams.set("key", useRuntimeConfig().ogkitKey)
 image.searchParams.set("title", page.title)
 useSeoMeta({ ogImage: image.toString(), twitterImage: image.toString() })`,
@@ -105,6 +106,24 @@ useSeoMeta({ ogImage: image.toString(), twitterImage: image.toString() })`,
   },
 }
 
+const FRAMEWORK_SECTIONS = [
+  {
+    heading: 'Server-rendered metadata is the SEO boundary',
+    body:
+      'Open Graph images only help distribution when the final HTML response already contains the metadata. Most scrapers do not wait for client-side JavaScript, so React hydration, client routers, and analytics callbacks are too late. Build the OGKit URL in the server route, loader, layout, view helper, or static generation step that owns the document head.',
+  },
+  {
+    heading: 'Use one deterministic image URL per canonical page',
+    body:
+      'The strongest pattern is one stable 1200x630 image URL for each canonical URL. Put the same image in Open Graph and Twitter/X metadata, keep the title aligned with the visible H1, and include page-specific context such as author, product name, release version, or docs section. That gives Slack, Discord, LinkedIn, iMessage, and browser-assisted LLM crawlers the same topic signal as the page body.',
+  },
+  {
+    heading: 'When to choose hosted templates over custom renderers',
+    body:
+      'Custom Satori, Puppeteer, or screenshot routes make sense when you need arbitrary layout control. Hosted templates make more sense when the business need is repeatable: blog cards, launch pages, changelogs, docs pages, product pages, and comparison pages that should look consistent without a renderer living in every codebase.',
+  },
+] as const
+
 const ALLOWED = new Set(Object.keys(HINT))
 
 type Props = { params: { framework: string } }
@@ -121,16 +140,19 @@ function pageOgImage(title: string, subtitle = 'Framework guide') {
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.framework)) return {}
   const details = DETAILS[params.framework]!
-  const title = params.framework === 'nextjs' ? `Next.js OG image generator — ${siteConfig.name}` : `Dynamic Open Graph images for ${details.label} — ${siteConfig.name}`
-  const description =
+  const ogTitle =
+    params.framework === 'nextjs' ? 'Next.js OG image generator' : `Dynamic Open Graph images for ${details.label}`
+  const title = `${ogTitle} — ${siteConfig.name}`
+  const description = clipMetaDescription(
     params.framework === 'nextjs'
-      ? 'Generate dynamic Open Graph images for Next.js App Router metadata with OGKit, code examples, pitfalls, and hosted API guidance.'
-      : `Generate branded Open Graph images for ${details.label} with OGKit. Includes implementation examples, metadata checklist, and common pitfalls.`
-  const image = pageOgImage(title.replace(` — ${siteConfig.name}`, ''), 'Open Graph image API guide')
-  const canonical = `${siteConfig.url}/for/${params.framework}`
+      ? 'Next.js App Router: build absolute OGKit image URLs in generateMetadata, set openGraph.images and twitter.images, keep keys server-side. Hosted 1200×630 templates vs maintaining @vercel/og — see compare page and /llms.txt for agents.'
+      : `${details.label}: dynamic 1200×630 Open Graph and Twitter/X cards via OGKit HTTPS URLs — server or SSG metadata patterns, pitfalls, and checklist. Framework-agnostic hosted API; pair with /docs and /llms.txt for AI-assisted setup.`,
+  )
+  const image = pageOgImage(ogTitle, 'Open Graph image API guide')
+  const canonical = absoluteSiteUrl(`/for/${params.framework}`)
   if (params.framework === 'nextjs') {
     return {
-      title,
+      title: { absolute: title },
       description,
       alternates: { canonical },
       openGraph: { title, description, url: canonical, images: [image] },
@@ -138,7 +160,7 @@ export function generateMetadata({ params }: Props) {
     }
   }
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical },
     openGraph: { title, description, url: canonical, images: [image] },
@@ -173,14 +195,15 @@ function NextJsGuide() {
           Keep the API key in server-side env vars or generate URLs during build.
         </p>
         <div className="mt-4">
-          <CodeBlock>{`const ogImage = new URL("https://webmorp.art/api/og/article");
+          <CodeBlock>{`const ogImage = new URL("${siteConfig.url}/api/og/article");
 ogImage.searchParams.set("key", process.env.OGKIT_KEY!);
 ogImage.searchParams.set("title", "How we shipped faster");
 ogImage.searchParams.set("author", "Acme");
 
 export const metadata = {
-  title: "How we shipped faster",
+  title: { absolute: "How we shipped faster — ${siteConfig.name}" },
   openGraph: {
+    title: "How we shipped faster",
     images: [ogImage.toString()]
   },
   twitter: {
@@ -225,11 +248,12 @@ export const metadata = {
 
       <section>
         <h2 className="text-2xl font-semibold">Related Next.js SEO pages</h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {[
             ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
             ['Open Graph image API docs', '/docs'],
             ['Try the Playground', '/playground'],
+            ['Open Graph SEO guide', '/blog/open-graph-images-seo-guide'],
           ].map(([label, href]) => (
             <Link key={href} href={withBasePath(href)} className="rounded-lg border p-4 text-sm font-medium hover:bg-muted/50">
               {label}
@@ -264,6 +288,30 @@ export const metadata = {
         </div>
       </section>
 
+      <section>
+        <h2 className="text-2xl font-semibold">Related reading</h2>
+        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/blog/open-graph-images-seo-guide')}>
+              Open Graph images for SEO and social
+            </Link>{' '}
+            — long-form guide with TL;DR and internal links across OGKit.
+          </li>
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/compare/ogkit-vs-vercel-og')}>
+              OGKit vs @vercel/og
+            </Link>{' '}
+            — when a hosted URL API beats maintaining ImageResponse.
+          </li>
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/use-case/dynamic-social-preview-images')}>
+              Dynamic social preview images
+            </Link>{' '}
+            — narrative, mistakes, and template picks.
+          </li>
+        </ul>
+      </section>
+
       <FinishCta />
     </div>
   )
@@ -286,7 +334,17 @@ export default function ForFrameworkPage({ params }: Props) {
       answer: 'Keep the API key in server-side environment variables, framework runtime config, or build-time secrets. Do not bundle it into client-side JavaScript.',
     },
   ]
+  const canonical = absoluteSiteUrl(`/for/${params.framework}`)
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: siteConfig.name, item: absoluteSiteUrl('') },
+      { '@type': 'ListItem', position: 2, name: details.label, item: canonical },
+    ],
+  }
   const jsonLd = [
+    breadcrumbLd,
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -302,8 +360,8 @@ export default function ForFrameworkPage({ params }: Props) {
       headline: `Dynamic Open Graph images for ${details.label}`,
       description: HINT[params.framework],
       author: { '@type': 'Organization', name: siteConfig.name },
-      publisher: { '@type': 'Organization', name: siteConfig.name },
-      mainEntityOfPage: `${siteConfig.url}/for/${params.framework}`,
+      publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
+      mainEntityOfPage: canonical,
     },
   ]
   if (params.framework === 'nextjs') {
@@ -329,11 +387,32 @@ export default function ForFrameworkPage({ params }: Props) {
         </p>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-3">
+        {FRAMEWORK_SECTIONS.map((section) => (
+          <div key={section.heading} className="rounded-lg border p-5">
+            <h2 className="text-lg font-semibold">{section.heading}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{section.body}</p>
+          </div>
+        ))}
+      </section>
+
       <section>
         <h2 className="text-2xl font-semibold">Implementation pattern</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Generate the OGKit URL before the crawler sees the HTML. That can happen during static generation, in a server
-          route, or in the framework metadata layer.
+          route, or in the framework metadata layer. Start with the{' '}
+          <Link className="text-primary underline" href={withBasePath('/docs')}>
+            API reference
+          </Link>
+          , test the URL in the{' '}
+          <Link className="text-primary underline" href={withBasePath('/playground')}>
+            Playground
+          </Link>
+          , then validate the deployed page with the{' '}
+          <Link className="text-primary underline" href={withBasePath('/tools')}>
+            preview debugging tools
+          </Link>
+          .
         </p>
         <div className="mt-4">
           <CodeBlock>{details.example}</CodeBlock>
@@ -378,6 +457,30 @@ export default function ForFrameworkPage({ params }: Props) {
             </div>
           ))}
         </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Related reading</h2>
+        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/blog/open-graph-images-seo-guide')}>
+              Open Graph images for SEO and social
+            </Link>{' '}
+            — long-form guide with TL;DR and internal links across OGKit.
+          </li>
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/compare/ogkit-vs-vercel-og')}>
+              OGKit vs @vercel/og
+            </Link>{' '}
+            — when a hosted URL API beats maintaining ImageResponse.
+          </li>
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/use-case/dynamic-social-preview-images')}>
+              Dynamic social preview images
+            </Link>{' '}
+            — narrative, mistakes, and template picks.
+          </li>
+        </ul>
       </section>
 
       <FinishCta />

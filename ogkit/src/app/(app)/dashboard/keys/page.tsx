@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { getApiUrl, withBasePath } from '@/config/paths'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
@@ -75,7 +75,7 @@ export default function KeysPage() {
       </p>
       <Card>
         <CardHeader>
-          <CardTitle>API Keys</CardTitle>
+          <h1 className="text-2xl font-semibold leading-none tracking-tight">API keys</h1>
         </CardHeader>
         <CardContent className="space-y-4">
           {exampleTestUrl && (

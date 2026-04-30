@@ -26,7 +26,12 @@ export function CookieBanner() {
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur px-4 py-3">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur px-4 py-3"
+      role="region"
+      aria-label="Cookie notice"
+      aria-live="polite"
+    >
       <div className="container max-w-6xl flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-muted-foreground">
           We use essential cookies for authentication and session management. No tracking or advertising cookies.

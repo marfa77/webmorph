@@ -1,14 +1,40 @@
+import Link from 'next/link'
+import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
+import { marketingMetadata } from '@/lib/marketing-metadata'
+import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 
-export const metadata = {
-  title: `Privacy Policy — ${siteConfig.name}`,
-  alternates: { canonical: `${siteConfig.url}/privacy` },
+export const metadata = marketingMetadata({
+  title: 'OGKit privacy policy — data, cookies, GA4 & Cryptomus',
+  description:
+    'What we collect: account email, API usage logs, optional GA4 page views, cookie-banner local storage, Cryptomus payment signals. Retention, security, and your rights as an Open Graph API user.',
+  pathname: '/privacy',
+})
+
+const updated = 'April 30, 2026'
+const updatedIso = '2026-04-30'
+
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'OGKit Privacy Policy',
+  url: absoluteSiteUrl('/privacy'),
+  description:
+    'OGKit privacy policy: account data, API usage logs, optional GA4 page views, cookie-banner local storage, Cryptomus payment signals, retention, security, and user rights.',
+  inLanguage: 'en',
+  datePublished: updatedIso,
+  dateModified: updatedIso,
+  lastReviewed: updatedIso,
+  publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
 }
 
 export default function PrivacyPage() {
-  const updated = 'April 29, 2026'
+  const breadcrumbLd = breadcrumbListJsonLd([{ name: 'Privacy Policy', path: '/privacy' }])
   return (
     <div className="container max-w-3xl py-16 prose prose-sm dark:prose-invert">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+
       <h1>Privacy Policy</h1>
       <p className="text-muted-foreground text-sm">Last updated: {updated}</p>
 
@@ -36,8 +62,11 @@ export default function PrivacyPage() {
       </p>
       <h3>Cookies and local storage</h3>
       <p>
-        We use a session cookie for authentication. No third-party advertising or tracking cookies are
-        set.
+        We use a session cookie for authentication. The marketing cookie banner stores your acknowledgement in
+        browser <strong>local storage</strong> (not a third-party cookie). If we enable optional{' '}
+        <strong>Google Analytics 4</strong> on public pages (only when <code className="text-foreground">NEXT_PUBLIC_GA4_MEASUREMENT_ID</code> is
+        configured), Google may set first-party cookies and process anonymized IP page-view data under
+        Google&apos;s privacy policy — we do not use advertising remarketing pixels on this product.
       </p>
 
       <h2>3. How We Use Your Information</h2>
@@ -71,8 +100,8 @@ export default function PrivacyPage() {
       <h2>7. Your Rights</h2>
       <p>
         Depending on your jurisdiction you may have the right to access, correct, or delete your
-        personal data.         To exercise these rights, use our{' '}
-        <a href="/contact">contact form</a>.
+        personal data. To exercise these rights, use our{' '}
+        <Link href={withBasePath('/contact')}>contact form</Link>.
       </p>
 
       <h2>8. Changes to This Policy</h2>
@@ -84,7 +113,7 @@ export default function PrivacyPage() {
       <h2>9. Contact</h2>
       <p>
         Privacy questions should be directed to our{' '}
-        <a href="/contact">contact form</a>.
+        <Link href={withBasePath('/contact')}>contact form</Link>.
       </p>
     </div>
   )

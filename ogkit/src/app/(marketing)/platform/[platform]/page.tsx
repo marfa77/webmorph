@@ -1,6 +1,9 @@
+import Link from 'next/link'
+import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
+import { clipMetaDescription } from '@/lib/seo-meta'
 
 const COPY: Record<string, string> = {
   vercel:
@@ -15,7 +18,7 @@ const COPY: Record<string, string> = {
 
 const DETAILS: Record<string, { env: string[]; checklist: string[]; cache: string }> = {
   vercel: {
-    env: ['NEXT_PUBLIC_APP_URL=https://webmorp.art', 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...'],
+    env: [`NEXT_PUBLIC_APP_URL=${siteConfig.url}`, 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...'],
     checklist: ['Use the final production domain in public URL env vars.', 'Keep API keys server-side.', 'Let Vercel cache generated PNG responses.'],
     cache: 'OGKit image responses include cache headers for CDN reuse. Keep image URLs deterministic so repeated shares hit cache instead of re-rendering.',
   },
@@ -43,14 +46,16 @@ export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.platform)) return {}
   const label = params.platform.replace('-', ' ')
   const title = `Open Graph image API on ${label} — ${siteConfig.name}`
-  const description = `Deploy OGKit on ${label} with canonical URL guidance, cache setup, crawler notes, and dynamic social preview image examples.`
+  const description = clipMetaDescription(
+    `Deploy the OGKit Open Graph image API on ${label}: canonical HTTPS URLs, env vars, CDN caching for GET /api/og/…, signed URLs, and Google-friendly sitemap/robots patterns. Works as a hosted alternative to custom Next.js image routes.`,
+  )
   const image = new URL(`${siteConfig.url}/api/og/minimal`)
   image.searchParams.set('demo', '1')
   image.searchParams.set('title', `OG image API on ${label}`)
   image.searchParams.set('subtitle', 'Deployment guide')
-  const canonical = `${siteConfig.url}/platform/${params.platform}`
+  const canonical = absoluteSiteUrl(`/platform/${params.platform}`)
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical },
     openGraph: { title, description, url: canonical, images: [image.toString()] },
@@ -77,7 +82,17 @@ export default function PlatformPage({ params }: Props) {
       answer: 'Yes. OGKit image URLs are deterministic, and generated PNG responses include cache headers. Keep query strings intact when caching.',
     },
   ]
+  const canonical = absoluteSiteUrl(`/platform/${p}`)
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: siteConfig.name, item: absoluteSiteUrl('') },
+      { '@type': 'ListItem', position: 2, name: `Deploy on ${label}`, item: canonical },
+    ],
+  }
   const jsonLd = [
+    breadcrumbLd,
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -93,8 +108,8 @@ export default function PlatformPage({ params }: Props) {
       headline: `Open Graph image API on ${label}`,
       description: COPY[p],
       author: { '@type': 'Organization', name: siteConfig.name },
-      publisher: { '@type': 'Organization', name: siteConfig.name },
-      mainEntityOfPage: `${siteConfig.url}/platform/${p}`,
+      publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
+      mainEntityOfPage: canonical,
     },
   ]
   return (
@@ -152,6 +167,30 @@ export default function PlatformPage({ params }: Props) {
             </div>
           ))}
         </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Related pages</h2>
+        <ul className="mt-3 list-inside list-disc space-y-2 text-sm text-muted-foreground">
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/docs')}>
+              API reference
+            </Link>{' '}
+            — templates, query parameters, and auth.
+          </li>
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/blog/open-graph-images-seo-guide')}>
+              Open Graph SEO guide
+            </Link>{' '}
+            — metadata, caching, and mistakes.
+          </li>
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/for/nextjs')}>
+              Next.js framework guide
+            </Link>{' '}
+            — App Router snippets.
+          </li>
+        </ul>
       </section>
 
       <FinishCta />

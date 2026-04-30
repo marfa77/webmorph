@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { siteConfig } from '@/config/site'
-import { withBasePath } from '@/config/paths'
+import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
+import { clipMetaDescription } from '@/lib/seo-meta'
 
 const COPY: Record<string, string> = {
   blog:
@@ -90,8 +91,32 @@ const DETAILS: Record<string, { template: string; fields: string[]; exampleTitle
   },
 }
 
+const USE_CASE_SECTIONS = [
+  {
+    heading: 'Why page-specific preview images matter',
+    body:
+      'Search results, social feeds, chat apps, and AI browsing surfaces all compress a page into a few visible signals: title, description, URL, and image. A static homepage card wastes that surface area on specific URLs. Dynamic Open Graph images let each blog post, release note, product page, or docs guide show the exact headline and context a visitor expects before the click.',
+  },
+  {
+    heading: 'The operational pattern',
+    body:
+      'Keep the template choice boring and repeatable. Store the page title, subtitle, author, price, or release name in your CMS or database, build an OGKit URL on the server, and emit the final HTTPS image in both og:image and twitter:image. The image URL becomes part of the page contract, just like the canonical URL and meta description.',
+  },
+  {
+    heading: 'How to avoid stale previews',
+    body:
+      'Unfurlers cache image URLs aggressively. If a title or product visual changes materially, version the query string, update the signed URL, or force a rescrape with platform validators. Deterministic URLs are good for cache hit rate, but content teams still need a refresh habit after important launches and edits.',
+  },
+] as const
+
 const ALLOWED = new Set(Object.keys(COPY))
 type Props = { params: { type: string } }
+
+function buildUseCaseMetaDescription(type: string, label: string): string {
+  const details = DETAILS[type]!
+  const fields = details.fields.join(', ')
+  return `${label}: OGKit ${details.template} template for 1200×630 Open Graph & Twitter/X cards. Query fields: ${fields}. Hosted API, demo=1 previews, signed URLs on paid plans. Works with Next.js, Astro, Rails, and static sites.`
+}
 
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.type)) return {}
@@ -102,13 +127,14 @@ export function generateMetadata({ params }: Props) {
   image.searchParams.set('title', `${label} Open Graph images`)
   image.searchParams.set('subtitle', `Template: ${details.template}`)
   image.searchParams.set('accent', '#2563eb')
-  const canonical = `${siteConfig.url}/use-case/${params.type}`
+  const canonical = absoluteSiteUrl(`/use-case/${params.type}`)
   if (params.type === 'dynamic-social-preview-images') {
     const title = `Dynamic social preview images — ${siteConfig.name}`
-    const description =
-      'Generate dynamic social preview images for Open Graph and Twitter cards with code examples, metadata setup, reusable templates, and production pitfalls.'
+    const description = clipMetaDescription(
+      'Complete guide: dynamic Open Graph and Twitter/X preview images from one URL, metadata patterns for Next.js and other frameworks, OGKit templates, demo mode, signed URLs, and mistakes to avoid in Slack and LinkedIn.',
+    )
     return {
-      title,
+      title: { absolute: title },
       description,
       alternates: { canonical },
       openGraph: { title, description, url: canonical, images: [image.toString()] },
@@ -116,9 +142,9 @@ export function generateMetadata({ params }: Props) {
     }
   }
   const title = `${label} Open Graph images — ${siteConfig.name}`
-  const description = `Generate dynamic Open Graph images for ${label.toLowerCase()} pages with OGKit. Includes template recommendations, code examples, and common mistakes.`
+  const description = clipMetaDescription(buildUseCaseMetaDescription(params.type, label))
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: { canonical },
     openGraph: { title, description, url: canonical, images: [image.toString()] },
@@ -159,7 +185,7 @@ function DynamicSocialPreviewGuide() {
           Pick a template, pass page-specific fields, and use the resulting PNG URL in both Open Graph and Twitter metadata.
         </p>
         <div className="mt-4">
-          <CodeBlock>{`const image = new URL("https://webmorp.art/api/og/minimal");
+          <CodeBlock>{`const image = new URL("${siteConfig.url}/api/og/minimal");
 image.searchParams.set("key", process.env.OGKIT_KEY!);
 image.searchParams.set("title", post.title);
 image.searchParams.set("subtitle", post.description);
@@ -190,11 +216,13 @@ const meta = {
           Use OGKit when you want a focused Open Graph image API instead of a screenshot API, a manual design workflow,
           or a custom Vercel OG implementation.
         </p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {[
             ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
             ['OGKit vs Bannerbear', '/compare/ogkit-vs-bannerbear'],
+            ['OGKit vs Placid', '/compare/ogkit-vs-placid'],
             ['Next.js OG generator', '/for/nextjs'],
+            ['llms.txt for agents', '/llms.txt'],
           ].map(([label, href]) => (
             <Link key={href} href={withBasePath(href)} className="rounded-lg border p-4 text-sm font-medium hover:bg-muted/50">
               {label}
@@ -271,7 +299,17 @@ export default function UseCasePage({ params }: Props) {
       answer: 'Use the final HTTPS image URL in both og:image and twitter:image metadata so social networks, chat apps, and search previews show the same branded card.',
     },
   ]
+  const canonical = absoluteSiteUrl(`/use-case/${params.type}`)
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: siteConfig.name, item: absoluteSiteUrl('') },
+      { '@type': 'ListItem', position: 2, name: `${title} Open Graph images`, item: canonical },
+    ],
+  }
   const jsonLd = [
+    breadcrumbLd,
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
@@ -287,8 +325,8 @@ export default function UseCasePage({ params }: Props) {
       headline: `${title} Open Graph images`,
       description: COPY[params.type],
       author: { '@type': 'Organization', name: siteConfig.name },
-      publisher: { '@type': 'Organization', name: siteConfig.name },
-      mainEntityOfPage: `${siteConfig.url}/use-case/${params.type}`,
+      publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
+      mainEntityOfPage: canonical,
     },
   ]
   if (params.type === 'dynamic-social-preview-images') {
@@ -314,6 +352,15 @@ export default function UseCasePage({ params }: Props) {
         </p>
       </section>
 
+      <section className="grid gap-4 md:grid-cols-3">
+        {USE_CASE_SECTIONS.map((section) => (
+          <div key={section.heading} className="rounded-lg border p-5">
+            <h2 className="text-lg font-semibold">{section.heading}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{section.body}</p>
+          </div>
+        ))}
+      </section>
+
       <section>
         <h2 className="text-2xl font-semibold">Recommended OGKit template</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -334,15 +381,28 @@ export default function UseCasePage({ params }: Props) {
         <h2 className="text-2xl font-semibold">Copy-paste example</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           This pattern works in any framework that can output metadata. Keep the key in server-side code, then place the final
-          HTTPS URL in both Open Graph and Twitter metadata.
+          HTTPS URL in both Open Graph and Twitter metadata. Use the{' '}
+          <Link className="text-primary underline" href={withBasePath('/docs')}>
+            API docs
+          </Link>{' '}
+          for all template fields, test copy in the{' '}
+          <Link className="text-primary underline" href={withBasePath('/playground')}>
+            Playground
+          </Link>
+          , and read the{' '}
+          <Link className="text-primary underline" href={withBasePath('/blog/open-graph-images-seo-guide')}>
+            Open Graph SEO guide
+          </Link>{' '}
+          before wiring production pages.
         </p>
         <div className="mt-4">
-          <CodeBlock>{`const image = new URL("https://webmorp.art/api/og/${details.template}");
+          <CodeBlock>{`const image = new URL("${siteConfig.url}/api/og/${details.template}");
 image.searchParams.set("key", process.env.OGKIT_KEY!);
 image.searchParams.set("title", "${details.exampleTitle}");
 image.searchParams.set("subtitle", "${details.exampleSubtitle}");
 
 export const metadata = {
+  title: { absolute: "Page title — ${siteConfig.name}" },
   openGraph: { images: [image.toString()] },
   twitter: { card: "summary_large_image", images: [image.toString()] }
 };`}</CodeBlock>
@@ -364,6 +424,22 @@ export const metadata = {
             Use dynamic images when every page has a different title, release, product, guide, or author. Static social cards
             are fine for a homepage, but they waste clicks when shared links point to specific content.
           </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 className="text-2xl font-semibold">Related implementation pages</h2>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ['Next.js guide', '/for/nextjs'],
+            ['API reference', '/docs'],
+            ['Preview validators', '/tools'],
+            ['Dynamic preview guide', '/use-case/dynamic-social-preview-images'],
+          ].map(([label, href]) => (
+            <Link key={href} href={withBasePath(href)} className="rounded-lg border p-4 text-sm font-medium hover:bg-muted/50">
+              {label}
+            </Link>
+          ))}
         </div>
       </section>
 

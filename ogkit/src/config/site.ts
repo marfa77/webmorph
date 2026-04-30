@@ -8,8 +8,9 @@ export const siteConfig = {
   /** Full public URL of this Next app, no trailing slash. */
   url: canonicalUrl,
   tagline: 'Crypto-native Open Graph image API for AI-built sites',
+  /** ~120–155 chars: SERP + default `layout` / Open Graph description (avoid truncation noise). */
   description:
-    'Generate dynamic Open Graph images and social preview cards from one URL. Built for AI-assisted developers, Next.js, SaaS landing pages, blogs, docs, and product launches.',
+    'Open Graph image API: 1200×630 PNG social cards from one HTTPS URL — templates, signed URLs, crypto checkout. Next.js, SaaS, blogs, docs & changelogs.',
   author: 'OGKit',
   /** Source for webmorp.art deploy — [marfa77/webmorph](https://github.com/marfa77/webmorph) */
   github: 'https://github.com/marfa77/webmorph',

@@ -1,0 +1,13 @@
+---
+description: Run OGKit marketing/SEO pages through the perfection checklist before shipping.
+globs: ogkit/src/app/(marketing)/**/*.{tsx,ts}
+alwaysApply: false
+---
+
+# SEO & GEO checklist for OGKit marketing pages
+
+When editing `ogkit/src/app/(marketing)/` or related SEO infra (`ogkit/src/app/sitemap.ts`, `ogkit/src/app/robots.ts`, `ogkit/src/app/llms.txt`, `ogkit/src/app/llm.txt`, `ogkit/src/lib/llms-txt-body.ts`, `ogkit/src/lib/marketing-metadata.ts`):
+
+1. Open **`ogkit/docs/seo-page-perfection-checklist.md`** and run changed URLs through **all 11 sections** (69 items); skip only inapplicable rows (e.g. IndexNow until implemented).
+2. **E-E-A-T**, **Core Web Vitals (LCP / INP / CLS)**, **GEO (`llms.txt` / `llm.txt`)**, **IndexNow**, **GA4 / AI referrers** — treat as first-class per that doc.
+3. After factual or URL changes, sync **`buildLlmsTxtBody()`** and **`sitemap.ts`**.

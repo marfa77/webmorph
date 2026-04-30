@@ -1,8 +1,18 @@
+import { siteConfig } from '@/config/site'
+
 /**
  * Leave empty when OGKit owns the site root. Set only if the app is mounted
  * below another path by the hosting layer.
  */
 export const publicBasePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
+
+/** Absolute canonical URL for the primary host + optional `NEXT_PUBLIC_BASE_PATH` (sitemap, metadata, JSON-LD). */
+export function absoluteSiteUrl(pathname: string) {
+  const base = siteConfig.url.replace(/\/$/, '')
+  const normalized =
+    pathname === '' || pathname === '/' ? '' : pathname.startsWith('/') ? pathname : `/${pathname}`
+  return `${base}${publicBasePath}${normalized}`
+}
 
 /** e.g. "/ogkit/pricing" or "/pricing" if no base */
 export function withBasePath(href: string) {

@@ -1,18 +1,33 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { withBasePath } from '@/config/paths'
+import type { Metadata } from 'next'
+import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
+import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
+import { clipMetaDescription } from '@/lib/seo-meta'
 import { Button } from '@/components/ui/button'
 
-export const metadata = {
-  alternates: { canonical: siteConfig.url },
+const homeCanonical = absoluteSiteUrl('')
+/** ~54 chars: avoids root `title.template` appending `| OGKit` twice in SERP. */
+const homeTitle = `${siteConfig.name} — Open Graph image API for 1200×630 social cards`
+const homeDescription = clipMetaDescription(siteConfig.description)
+export const metadata: Metadata = {
+  title: { absolute: homeTitle },
+  description: homeDescription,
+  alternates: { canonical: homeCanonical },
   openGraph: {
     type: 'website',
-    url: siteConfig.url,
+    url: homeCanonical,
     siteName: siteConfig.name,
-    title: 'OGKit - Open Graph image API',
-    description: siteConfig.description,
+    title: homeTitle,
+    description: homeDescription,
     images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'OGKit dynamic Open Graph image API' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: homeTitle,
+    description: homeDescription,
+    images: ['/og-image.jpg'],
   },
 }
 
@@ -45,18 +60,27 @@ export default function HomePage() {
     },
   ]
 
+  const siteRoot = absoluteSiteUrl('')
+  const websiteJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteConfig.name,
+    url: siteRoot,
+    description: siteConfig.description,
+    publisher: { '@type': 'Organization', name: siteConfig.name, url: siteRoot, sameAs: siteConfig.github },
+  }
   const softwareJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
     name: siteConfig.name,
     applicationCategory: 'DeveloperApplication',
     operatingSystem: 'Web',
-    url: siteConfig.url,
+    url: siteRoot,
     description: siteConfig.description,
     offers: [
-      { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD' },
-      { '@type': 'Offer', name: 'Pro', price: '19', priceCurrency: 'USD' },
-      { '@type': 'Offer', name: 'Scale', price: '99', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD', url: absoluteSiteUrl('/pricing') },
+      { '@type': 'Offer', name: 'Pro', price: '19', priceCurrency: 'USD', url: absoluteSiteUrl('/pricing') },
+      { '@type': 'Offer', name: 'Scale', price: '99', priceCurrency: 'USD', url: absoluteSiteUrl('/pricing') },
     ],
   }
   const faqJsonLd = {
@@ -71,20 +95,26 @@ export default function HomePage() {
       },
     })),
   }
+  const breadcrumbLd = breadcrumbListJsonLd([])
 
   return (
     <div className="container max-w-5xl py-24">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div className="grid items-center gap-10 lg:grid-cols-[0.95fr_1.05fr]">
         <div>
           <p className="text-sm font-medium text-muted-foreground">{siteConfig.tagline}</p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-6xl">
-            Open Graph images for AI-built sites
+            Open Graph image API for 1200×630 social cards
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            {siteConfig.description} Use OGKit as a hosted alternative to custom Vercel OG routes, screenshot services, and
-            hand-designed social cards. Pay globally with crypto when you need production quota.
+            {siteConfig.name} turns one HTTPS URL into a 1200×630 PNG{' '}
+            <code className="font-mono text-foreground">og:image</code> for any framework. Generate dynamic social preview
+            cards for Slack, Discord, LinkedIn, iMessage, and X from server-rendered metadata — no custom renderer, no
+            Satori bundle budget, no headless browser. Use OGKit as a hosted alternative to Vercel OG routes, screenshot
+            services, and hand-designed cards; pay globally with crypto when you need production quota.
           </p>
           <div className="mt-5 flex flex-wrap gap-2 text-xs font-medium text-muted-foreground">
             {['No-login demo previews', 'Crypto-native checkout', 'Cursor-friendly docs', 'Signed production URLs'].map((item) => (
@@ -114,6 +144,7 @@ export default function HomePage() {
               height={630}
               alt="Example OGKit article Open Graph image preview"
               priority
+              sizes="(min-width: 1024px) 600px, (min-width: 640px) 90vw, 100vw"
               className="rounded-[1.25rem]"
             />
           </div>
@@ -139,7 +170,15 @@ export default function HomePage() {
             ['Code template', '/previews/code-preview.png', 'Developer code social preview image generated by OGKit'],
           ].map(([label, src, alt]) => (
             <figure key={src} className="overflow-hidden rounded-xl border bg-card">
-              <Image src={src} width={1200} height={630} alt={alt} className="aspect-[1200/630] object-cover" />
+              <Image
+                src={src}
+                width={1200}
+                height={630}
+                alt={alt}
+                loading="lazy"
+                sizes="(min-width: 1024px) 350px, (min-width: 640px) 45vw, 100vw"
+                className="aspect-[1200/630] object-cover"
+              />
               <figcaption className="border-t px-4 py-3 text-sm font-medium">{label}</figcaption>
             </figure>
           ))}
@@ -157,6 +196,33 @@ export default function HomePage() {
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
           </div>
         ))}
+      </section>
+
+      <section className="mt-16 space-y-4">
+        <h2 className="text-2xl font-bold">How the Open Graph image API works</h2>
+        <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          Every OGKit template is an HTTPS endpoint. You pass structured fields — title, subtitle, author, logo, product
+          image, price, or code snippet — as URL query parameters, and the API returns a ready-to-embed 1200×630 PNG.
+          There is nothing to install: build the URL on the server, assign it to{' '}
+          <code className="font-mono text-foreground">openGraph.images</code> (Next.js), a{' '}
+          <code className="font-mono text-foreground">&lt;meta property=&quot;og:image&quot;&gt;</code> tag, or any
+          framework metadata layer, and you are done.
+        </p>
+        <p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          Because image URLs are deterministic, CDNs and social-network scrapers cache the PNG after the first fetch.
+          Slack, LinkedIn, iMessage, Discord, and X unfurl the same cached byte-for-byte preview on every reshare — no
+          re-render, no rate-limit surprise. Watermarked{' '}
+          <code className="font-mono text-foreground">demo=1</code> previews are available without an account, so you
+          can validate your card layout in the{' '}
+          <Link className="text-primary underline" href={withBasePath('/playground')}>
+            Playground
+          </Link>{' '}
+          before committing to a production key. Read the{' '}
+          <Link className="text-primary underline" href={withBasePath('/blog/open-graph-images-seo-guide')}>
+            Open Graph SEO guide
+          </Link>{' '}
+          for a deeper walkthrough of metadata patterns, caching, and common mistakes.
+        </p>
       </section>
 
       <section className="mt-16 space-y-4">
@@ -186,6 +252,7 @@ export default function HomePage() {
             ['Product launch images', '/use-case/product-launch'],
             ['Vercel deployment', '/platform/vercel'],
             ['API documentation', '/docs'],
+            ['Open Graph SEO guide', '/blog/open-graph-images-seo-guide'],
           ].map(([label, href]) => (
             <Link key={href} href={withBasePath(href)} className="rounded-md border p-4 text-sm font-medium hover:bg-muted/50">
               {label}
@@ -208,6 +275,7 @@ export default function HomePage() {
             ['OGKit vs Bannerbear', '/compare/ogkit-vs-bannerbear'],
             ['OGKit vs Placid', '/compare/ogkit-vs-placid'],
             ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
+            ['Satori vs Puppeteer', '/compare/satori-vs-puppeteer'],
           ].map(([label, href]) => (
             <Link key={href} href={withBasePath(href)} className="rounded-md border p-4 text-sm font-medium hover:bg-muted/50">
               {label}

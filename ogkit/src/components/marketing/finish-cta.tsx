@@ -10,6 +10,10 @@ export function FinishCta() {
         <Link className="font-medium text-foreground underline" href={withBasePath('/docs')}>
           API reference
         </Link>
+        , the{' '}
+        <Link className="font-medium text-foreground underline" href={withBasePath('/blog/open-graph-images-seo-guide')}>
+          Open Graph SEO guide
+        </Link>
         , try the{' '}
         <Link className="font-medium text-foreground underline" href={withBasePath('/playground')}>
           Playground

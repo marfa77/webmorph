@@ -50,19 +50,18 @@ export function PricingSuccessContent() {
   const paid = order?.status === 'paid'
 
   return (
-    <div className="container max-w-lg py-16">
-      <Card>
-        <CardHeader>
-          <CardTitle>Thanks</CardTitle>
-          <CardDescription>
-            {isCrypto
-              ? paid
-                ? 'Your crypto payment is confirmed. Your plan is active.'
-                : 'Confirming your payment… This usually takes under a minute.'
-              : 'Your purchase is being processed. You can return to the app below.'}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4 text-sm text-muted-foreground">
+    <Card>
+      <CardHeader>
+        <CardTitle>Thanks</CardTitle>
+        <CardDescription>
+          {isCrypto
+            ? paid
+              ? 'Your crypto payment is confirmed. Your plan is active.'
+              : 'Confirming your payment… This usually takes under a minute.'
+            : 'Your purchase is being processed. You can return to the app below.'}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4 text-sm text-muted-foreground">
           {isCrypto && order && !paid && <p>Status: {order.status}</p>}
           {isCrypto && paid && order && (
             <p>
@@ -78,8 +77,7 @@ export function PricingSuccessContent() {
               {siteConfig.name} home
             </Link>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+      </CardContent>
+    </Card>
   )
 }

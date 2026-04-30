@@ -7,7 +7,7 @@ import { getAuthCallbackUrl, withBasePath } from '@/config/paths'
 import { createClient } from '@/lib/supabase/client'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -61,7 +61,7 @@ export function LoginForm() {
     <div className="container flex min-h-[70vh] max-w-lg items-center">
       <Card className="w-full">
         <CardHeader>
-          <CardTitle>Sign in to {siteConfig.name}</CardTitle>
+          <h1 className="text-2xl font-semibold leading-none tracking-tight">Sign in to {siteConfig.name}</h1>
           <CardDescription>Magic link. No password.</CardDescription>
         </CardHeader>
         <CardContent>

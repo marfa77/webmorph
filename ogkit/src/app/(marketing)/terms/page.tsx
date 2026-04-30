@@ -1,14 +1,40 @@
+import Link from 'next/link'
+import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
+import { marketingMetadata } from '@/lib/marketing-metadata'
+import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 
-export const metadata = {
-  title: `Terms of Service — ${siteConfig.name}`,
-  alternates: { canonical: `${siteConfig.url}/terms` },
+export const metadata = marketingMetadata({
+  title: 'OGKit terms — accounts, crypto billing, quotas & liability',
+  description:
+    'Terms of Service for the OGKit Open Graph image API: acceptable use, accounts, Cryptomus billing, monthly quotas, disclaimers, and limitation of liability for generated images.',
+  pathname: '/terms',
+})
+
+const updated = 'April 30, 2026'
+const updatedIso = '2026-04-30'
+
+const webPageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'OGKit Terms of Service',
+  url: absoluteSiteUrl('/terms'),
+  description:
+    'Terms of Service for OGKit: acceptable use, accounts, Cryptomus crypto billing, monthly quotas, disclaimers, and limitation of liability for the Open Graph image API.',
+  inLanguage: 'en',
+  datePublished: updatedIso,
+  dateModified: updatedIso,
+  lastReviewed: updatedIso,
+  publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
 }
 
 export default function TermsPage() {
-  const updated = 'April 29, 2026'
+  const breadcrumbLd = breadcrumbListJsonLd([{ name: 'Terms of Service', path: '/terms' }])
   return (
     <div className="container max-w-3xl py-16 prose prose-sm dark:prose-invert">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
+
       <h1>Terms of Service</h1>
       <p className="text-muted-foreground text-sm">Last updated: {updated}</p>
 
@@ -34,9 +60,8 @@ export default function TermsPage() {
       <h2>4. Accounts</h2>
       <p>
         You are responsible for maintaining the confidentiality of your API key. All activity that
-        occurs under your API key is your responsibility. Notify us immediately at{' '}
-        <a href="/contact">use the contact form</a> if you suspect
-        unauthorized use.
+        occurs under your API key is your responsibility. Notify us immediately via our{' '}
+        <Link href={withBasePath('/contact')}>contact form</Link> if you suspect unauthorized use.
       </p>
 
       <h2>5. Payments</h2>
@@ -83,7 +108,7 @@ export default function TermsPage() {
       <h2>11. Contact</h2>
       <p>
         Questions about these Terms should be directed to our{' '}
-        <a href="/contact">contact form</a>.
+        <Link href={withBasePath('/contact')}>contact form</Link>.
       </p>
     </div>
   )

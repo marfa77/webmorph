@@ -1,14 +1,18 @@
 import Link from 'next/link'
-import { getApiUrl, withBasePath } from '@/config/paths'
+import { absoluteSiteUrl, getApiUrl, withBasePath } from '@/config/paths'
 import { TEMPLATE_IDS, TEMPLATE_META } from '@/config/templates'
 import { siteConfig } from '@/config/site'
+import { marketingMetadata } from '@/lib/marketing-metadata'
+import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
-export const metadata = {
-  title: `API reference — ${siteConfig.name}`,
-  alternates: { canonical: `${siteConfig.url}/docs` },
-}
+export const metadata = marketingMetadata({
+  title: 'OGKit API — Open Graph URLs, templates, keys & signed URLs',
+  description:
+    'GET /api/og/{template} and /api/og/auto: query params, API keys, demo=1 watermarks, signed URLs, errors, Next.js snippets. Machine-readable /llms.txt for Cursor, ChatGPT & Claude.',
+  pathname: '/docs',
+})
 
 const PARAM_ROWS: { name: string; required: string; desc: string }[] = [
   { name: 'key', required: 'Production', desc: 'API key (`ogk_live_…`); also accepted as `Authorization: Bearer`.' },
@@ -88,16 +92,41 @@ export default function ApiDocsPage() {
       acceptedAnswer: { '@type': 'Answer', text: item.answer },
     })),
   }
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: 'OGKit Open Graph image API reference',
+    description:
+      'HTTP reference for OGKit: templates, query parameters, authentication, errors, signed URLs, and Next.js metadata integration for 1200×630 Open Graph images.',
+    url: absoluteSiteUrl('/docs'),
+    datePublished: '2026-04-30',
+    dateModified: '2026-04-30',
+    author: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
+    publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
+    mainEntityOfPage: absoluteSiteUrl('/docs'),
+    proficiencyLevel: 'Beginner',
+    about: 'Open Graph image API',
+  }
+  const breadcrumbLd = breadcrumbListJsonLd([{ name: 'API reference', path: '/docs' }])
 
   return (
     <div className="container max-w-3xl space-y-12 py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <div>
         <p className="text-sm font-medium text-muted-foreground">Reference</p>
         <h1 className="mt-1 text-3xl font-bold">OG image API</h1>
         <p className="mt-2 text-muted-foreground">
           Renders a <strong>1200×630</strong> Open Graph (PNG) image. All templates use the same endpoint; only the template
           slug and query string change.
+        </p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          For a long-form SEO perspective on link previews, see the{' '}
+          <Link className="text-primary underline" href={withBasePath('/blog/open-graph-images-seo-guide')}>
+            Open Graph images guide
+          </Link>
+          .
         </p>
         <Button asChild className="mt-4" variant="outline" size="sm">
           <Link href={withBasePath('/playground')}>Open Playground</Link>
@@ -222,11 +251,16 @@ export default function ApiDocsPage() {
           <code className="font-mono">/api/og/…</code> on the same origin).
         </p>
         <CodeBlock>{`export const metadata = {
+  title: { absolute: "My post — ${siteConfig.name}" },
   openGraph: {
     title: "My post",
     images: ["${og('article', 'key=KEY&title=My+post&author=ACME')}"]
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["${og('article', 'key=KEY&title=My+post&author=ACME')}"]
   }
-}`}</CodeBlock>
+};`}</CodeBlock>
       </section>
 
       <section>
@@ -244,14 +278,17 @@ url.searchParams.set("sig", sig);`}</CodeBlock>
 
       <section>
         <h2 className="text-xl font-semibold">Guides and comparisons</h2>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             ['Next.js OG image generator guide', '/for/nextjs'],
             ['Dynamic social preview images', '/use-case/dynamic-social-preview-images'],
+            ['OGKit vs @vercel/og', '/compare/ogkit-vs-vercel-og'],
+            ['OGKit vs Bannerbear', '/compare/ogkit-vs-bannerbear'],
+            ['OGKit vs Placid', '/compare/ogkit-vs-placid'],
             ['OGKit vs MetaShot', '/compare/ogkit-vs-metashot'],
             ['OGKit vs OGMagic', '/compare/ogkit-vs-ogmagic'],
-            ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
             ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
+            ['llms.txt', '/llms.txt'],
           ].map(([label, href]) => (
             <Link key={href} href={withBasePath(href)} className="rounded-lg border p-4 text-sm font-medium hover:bg-muted/50">
               {label}
@@ -269,6 +306,21 @@ const r = await fetch(u);
 if (!r.ok) throw new Error(String(r.status));
 const buf = await r.arrayBuffer();
 // e.g. write to disk or return new Response(buf, { headers: { "Content-Type": "image/png" } })`}</CodeBlock>
+      </section>
+
+      <section>
+        <h2 className="text-xl font-semibold">LLM and crawler discovery</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          For coding agents and search systems that ingest plain-text site maps, use{' '}
+          <Link href={withBasePath('/llms.txt')} className="font-medium text-foreground underline underline-offset-4">
+            /llms.txt
+          </Link>{' '}
+          (same facts at{' '}
+          <Link href={withBasePath('/llm.txt')} className="font-medium text-foreground underline underline-offset-4">
+            /llm.txt
+          </Link>
+          ). It lists endpoints, templates, pricing summary, and deep links to comparisons and use cases.
+        </p>
       </section>
 
       <Card>

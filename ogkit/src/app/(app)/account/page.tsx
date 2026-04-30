@@ -9,8 +9,14 @@ import { isCryptoBillingLive } from '@/config/billing'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { privateAppMetadata } from '@/lib/app-route-metadata'
 
-export const metadata = { title: `Account — ${siteConfig.name}` }
+export const metadata = privateAppMetadata({
+  title: 'OGKit account — plan, billing, Cryptomus & API keys',
+  description:
+    'Your OGKit account: current plan, crypto billing through Cryptomus, monthly image quota, and shortcuts to API keys and dashboard usage. Sign in required.',
+  pathname: '/account',
+})
 
 export default async function AccountPage() {
   const supabase = await createClient()
