@@ -58,6 +58,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Ahrefs Web Analytics — install snippet exactly as in Ahrefs dashboard (head + data-key + async) */}
+        <script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="mxElZupDL+Tyl+iGuMaCew"
+          async
+        />
+      </head>
       <body>
         {children}
         <Toaster position="top-center" />
