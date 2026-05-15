@@ -2,17 +2,14 @@
  * GET /api/billing/crypto-order?order_id= — success page polling (owner only)
  */
 import { type NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { auth } from '@/auth'
 import { getCryptoBillingOrderByOrderId } from '@/lib/crypto-billing-orders'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user?.id) {
+  const session = await auth()
+  if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -25,7 +22,7 @@ export async function GET(request: NextRequest) {
   if (!order) {
     return NextResponse.json({ error: 'Order not found' }, { status: 404 })
   }
-  if (order.user_id !== user.id) {
+  if (order.user_id !== session.user.id) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 

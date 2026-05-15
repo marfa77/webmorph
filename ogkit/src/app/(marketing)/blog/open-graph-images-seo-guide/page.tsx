@@ -5,11 +5,89 @@ import { marketingMetadata } from '@/lib/marketing-metadata'
 import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 import { FinishCta } from '@/components/marketing/finish-cta'
 
+function guideOgImageUrl() {
+  const u = new URL(absoluteSiteUrl('/api/og/minimal'))
+  u.searchParams.set('demo', '1')
+  u.searchParams.set('title', 'Open Graph image SEO')
+  u.searchParams.set('subtitle', '1200×630 · Next.js · Google & LLMs')
+  u.searchParams.set('accent', '#2563eb')
+  return u.toString()
+}
+
+const GUIDE_KEYWORDS = [
+  'open graph image size',
+  'og:image',
+  'og image seo',
+  'dynamic open graph image',
+  'next.js open graph image',
+  'generateMetadata og:image',
+  'twitter card image',
+  'twitter:image',
+  'link preview image',
+  'slack unfurl image',
+  'linkedin post inspector',
+  'facebook sharing debugger',
+  'google discover image',
+  'schema.org Article',
+  'llms.txt',
+  'social preview metadata',
+]
+
+/** FAQ entries shared by JSON-LD and visible HTML (parity for Google + LLMs). */
+const GUIDE_FAQ = [
+  {
+    name: 'What is the recommended Open Graph image size?',
+    text: 'Use 1200×630 pixels (about 1.91:1) for Open Graph and most Twitter/X large image cards. Google may also use og:image and structured data for thumbnails in Search and Discover; very small images (under ~200×200) are often rejected.',
+  },
+  {
+    name: 'Does Google use Open Graph images?',
+    text: 'Google can use og:image together with schema.org markup (for example primaryImageOfPage or image on the main entity) when choosing thumbnails in Search and Discover. Strong alignment between title, description, og:image, and visible page content improves click-through.',
+  },
+  {
+    name: 'Should og:image be an absolute URL?',
+    text: 'Yes. Use an absolute HTTPS URL (include your public path prefix if the app is mounted below the domain root) so Slack, LinkedIn, Discord, iMessage, and crawlers fetch exactly the bytes your HTML references.',
+  },
+  {
+    name: 'How do I set og:image in Next.js App Router?',
+    text: 'Build the final image URL in generateMetadata or another server-only path, then assign it to metadata.openGraph.images and metadata.twitter.images. Never put API secrets in client components—only the generated HTTPS URL belongs in the head.',
+  },
+  {
+    name: 'Why is my link preview wrong or cached on Facebook or LinkedIn?',
+    text: 'Most platforms cache the first successful og:image they see for a URL. After you change art or copy, use the Facebook Sharing Debugger and LinkedIn Post Inspector to force a rescrape, or version the image URL (query string or new path) so caches see a new resource.',
+  },
+  {
+    name: 'Can I use SVG or WebP for og:image?',
+    text: 'Many scrapers expect PNG or JPEG for social previews; SVG is a poor default because not every consumer rasterizes it reliably. WebP/AVIF can work in some stacks but PNG at 1200×630 is the safest default for universal unfurling.',
+  },
+  {
+    name: 'Do Open Graph tags affect rankings directly?',
+    text: 'They are not a classic ranking factor like backlinks, but they strongly affect click-through from search and social, and they feed AI browsing tools that read HTML metadata. Weak or missing og:image hurts perceived quality next to competitors.',
+  },
+  {
+    name: 'What should I ship for LLM crawlers (ChatGPT, Perplexity, etc.)?',
+    text: 'Ship a canonical og:image, concise Article or TechArticle JSON-LD, and a machine-readable /llms.txt that points to your docs and guides. Consistent URLs across sitemap, canonical, and examples reduce hallucinated hosts in coding agents.',
+  },
+  {
+    name: 'How large can an Open Graph image be before timeouts?',
+    text: 'Stay well under ~1 MB for the PNG when possible; multi‑MB files increase rescrape failures on slow hosts. Prefer tuned PNG compression and capped typography instead of huge embedded assets.',
+  },
+] as const
+
+const GUIDE_PUBLISHED = '2026-04-30T12:00:00.000Z'
+const GUIDE_MODIFIED = '2026-05-11T12:00:00.000Z'
+
 export const metadata = marketingMetadata({
-  title: 'Dynamic Open Graph images for SEO & social — OGKit guide',
+  title: 'Open Graph image SEO (2026): size, Next.js, Google thumbnails & LLMs | OGKit',
   description:
-    'TL;DR: templates, Next.js metadata, signed URLs, Slack and LinkedIn previews, and common og:image mistakes. Links to OGKit docs, pricing, Playground, and framework guides.',
+    'Open Graph image size (1200×630), absolute og:image URLs, Next.js generateMetadata patterns, Facebook/LinkedIn cache refresh, Google Discover thumbnails, JSON-LD, and /llms.txt for LLM crawlers—practical OGKit guide.',
   pathname: '/blog/open-graph-images-seo-guide',
+  keywords: [...GUIDE_KEYWORDS],
+  article: {
+    publishedTime: GUIDE_PUBLISHED,
+    modifiedTime: GUIDE_MODIFIED,
+    authors: [siteConfig.name],
+  },
+  ogImageUrl: guideOgImageUrl(),
 })
 
 const sections: { id: string; heading: string; level: 2 | 3; body: string[] }[] = [
@@ -128,51 +206,109 @@ const sections: { id: string; heading: string; level: 2 | 3; body: string[] }[] 
 const faqJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'What is the recommended Open Graph image size?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Use 1200×630 pixels for Open Graph and most Twitter/X large cards so previews stay sharp on high-DPI feeds without oversized downloads.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Should og:image be an absolute URL?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Yes. Use an absolute HTTPS URL (including any public path prefix) so Slack, LinkedIn, and other unfurlers fetch the same bytes your HTML describes.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Where do I wire OGKit in a Next.js App Router project?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Build the OGKit image URL in generateMetadata or another server-only path, then assign it to metadata.openGraph.images and twitter.images. Never expose production API keys in client components.',
-      },
-    },
-  ],
+  mainEntity: GUIDE_FAQ.map((item) => ({
+    '@type': 'Question',
+    name: item.name,
+    acceptedAnswer: { '@type': 'Answer', text: item.text },
+  })),
 }
 
 const articleJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'TechArticle',
-  headline: 'Dynamic Open Graph images for SEO and social distribution',
+  headline: 'Open Graph image SEO: size, Next.js metadata, Google thumbnails & LLM crawlers',
   description:
-    'A practical guide to Open Graph images, Twitter cards, Next.js metadata, signed URLs, cache-friendly previews, and validation workflows.',
-  datePublished: '2026-04-30',
-  dateModified: '2026-04-30',
+    'Practical guide: 1200×630 Open Graph and Twitter/X images, absolute og:image URLs, Next.js generateMetadata, platform cache refresh, JSON-LD, and /llms.txt for AI crawlers.',
+  inLanguage: 'en-US',
+  datePublished: GUIDE_PUBLISHED,
+  dateModified: GUIDE_MODIFIED,
+  image: [guideOgImageUrl()],
   author: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
   publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
-  mainEntityOfPage: absoluteSiteUrl('/blog/open-graph-images-seo-guide'),
+  mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteSiteUrl('/blog/open-graph-images-seo-guide') },
+  isPartOf: { '@type': 'WebSite', name: siteConfig.name, url: absoluteSiteUrl('') },
+  keywords: GUIDE_KEYWORDS.join(', '),
+}
+
+function OgCardVisual() {
+  return (
+    <figure className="not-prose mt-10 overflow-hidden rounded-2xl border bg-slate-950 shadow-2xl shadow-slate-950/15">
+      <div className="grid gap-0 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="p-6 sm:p-8">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200">
+            <span>1200×630 PNG</span>
+            <span>og:image</span>
+          </div>
+          <div className="mt-6 rounded-[1.4rem] border border-white/10 bg-[#101216] p-6 shadow-inner">
+            <div className="h-24 w-24 rounded-3xl bg-gradient-to-br from-cyan-300 via-blue-500 to-violet-600 shadow-lg shadow-cyan-500/20" />
+            <h2 className="mt-8 max-w-md text-4xl font-black tracking-tight text-white">How we shipped launch cards</h2>
+            <p className="mt-3 text-sm text-slate-300">Dynamic Open Graph images from one API URL</p>
+            <div className="mt-8 flex items-center justify-between text-xs text-slate-500">
+              <span>by OGKit</span>
+              <span className="font-bold text-slate-400">OGKit</span>
+            </div>
+          </div>
+        </div>
+        <figcaption className="border-t border-white/10 bg-white/[0.04] p-6 text-sm leading-relaxed text-slate-300 lg:border-l lg:border-t-0">
+          <p className="font-semibold text-white">What crawlers should see</p>
+          <p className="mt-2">
+            A canonical HTTPS preview image, matching <code className="rounded bg-white/10 px-1 py-0.5 font-mono">og:title</code>, and
+            structured data that repeats the same article intent. This is the visual contract for Google thumbnails,
+            Slack unfurls, LinkedIn cards, and LLM browsing surfaces.
+          </p>
+        </figcaption>
+      </div>
+    </figure>
+  )
+}
+
+function MetadataFlowVisual() {
+  const steps = [
+    ['Page data', 'title, summary, author'],
+    ['OGKit URL', '/api/og/article?...'],
+    ['1200×630 PNG', 'cached image bytes'],
+    ['Distribution', 'Google, Slack, LLMs'],
+  ] as const
+  return (
+    <figure className="not-prose mt-8 rounded-2xl border bg-white p-5 shadow-sm">
+      <figcaption className="text-sm font-semibold text-foreground">Metadata flow: from page content to visible previews</figcaption>
+      <div className="mt-4 grid gap-3 md:grid-cols-4">
+        {steps.map(([title, copy], index) => (
+          <div key={title} className="relative rounded-xl border bg-muted/30 p-4">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-950 text-sm font-bold text-white">
+              {index + 1}
+            </div>
+            <h3 className="mt-4 text-sm font-semibold">{title}</h3>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{copy}</p>
+          </div>
+        ))}
+      </div>
+    </figure>
+  )
+}
+
+function SeoExamplePanels() {
+  const examples = [
+    ['Good URL', 'https://www.webmorp.art/api/og/article?title=Open+Graph+SEO&demo=1'],
+    ['Bad preview', 'One generic homepage banner reused on every article and changelog.'],
+    ['Next.js hook', 'generateMetadata() returns openGraph.images + twitter.images on the server.'],
+  ] as const
+  return (
+    <figure className="not-prose mt-8 grid gap-3 md:grid-cols-3">
+      {examples.map(([label, value]) => (
+        <div key={label} className="rounded-2xl border bg-white p-4 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">{label}</p>
+          <p className="mt-3 break-words font-mono text-xs leading-relaxed text-foreground">{value}</p>
+        </div>
+      ))}
+    </figure>
+  )
 }
 
 export default function OpenGraphSeoGuidePage() {
   const breadcrumbLd = breadcrumbListJsonLd([
     { name: 'Blog', path: '/blog' },
-    { name: 'Open Graph images SEO guide', path: '/blog/open-graph-images-seo-guide' },
+    { name: 'Open Graph image SEO guide', path: '/blog/open-graph-images-seo-guide' },
   ])
   return (
     <div className="container max-w-3xl py-16">
@@ -180,11 +316,17 @@ export default function OpenGraphSeoGuidePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <article className="prose prose-sm max-w-none dark:prose-invert">
-        <p className="text-sm font-medium text-muted-foreground not-prose">Guide · Updated April 2026</p>
-        <h1 className="not-prose mt-2 text-3xl font-bold tracking-tight">Dynamic Open Graph images for SEO and social distribution</h1>
+        <p className="text-sm font-medium text-muted-foreground not-prose">Guide · Updated May 2026</p>
+        <h1 className="not-prose mt-2 text-3xl font-bold tracking-tight">
+          Open Graph image SEO: size, Next.js metadata, Google thumbnails &amp; LLM crawlers
+        </h1>
         <p className="lead not-prose mt-4 text-base text-muted-foreground">
-          A practical, long-form reference for engineering and growth teams who want predictable 1200×630 link previews without operating bespoke rendering clusters. This page intentionally overlaps vocabulary you will see in search-console tooling—social cards, unfurl, og:image, twitter:image, click-through, and structured sharing—so related queries cluster cleanly.
+          Answers the queries teams actually type into Google and into LLMs: <strong className="font-medium text-foreground">open graph image size</strong>,{' '}
+          <strong className="font-medium text-foreground">og:image</strong> vs <strong className="font-medium text-foreground">twitter:image</strong>,{' '}
+          <strong className="font-medium text-foreground">Next.js generateMetadata</strong>, Facebook/LinkedIn cache refresh, Google Search &amp; Discover
+          thumbnails, and what to put in <strong className="font-medium text-foreground">JSON-LD</strong> plus <strong className="font-medium text-foreground">/llms.txt</strong> so AI crawlers cite you correctly.
         </p>
+        <OgCardVisual />
 
         <section className="not-prose mt-10 rounded-lg border bg-muted/30 p-6">
           <h2 className="text-xl font-semibold">Recommended implementation path</h2>
@@ -227,6 +369,7 @@ export default function OpenGraphSeoGuidePage() {
             </p>
           </div>
         </section>
+        <MetadataFlowVisual />
 
         {sections.map((s) =>
           s.level === 2 ? (
@@ -237,6 +380,7 @@ export default function OpenGraphSeoGuidePage() {
                   <p key={`${s.id}-${i}`}>{p}</p>
                 ))}
               </div>
+              {s.id === 'nextjs' ? <SeoExamplePanels /> : null}
             </section>
           ) : (
             <section key={s.id} id={s.id} className="not-prose mt-10">
@@ -302,6 +446,22 @@ export default function OpenGraphSeoGuidePage() {
               if you need help with billing, keys, or template behavior.
             </li>
           </ul>
+        </section>
+
+        <section id="faq" className="not-prose mt-16 scroll-mt-24">
+          <h2 className="text-2xl font-semibold tracking-tight">Frequently asked questions</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Same Q&amp;A as the <code className="font-mono text-foreground">FAQPage</code> JSON-LD on this route—helpful for people, Google rich results, and
+            LLM retrieval.
+          </p>
+          <dl className="mt-8 space-y-8">
+            {GUIDE_FAQ.map((item) => (
+              <div key={item.name}>
+                <dt className="text-base font-semibold text-foreground">{item.name}</dt>
+                <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.text}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
       </article>
 

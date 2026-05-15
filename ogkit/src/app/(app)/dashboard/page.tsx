@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import { and, count, eq, gte } from 'drizzle-orm'
+import { auth } from '@/auth'
 import { withBasePath } from '@/config/paths'
-import { siteConfig } from '@/config/site'
-import { createClient } from '@/lib/supabase/server'
+import { db } from '@/lib/db'
+import { usageEvents } from '@/lib/db/schema'
 import { PLANS, type Plan } from '@/config/plans'
 import { isCryptoBillingLive } from '@/config/billing'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
@@ -44,27 +46,24 @@ function NavCard({
 }
 
 export default async function DashboardPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const session = await auth()
+  const user = session?.user
 
   let planLabel: string | null = null
   let usageCount: number | null = null
   let usageCap: number | null = null
-  if (user) {
+  if (user?.id) {
     const plan = await getResolvedUserPlanForUserId(user.id)
     planLabel = PLANS[plan as Plan].name
     usageCap = PLANS[plan as Plan].monthlyCap
     const startMonth = new Date()
     startMonth.setDate(1)
     startMonth.setHours(0, 0, 0, 0)
-    const { count } = await supabase
-      .from('usage_events')
-      .select('id', { count: 'exact', head: true })
-      .eq('user_id', user.id)
-      .gte('created_at', startMonth.toISOString())
-    usageCount = count ?? 0
+    const [row] = await db
+      .select({ value: count() })
+      .from(usageEvents)
+      .where(and(eq(usageEvents.userId, user.id), gte(usageEvents.createdAt, startMonth)))
+    usageCount = row?.value ?? 0
   }
 
   return (

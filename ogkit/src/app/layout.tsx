@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
+import { AuthSessionProvider } from '@/components/auth-session-provider'
 import { siteConfig } from '@/config/site'
 import './globals.css'
 
@@ -67,7 +68,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
-        {children}
+        <AuthSessionProvider>{children}</AuthSessionProvider>
         <Toaster position="top-center" />
       </body>
     </html>

@@ -1,52 +1,73 @@
 import { NextResponse } from 'next/server'
+import { desc, eq } from 'drizzle-orm'
 import { z } from 'zod'
-import { createClient } from '@/lib/supabase/server'
+import { auth } from '@/auth'
+import { db } from '@/lib/db'
+import { apiKeys } from '@/lib/db/schema'
 import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
 import { generateKey } from '@/lib/api/keys'
 
 const CreateSchema = z.object({ name: z.string().min(1).max(64).default('default') })
 
 export async function GET() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  const session = await auth()
+  if (!session?.user?.id) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-  const { data, error } = await supabase
-    .from('api_keys')
-    .select('id,name,prefix,last_used_at,created_at,revoked_at,allowed_domains,require_signed_urls')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  const data = await db
+    .select({
+      id: apiKeys.id,
+      name: apiKeys.name,
+      prefix: apiKeys.prefix,
+      last_used_at: apiKeys.lastUsedAt,
+      created_at: apiKeys.createdAt,
+      revoked_at: apiKeys.revokedAt,
+      allowed_domains: apiKeys.allowedDomains,
+      require_signed_urls: apiKeys.requireSignedUrls,
+    })
+    .from(apiKeys)
+    .where(eq(apiKeys.userId, session.user.id))
+    .orderBy(desc(apiKeys.createdAt))
 
-  return NextResponse.json({ keys: data ?? [] })
+  const keys = data.map((k) => ({
+    id: k.id,
+    name: k.name,
+    prefix: k.prefix,
+    last_used_at: k.last_used_at?.toISOString() ?? null,
+    created_at: k.created_at.toISOString(),
+    revoked_at: k.revoked_at?.toISOString() ?? null,
+    allowed_domains: k.allowed_domains,
+    require_signed_urls: k.require_signed_urls,
+  }))
+
+  return NextResponse.json({ keys })
 }
 
 export async function POST(req: Request) {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  const session = await auth()
+  if (!session?.user?.id) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
   const json = await req.json().catch(() => ({}))
   const parsed = CreateSchema.safeParse(json)
   if (!parsed.success) return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
 
   const { fullKey, prefix, hash } = generateKey()
-  const { error } = await supabase.from('api_keys').insert({
-    user_id: user.id,
-    name: parsed.data.name,
-    prefix,
-    hash,
-  })
+  try {
+    await db.insert(apiKeys).values({
+      userId: session.user.id,
+      name: parsed.data.name,
+      prefix,
+      hash,
+      allowedDomains: [],
+      requireSignedUrls: false,
+    })
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
 
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
   trackFunnelEventSoon({
     eventName: 'api_key_created',
-    userId: user.id,
-    email: user.email,
+    userId: session.user.id,
+    email: session.user.email,
     source: 'dashboard_keys',
     properties: { keyName: parsed.data.name, prefix },
     notify: true,

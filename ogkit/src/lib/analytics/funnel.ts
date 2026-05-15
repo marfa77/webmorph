@@ -1,6 +1,8 @@
-import type { Json } from '@/lib/supabase/database.types'
-import { createAdminClient } from '@/lib/supabase/admin'
+import type { Json } from '@/lib/db/types'
+import { db } from '@/lib/db'
+import { funnelEvents } from '@/lib/db/schema'
 import { sendTelegramMessage } from '@/lib/notifications/telegram'
+import { and, desc, eq, isNull } from 'drizzle-orm'
 
 export type FunnelEventName =
   | 'user_registered'
@@ -19,6 +21,8 @@ type TrackFunnelEventInput = {
   properties?: Record<string, Json | undefined>
   notify?: boolean
 }
+
+const DEDUPE_EVENTS = ['user_registered', 'first_preview_generated'] as const
 
 function compactProperties(properties: Record<string, Json | undefined> = {}) {
   return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined)) as Record<string, Json>
@@ -40,51 +44,92 @@ function formatTelegramEvent(input: TrackFunnelEventInput) {
   return lines.join('\n')
 }
 
+function isDuplicateKeyError(e: unknown): boolean {
+  const err = e as { errno?: number; code?: string; message?: string }
+  if (err.errno === 1062) return true
+  const msg = err.message ?? ''
+  return /duplicate|unique/i.test(msg)
+}
+
 export async function trackFunnelEvent(input: TrackFunnelEventInput) {
   try {
-    const supabase = createAdminClient()
-    const { data: inserted, error } = await supabase
-      .from('funnel_events')
-      .insert({
-        user_id: input.userId ?? null,
-        email: input.email?.trim().toLowerCase() ?? null,
-        event_name: input.eventName,
-        source: input.source ?? 'server',
-        properties: compactProperties(input.properties),
-      })
-      .select('id')
-      .maybeSingle()
+    const props = compactProperties(input.properties)
+    const values = {
+      userId: input.userId ?? null,
+      email: input.email?.trim().toLowerCase() ?? null,
+      eventName: input.eventName,
+      source: input.source ?? 'server',
+      properties: props,
+    }
 
-    if (error) {
-      const code = (error as { code?: string }).code
-      const message = (error as { message?: string }).message ?? ''
-      if (input.notify && input.userId && (code === '23505' || /unique|duplicate/i.test(message))) {
-        const { data } = await supabase
-          .from('funnel_events')
-          .select('id')
-          .eq('user_id', input.userId)
-          .eq('event_name', input.eventName)
-          .is('notified_at', null)
-          .maybeSingle()
+    const needsDedupe =
+      Boolean(input.userId) &&
+      (DEDUPE_EVENTS as readonly string[]).includes(input.eventName)
 
-        if (data) {
+    if (needsDedupe) {
+      const [existing] = await db
+        .select()
+        .from(funnelEvents)
+        .where(and(eq(funnelEvents.userId, input.userId!), eq(funnelEvents.eventName, input.eventName)))
+        .limit(1)
+
+      if (existing) {
+        if (input.notify && input.userId && existing.notifiedAt == null) {
           const notification = await sendTelegramMessage({ text: formatTelegramEvent(input) })
           if (notification.ok) {
-            await supabase.from('funnel_events').update({ notified_at: new Date().toISOString() }).eq('id', data.id)
+            await db.update(funnelEvents).set({ notifiedAt: new Date() }).where(eq(funnelEvents.id, existing.id))
+          }
+        }
+        return
+      }
+    }
+
+    try {
+      await db.insert(funnelEvents).values(values)
+    } catch (e) {
+      if (input.notify && input.userId && isDuplicateKeyError(e)) {
+        const [existing] = await db
+          .select({ id: funnelEvents.id })
+          .from(funnelEvents)
+          .where(
+            and(
+              eq(funnelEvents.userId, input.userId),
+              eq(funnelEvents.eventName, input.eventName),
+              isNull(funnelEvents.notifiedAt),
+            ),
+          )
+          .limit(1)
+
+        if (existing) {
+          const notification = await sendTelegramMessage({ text: formatTelegramEvent(input) })
+          if (notification.ok) {
+            await db.update(funnelEvents).set({ notifiedAt: new Date() }).where(eq(funnelEvents.id, existing.id))
           }
         }
         return
       }
 
-      if (code !== '23505' && !/unique|duplicate/i.test(message)) {
-        console.warn('Funnel event insert failed', { eventName: input.eventName, code, message })
+      if (!isDuplicateKeyError(e)) {
+        console.warn('Funnel event insert failed', { eventName: input.eventName, error: e })
       }
+      return
     }
 
     if (input.notify) {
+      const parts = [eq(funnelEvents.eventName, input.eventName)]
+      if (input.userId) parts.push(eq(funnelEvents.userId, input.userId))
+      else if (input.email) parts.push(eq(funnelEvents.email, input.email.trim().toLowerCase()))
+
+      const [inserted] = await db
+        .select({ id: funnelEvents.id })
+        .from(funnelEvents)
+        .where(and(...parts))
+        .orderBy(desc(funnelEvents.id))
+        .limit(1)
+
       const notification = await sendTelegramMessage({ text: formatTelegramEvent(input) })
-      if (notification.ok && inserted?.id) {
-        await supabase.from('funnel_events').update({ notified_at: new Date().toISOString() }).eq('id', inserted.id)
+      if (notification.ok && inserted) {
+        await db.update(funnelEvents).set({ notifiedAt: new Date() }).where(eq(funnelEvents.id, inserted.id))
       }
     }
   } catch (error) {

@@ -1,5 +1,7 @@
-import { createAdminClient } from '@/lib/supabase/admin'
-import type { PlanTier } from '@/lib/supabase/database.types'
+import { eq } from 'drizzle-orm'
+import { db } from '@/lib/db'
+import { cryptoBillingOrders, users } from '@/lib/db/schema'
+import type { PlanTier } from '@/lib/db/types'
 
 export type CryptoBillingOrderStatus = 'pending' | 'paid'
 
@@ -12,32 +14,47 @@ export interface CryptoBillingOrder {
   updated_at: string
 }
 
+type CryptoRow = typeof cryptoBillingOrders.$inferSelect
+
+function rowToOrder(row: CryptoRow): CryptoBillingOrder {
+  return {
+    order_id: row.orderId,
+    user_id: row.userId,
+    plan: row.plan,
+    status: row.status,
+    created_at: row.createdAt.toISOString(),
+    updated_at: row.updatedAt.toISOString(),
+  }
+}
+
 export async function insertCryptoBillingOrder(
   orderId: string,
   plan: 'pro' | 'scale',
   userId: string,
 ): Promise<CryptoBillingOrder | null> {
-  const supabase = createAdminClient()
-  const { data, error } = await supabase
-    .from('crypto_billing_orders')
-    .insert({ order_id: orderId, plan, status: 'pending', user_id: userId })
-    .select()
-    .single()
-  if (error) {
-    console.warn('[crypto-billing-orders] insert error:', error)
+  try {
+    await db.insert(cryptoBillingOrders).values({
+      orderId,
+      plan,
+      status: 'pending',
+      userId,
+    })
+    const [row] = await db.select().from(cryptoBillingOrders).where(eq(cryptoBillingOrders.orderId, orderId)).limit(1)
+    return row ? rowToOrder(row) : null
+  } catch (e) {
+    console.warn('[crypto-billing-orders] insert error:', e)
     return null
   }
-  return data as CryptoBillingOrder
 }
 
 export async function getCryptoBillingOrderByOrderId(orderId: string): Promise<CryptoBillingOrder | null> {
-  const supabase = createAdminClient()
-  const { data, error } = await supabase.from('crypto_billing_orders').select('*').eq('order_id', orderId).maybeSingle()
-  if (error) {
-    console.warn('[crypto-billing-orders] select error:', error)
+  try {
+    const [row] = await db.select().from(cryptoBillingOrders).where(eq(cryptoBillingOrders.orderId, orderId)).limit(1)
+    return row ? rowToOrder(row) : null
+  } catch (e) {
+    console.warn('[crypto-billing-orders] select error:', e)
     return null
   }
-  return (data as CryptoBillingOrder) ?? null
 }
 
 const MS_PER_DAY = 86_400_000
@@ -47,7 +64,6 @@ const CRYPTO_BILLING_PERIOD_DAYS = 30
  * Mark order paid and extend pro/scale access. Stacks from current end when still valid.
  */
 export async function completeCryptoOrderFromWebhook(orderId: string): Promise<boolean> {
-  const supabase = createAdminClient()
   const order = await getCryptoBillingOrderByOrderId(orderId)
   if (!order) {
     return false
@@ -56,37 +72,37 @@ export async function completeCryptoOrderFromWebhook(orderId: string): Promise<b
     return true
   }
 
-  const { data: userRow, error: userErr } = await supabase
-    .from('users')
-    .select('crypto_paid_until, plan')
-    .eq('id', order.user_id)
-    .maybeSingle()
-  if (userErr || !userRow) {
-    console.warn('[crypto-billing-orders] user lookup error:', userErr)
+  const [userRow] = await db
+    .select({ cryptoPaidUntil: users.cryptoPaidUntil, plan: users.plan })
+    .from(users)
+    .where(eq(users.id, order.user_id))
+    .limit(1)
+  if (!userRow) {
+    console.warn('[crypto-billing-orders] user lookup error: not found')
     return false
   }
 
   const now = Date.now()
-  const currentEnd = userRow.crypto_paid_until ? new Date(userRow.crypto_paid_until).getTime() : 0
+  const currentEnd = userRow.cryptoPaidUntil ? userRow.cryptoPaidUntil.getTime() : 0
   const base = (currentEnd > now ? currentEnd : now) + CRYPTO_BILLING_PERIOD_DAYS * MS_PER_DAY
-  const cryptoPaidUntil = new Date(base).toISOString()
+  const cryptoPaidUntil = new Date(base)
 
-  const { error: updUser } = await supabase
-    .from('users')
-    .update({ plan: order.plan as PlanTier, crypto_paid_until: cryptoPaidUntil })
-    .eq('id', order.user_id)
+  try {
+    await db
+      .update(users)
+      .set({
+        plan: order.plan as PlanTier,
+        cryptoPaidUntil,
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, order.user_id))
 
-  if (updUser) {
-    console.warn('[crypto-billing-orders] user update error:', updUser)
-    return false
-  }
-
-  const { error: updOrder } = await supabase
-    .from('crypto_billing_orders')
-    .update({ status: 'paid', updated_at: new Date().toISOString() })
-    .eq('order_id', orderId)
-  if (updOrder) {
-    console.warn('[crypto-billing-orders] order update error:', updOrder)
+    await db
+      .update(cryptoBillingOrders)
+      .set({ status: 'paid', updatedAt: new Date() })
+      .where(eq(cryptoBillingOrders.orderId, orderId))
+  } catch (e) {
+    console.warn('[crypto-billing-orders] update error:', e)
     return false
   }
   return true

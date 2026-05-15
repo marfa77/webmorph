@@ -5,11 +5,38 @@ import { marketingMetadata } from '@/lib/marketing-metadata'
 import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 import { FinishCta } from '@/components/marketing/finish-cta'
 
+const BLOG_INDEX_KEYWORDS = [
+  'open graph image api',
+  'dynamic og image',
+  'og image generator api',
+  'twitter card api',
+  'next.js social preview',
+  'og:image seo',
+  'link preview metadata',
+  'OGKit blog',
+]
+
+const BLOG_INDEX_FAQ = [
+  {
+    name: 'What does the OGKit blog cover?',
+    text: 'Long-form guides on Open Graph and Twitter/X preview images at 1200×630, Next.js App Router metadata patterns, signed URLs, caching, validators, and mistakes that break Slack or LinkedIn unfurls.',
+  },
+  {
+    name: 'Where should I start if I use Next.js?',
+    text: 'Read the Open Graph SEO guide on this blog, then follow the /for/nextjs framework page and the /docs HTTP reference. Use the Playground with demo=1 before production keys.',
+  },
+  {
+    name: 'How do LLMs find OGKit documentation?',
+    text: 'Use the public /llms.txt and /llm.txt routes plus the sitemap; they list canonical URLs, API endpoints, and comparisons so ChatGPT, Claude, and Cursor pick up real examples instead of guessing hosts.',
+  },
+] as const
+
 export const metadata = marketingMetadata({
-  title: 'OGKit blog — Open Graph image API guides, SEO & patterns',
+  title: 'OGKit blog — Open Graph image API, SEO guides & Next.js patterns',
   description:
-    'Long-form OGKit writing: Open Graph image SEO, Next.js metadata, signed URLs, framework integrations, and operational patterns for 1200×630 social preview cards.',
+    'Guides for what people search: open graph image size, og:image in Next.js generateMetadata, dynamic Twitter/X cards, Slack/LinkedIn cache refresh, JSON-LD, and llms.txt for LLM crawlers.',
   pathname: '/blog',
+  keywords: [...BLOG_INDEX_KEYWORDS],
 })
 
 type Post = {
@@ -24,12 +51,12 @@ type Post = {
 const posts: Post[] = [
   {
     slug: 'open-graph-images-seo-guide',
-    title: 'Dynamic Open Graph images for SEO and social distribution',
+    title: 'Open Graph image SEO: size, Next.js, Google thumbnails & LLM crawlers',
     summary:
-      'A long-form reference for engineering and growth teams: Open Graph metadata, 1200×630 image sizing, Next.js App Router integration, signed URLs, caching, validation, and common mistakes.',
+      'Targets real searches: 1200×630 og:image, absolute URLs, Next.js generateMetadata, Facebook/LinkedIn cache busting, Google Discover thumbnails, JSON-LD FAQPage, and /llms.txt for AI agents.',
     tag: 'SEO guide',
-    readMinutes: 9,
-    updated: 'April 2026',
+    readMinutes: 11,
+    updated: 'May 2026',
   },
 ]
 
@@ -40,17 +67,29 @@ export default function BlogIndexPage() {
     '@type': 'Blog',
     name: `${siteConfig.name} blog`,
     url: absoluteSiteUrl('/blog'),
+    inLanguage: 'en-US',
     description:
-      'Long-form Open Graph image API writing: SEO, Next.js metadata, signed URLs, and framework integrations.',
+      'Open Graph image API guides: 1200×630 cards, Next.js metadata, signed URLs, social preview debugging, and LLM-friendly documentation.',
     publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
     blogPost: posts.map((p) => ({
       '@type': 'BlogPosting',
       headline: p.title,
       url: absoluteSiteUrl(`/blog/${p.slug}`),
       description: p.summary,
-      datePublished: '2026-04-30',
-      dateModified: '2026-04-30',
+      datePublished: '2026-04-30T12:00:00.000Z',
+      dateModified: '2026-05-11T12:00:00.000Z',
       author: { '@type': 'Organization', name: siteConfig.name },
+      image: absoluteSiteUrl('/og-image.jpg'),
+    })),
+  }
+
+  const blogFaqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: BLOG_INDEX_FAQ.map((item) => ({
+      '@type': 'Question',
+      name: item.name,
+      acceptedAnswer: { '@type': 'Answer', text: item.text },
     })),
   }
 
@@ -58,13 +97,15 @@ export default function BlogIndexPage() {
     <div className="container max-w-3xl space-y-12 py-16">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogFaqJsonLd) }} />
 
       <section>
         <p className="text-sm font-medium text-muted-foreground">Blog</p>
         <h1 className="mt-1 text-4xl font-bold tracking-tight">Open Graph image API writing</h1>
         <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-          Long-form guides on Open Graph images, Twitter/X cards, Next.js metadata, signed URLs, caching, and operational
-          patterns for social preview images at scale. Each post mirrors the{' '}
+          Long-form guides aligned with how people search today: <strong className="font-medium text-foreground">open graph image size</strong>,{' '}
+          <strong className="font-medium text-foreground">dynamic og image</strong>,{' '}
+          <strong className="font-medium text-foreground">next.js og:image</strong>, link preview debugging, and what LLM crawlers read alongside HTML. Each post mirrors the{' '}
           <Link className="text-primary underline" href={withBasePath('/docs')}>
             HTTP API reference
           </Link>{' '}
@@ -143,6 +184,18 @@ export default function BlogIndexPage() {
             , and more.
           </p>
         </div>
+      </section>
+
+      <section id="faq" className="scroll-mt-24">
+        <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
+        <dl className="mt-6 space-y-6">
+          {BLOG_INDEX_FAQ.map((item) => (
+            <div key={item.name}>
+              <dt className="text-base font-semibold text-foreground">{item.name}</dt>
+              <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.text}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <FinishCta />

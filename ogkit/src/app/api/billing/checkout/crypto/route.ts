@@ -3,8 +3,8 @@
  * Creates a Cryptomus invoice and redirects to the payment page.
  */
 import { type NextRequest, NextResponse } from 'next/server'
+import { auth } from '@/auth'
 import { isCryptoBillingLive, cryptoBillingNotConfiguredBody } from '@/config/billing'
-import { createClient } from '@/lib/supabase/server'
 import { createPaymentInvoice } from '@/lib/cryptomus'
 import { insertCryptoBillingOrder } from '@/lib/crypto-billing-orders'
 import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
@@ -30,10 +30,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(cryptoBillingNotConfiguredBody(), { status: 503 })
   }
 
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const session = await auth()
 
   const planParam = request.nextUrl.searchParams.get('plan')
   const plan = planParam === 'pro' || planParam === 'scale' ? planParam : null
@@ -42,7 +39,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL(withBasePath('/pricing'), request.url), 302)
   }
 
-  if (!user?.id) {
+  if (!session?.user?.id) {
     const returnPath = `/api/billing/checkout/crypto?plan=${encodeURIComponent(plan)}`
     return NextResponse.redirect(
       new URL(`${withBasePath('/login')}?${new URLSearchParams({ next: returnPath }).toString()}`, request.url),
@@ -70,21 +67,20 @@ export async function GET(request: NextRequest) {
   })
 
   if (!result) {
-    console.error('[conv] crypto_checkout_error', { reason: 'invoice_failed', userId: user.id, plan })
+    console.error('[conv] crypto_checkout_error', { reason: 'invoice_failed', userId: session.user.id, plan })
     return NextResponse.redirect(new URL(withBasePath('/pricing'), request.url), 302)
   }
 
-  // Keep the same id as in url_success / Cryptomus request (ciple pattern).
-  const inserted = await insertCryptoBillingOrder(orderId, plan, user.id)
+  const inserted = await insertCryptoBillingOrder(orderId, plan, session.user.id)
   if (!inserted) {
-    console.error('[conv] crypto_checkout_error', { reason: 'order_persist', userId: user.id, orderId })
+    console.error('[conv] crypto_checkout_error', { reason: 'order_persist', userId: session.user.id, orderId })
     return new NextResponse('Unable to create order. Please try again shortly.', { status: 503 })
   }
 
   trackFunnelEventSoon({
     eventName: 'checkout_started',
-    userId: user.id,
-    email: user.email,
+    userId: session.user.id,
+    email: session.user.email,
     source: 'crypto_checkout',
     properties: { plan, orderId, amount: price },
     notify: true,

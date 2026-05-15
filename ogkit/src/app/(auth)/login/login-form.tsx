@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
-import { getAuthCallbackUrl, withBasePath } from '@/config/paths'
-import { createClient } from '@/lib/supabase/client'
+import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
@@ -40,20 +40,13 @@ export function LoginForm() {
     e.preventDefault()
     setLoading(true)
     setErr(null)
-    const supabase = createClient()
-    const callback = getAuthCallbackUrl()
-    const emailRedirectTo =
-      next && next !== '/dashboard' ? `${callback}${callback.includes('?') ? '&' : '?'}next=${encodeURIComponent(next)}` : callback
+    const origin = window.location.origin.replace(/\/$/, '')
+    const nextPath = next.startsWith('/') ? next : `/${next}`
+    const callbackUrl = `${origin}${withBasePath(nextPath)}`
 
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo,
-        shouldCreateUser: true,
-      },
-    })
+    const result = await signIn('resend', { email, callbackUrl, redirect: false })
     setLoading(false)
-    if (error) setErr(error.message)
+    if (result?.error) setErr(result.error)
     else setSent(true)
   }
 

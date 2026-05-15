@@ -1,37 +1,36 @@
-import { createAdminClient } from '@/lib/supabase/admin'
+import { and, count, eq, gte } from 'drizzle-orm'
+import { db } from '@/lib/db'
+import { usageEvents } from '@/lib/db/schema'
 import { PLANS, type Plan } from '@/config/plans'
 
 export async function checkQuota(
   userId: string,
   plan: Plan,
 ): Promise<{ ok: true } | { ok: false; cap: number; period: 'month' | 'day' }> {
-  const supabase = createAdminClient()
   const limits = PLANS[plan]
 
   const startMonth = new Date()
   startMonth.setDate(1)
   startMonth.setHours(0, 0, 0, 0)
 
-  const { count: monthCount } = await supabase
-    .from('usage_events')
-    .select('id', { count: 'exact', head: true })
-    .eq('user_id', userId)
-    .gte('created_at', startMonth.toISOString())
+  const [monthRes] = await db
+    .select({ c: count() })
+    .from(usageEvents)
+    .where(and(eq(usageEvents.userId, userId), gte(usageEvents.createdAt, startMonth)))
 
-  if ((monthCount ?? 0) >= limits.monthlyCap) {
+  if ((monthRes?.c ?? 0) >= limits.monthlyCap) {
     return { ok: false, cap: limits.monthlyCap, period: 'month' }
   }
 
   if (limits.dailyCap) {
     const startDay = new Date()
     startDay.setHours(0, 0, 0, 0)
-    const { count: dayCount } = await supabase
-      .from('usage_events')
-      .select('id', { count: 'exact', head: true })
-      .eq('user_id', userId)
-      .gte('created_at', startDay.toISOString())
+    const [dayRes] = await db
+      .select({ c: count() })
+      .from(usageEvents)
+      .where(and(eq(usageEvents.userId, userId), gte(usageEvents.createdAt, startDay)))
 
-    if ((dayCount ?? 0) >= limits.dailyCap) {
+    if ((dayRes?.c ?? 0) >= limits.dailyCap) {
       return { ok: false, cap: limits.dailyCap, period: 'day' }
     }
   }
@@ -46,19 +45,15 @@ export async function recordUsage(e: {
   cacheHit: boolean
   status: number
 }): Promise<{ isFirstUsage: boolean }> {
-  const supabase = createAdminClient()
-  const { count } = await supabase
-    .from('usage_events')
-    .select('id', { count: 'exact', head: true })
-    .eq('user_id', e.userId)
+  const [prior] = await db.select({ c: count() }).from(usageEvents).where(eq(usageEvents.userId, e.userId))
 
-  await supabase.from('usage_events').insert({
-    user_id: e.userId,
-    api_key_id: e.apiKeyId,
+  await db.insert(usageEvents).values({
+    userId: e.userId,
+    apiKeyId: e.apiKeyId,
     template: e.template,
-    cache_hit: e.cacheHit,
+    cacheHit: e.cacheHit,
     status: e.status,
   })
 
-  return { isFirstUsage: (count ?? 0) === 0 }
+  return { isFirstUsage: (prior?.c ?? 0) === 0 }
 }

@@ -69,9 +69,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return 0.7
   }
 
+  const BLOG_GUIDE_MODIFIED = new Date('2026-05-11T12:00:00.000Z')
+
   return routes.map((route) => ({
     url: absoluteUrl(route),
-    lastModified: now,
+    lastModified: route === '/blog/open-graph-images-seo-guide' ? BLOG_GUIDE_MODIFIED : now,
     changeFrequency: route === '' ? 'weekly' : route.startsWith('/compare/') ? 'monthly' : ('monthly' as const),
     priority: priorityFor(route),
   }))

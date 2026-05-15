@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
-import { createAdminClient } from '@/lib/supabase/admin'
+import { db } from '@/lib/db'
+import { subscriptionWaitlist } from '@/lib/db/schema'
 import { trackFunnelEvent } from '@/lib/analytics/funnel'
 
 const Body = z.object({
@@ -10,6 +11,12 @@ const Body = z.object({
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
+
+function isDuplicateKeyError(e: unknown): boolean {
+  const err = e as { errno?: number; message?: string }
+  if (err.errno === 1062) return true
+  return /duplicate|unique/i.test(err.message ?? '')
+}
 
 async function notifyWaitlistRequest(email: string, plan: 'pro' | 'scale', already: boolean) {
   await trackFunnelEvent({
@@ -28,25 +35,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
   }
 
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!process.env.DATABASE_URL) {
     console.error('Waitlist insert failed: missing_server_env')
     return NextResponse.json({ error: 'server_error' }, { status: 500 })
   }
 
-  const supabase = createAdminClient()
-  const { error } = await supabase.from('subscription_waitlist').insert({
-    email: parsed.data.email.trim().toLowerCase(),
-    plan_interest: parsed.data.plan,
-  })
-
-  if (error) {
-    const code = (error as { code?: string }).code
-    const msg = (error as { message?: string }).message ?? ''
-    if (code === '23505' || /unique|duplicate/i.test(msg)) {
+  try {
+    await db.insert(subscriptionWaitlist).values({
+      email: parsed.data.email.trim().toLowerCase(),
+      planInterest: parsed.data.plan,
+    })
+  } catch (e) {
+    if (isDuplicateKeyError(e)) {
       await notifyWaitlistRequest(parsed.data.email.trim().toLowerCase(), parsed.data.plan, true)
       return NextResponse.json({ ok: true, already: true })
     }
-    console.error('Waitlist insert failed', { code, message: msg })
+    console.error('Waitlist insert failed', e)
     return NextResponse.json({ error: 'server_error' }, { status: 500 })
   }
 

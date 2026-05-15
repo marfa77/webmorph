@@ -31,18 +31,6 @@ export function getAppBaseUrl() {
   return 'https://www.webmorp.art'
 }
 
-/**
- * URL Supabase will redirect the magic link to. Must be listed in Supabase Auth → URL Configuration → Redirect URLs.
- * In the browser, always use the current origin. This prevents a stale NEXT_PUBLIC_APP_URL from generating
- * production magic links that point to localhost.
- */
-export function getAuthCallbackUrl() {
-  if (typeof window !== 'undefined') {
-    return `${window.location.origin.replace(/\/$/, '')}${withBasePath('/callback')}`
-  }
-  return `${getAppBaseUrl()}/callback`
-}
-
 export function getApiUrl(path: string) {
   const p = path.startsWith('/') ? path : `/${path}`
   if (!publicBasePath) return p

@@ -1,12 +1,13 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import { auth } from '@/auth'
 import { withBasePath } from '@/config/paths'
-import { siteConfig } from '@/config/site'
-import { createClient } from '@/lib/supabase/server'
 import { signOut } from '@/lib/auth/signout'
 import { PLANS } from '@/config/plans'
 import { isCryptoBillingLive } from '@/config/billing'
+import { isGumroadRedeemConfigured } from '@/config/gumroad'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
+import { GumroadRedeemCard } from '@/components/billing/gumroad-redeem-card'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { privateAppMetadata } from '@/lib/app-route-metadata'
@@ -19,20 +20,17 @@ export const metadata = privateAppMetadata({
 })
 
 export default async function AccountPage() {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) redirect(withBasePath('/login'))
+  const session = await auth()
+  if (!session?.user?.id) redirect(withBasePath('/login'))
 
-  const plan = await getResolvedUserPlanForUserId(user.id)
+  const plan = await getResolvedUserPlanForUserId(session.user.id)
   const planLabel = PLANS[plan].name
 
   return (
     <div className="container max-w-2xl space-y-6 py-8">
       <div>
         <h1 className="text-2xl font-bold">Account</h1>
-        {user.email && <p className="mt-1 text-sm text-muted-foreground">Signed in as {user.email}</p>}
+        {session.user.email && <p className="mt-1 text-sm text-muted-foreground">Signed in as {session.user.email}</p>}
       </div>
 
       <Card>
@@ -56,6 +54,8 @@ export default async function AccountPage() {
           </p>
         </CardContent>
       </Card>
+
+      <GumroadRedeemCard redeemConfigured={isGumroadRedeemConfigured()} />
 
       <Card>
         <CardHeader>

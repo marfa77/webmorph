@@ -1,18 +1,16 @@
 import Link from 'next/link'
+import { auth } from '@/auth'
 import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
-import { createClient } from '@/lib/supabase/server'
 import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
 import { signOut } from '@/lib/auth/signout'
 import { Button } from '@/components/ui/button'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const session = await auth()
+  const user = session?.user
 
-  if (user) {
+  if (user?.id) {
     trackFunnelEventSoon({
       eventName: 'user_registered',
       userId: user.id,

@@ -1,6 +1,9 @@
-import { createClient } from '@/lib/supabase/server'
+import { and, eq, isNull } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
+import { auth } from '@/auth'
+import { db } from '@/lib/db'
+import { apiKeys } from '@/lib/db/schema'
 
 type RouteContext = { params: { id: string } }
 
@@ -20,45 +23,41 @@ const UpdateSchema = z.object({
 
 export async function PATCH(req: Request, context: RouteContext) {
   const { id } = context.params
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  const session = await auth()
+  if (!session?.user?.id) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
   const json = await req.json().catch(() => ({}))
   const parsed = UpdateSchema.safeParse(json)
   if (!parsed.success) return NextResponse.json({ error: 'invalid_body' }, { status: 400 })
-  const update: { allowed_domains?: string[]; require_signed_urls?: boolean } = {}
-  if (parsed.data.allowedDomains) update.allowed_domains = parsed.data.allowedDomains
-  if (typeof parsed.data.requireSignedUrls === 'boolean') update.require_signed_urls = parsed.data.requireSignedUrls
+
+  const update: { allowedDomains?: string[]; requireSignedUrls?: boolean } = {}
+  if (parsed.data.allowedDomains) update.allowedDomains = parsed.data.allowedDomains
+  if (typeof parsed.data.requireSignedUrls === 'boolean') update.requireSignedUrls = parsed.data.requireSignedUrls
   if (Object.keys(update).length === 0) return NextResponse.json({ ok: true })
 
-  const { error } = await supabase
-    .from('api_keys')
-    .update(update)
-    .eq('id', id)
-    .eq('user_id', user.id)
-    .is('revoked_at', null)
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  try {
+    await db
+      .update(apiKeys)
+      .set(update)
+      .where(and(eq(apiKeys.id, id), eq(apiKeys.userId, session.user.id), isNull(apiKeys.revokedAt)))
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
   return NextResponse.json({ ok: true })
 }
 
 export async function DELETE(_: Request, context: RouteContext) {
   const { id } = context.params
-  const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
+  const session = await auth()
+  if (!session?.user?.id) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-  const { error } = await supabase
-    .from('api_keys')
-    .update({ revoked_at: new Date().toISOString() })
-    .eq('id', id)
-    .eq('user_id', user.id)
-
-  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+  try {
+    await db
+      .update(apiKeys)
+      .set({ revokedAt: new Date() })
+      .where(and(eq(apiKeys.id, id), eq(apiKeys.userId, session.user.id)))
+  } catch (e) {
+    return NextResponse.json({ error: String(e) }, { status: 500 })
+  }
   return NextResponse.json({ ok: true })
 }

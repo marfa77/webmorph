@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { PLANS } from '@/config/plans'
+import { getGumroadCheckoutUrl } from '@/config/gumroad'
 import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { marketingMetadata } from '@/lib/marketing-metadata'
@@ -142,6 +143,24 @@ export default function PricingPage() {
           )
         })}
       </div>
+
+      <section className="mt-12 rounded-lg border bg-card p-6">
+        <h2 className="text-lg font-semibold">Gumroad (card checkout)</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          OGKit Pro is also available on Gumroad if you prefer card checkout through their checkout. After purchase,
+          sign in and redeem your license key on the account page.
+        </p>
+        <p className="mt-3 flex flex-wrap gap-3 text-sm">
+          <Button asChild variant="outline" size="sm">
+            <a href={getGumroadCheckoutUrl()} target="_blank" rel="noopener noreferrer">
+              Buy Pro on Gumroad
+            </a>
+          </Button>
+          <Button asChild variant="ghost" size="sm">
+            <Link href={withBasePath('/account#gumroad')}>Redeem license</Link>
+          </Button>
+        </p>
+      </section>
 
       <section className="mt-14 space-y-4">
         <h2 className="text-xl font-bold">What you get on every plan</h2>

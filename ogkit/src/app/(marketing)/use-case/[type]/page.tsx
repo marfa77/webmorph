@@ -20,8 +20,52 @@ const COPY: Record<string, string> = {
   portfolios:
     'For portfolios, minimal or gradient helps keep the focus on your work title and a short line of copy. Set `og:image` per project page with unique titles to avoid repeated previews in social clients.',
   'dynamic-social-preview-images':
-    'Dynamic social preview images are Open Graph and Twitter card images generated from page data instead of designed manually. OGKit turns titles, subtitles, logos, product names, authors, and hero images into stable 1200x630 PNG URLs.',
+    'Dynamic social preview images are Open Graph and Twitter card images generated from page data instead of designed manually. OGKit turns titles, subtitles, logos, product names, authors, and hero images into stable 1200×630 PNG URLs. This page answers high-intent searches like “dynamic link preview”, “programmatic og:image”, and “Slack unfurl wrong image”.',
 }
+
+/** Rich FAQ for /use-case/dynamic-social-preview-images — aligned with JSON-LD and common Google/LLM queries. */
+const DYNAMIC_SOCIAL_FAQ = [
+  {
+    question: 'What is a dynamic social preview image?',
+    answer:
+      'It is an Open Graph (og:image) or Twitter/X large image card built from structured page data—title, subtitle, author, price, release—so each URL gets its own 1200×630 preview instead of reusing a single homepage graphic.',
+  },
+  {
+    question: 'How is that different from a screenshot or Bannerbear workflow?',
+    answer:
+      'OGKit renders designed templates from query parameters (or /api/og/auto from fetched metadata). Screenshot APIs rasterize a full browser page; design tools export static assets. Templates are faster, cheaper, and easier to cache at scale.',
+  },
+  {
+    question: 'Where do I put the generated URL for Google and social apps?',
+    answer:
+      'Emit the same final HTTPS URL in og:image and twitter:image (and set width/height when your stack allows). Google may combine og:image with schema.org when picking thumbnails; Slack, Discord, LinkedIn, and iMessage read the Open Graph layer.',
+  },
+  {
+    question: 'Does Next.js need generateMetadata for link previews?',
+    answer:
+      'Yes for the App Router: crawlers read the first HTML response. Build the OGKit URL in generateMetadata or another server-only path so metadata is present before hydration—client-only updates will not fix Slack or Google.',
+  },
+  {
+    question: 'Why is Slack or LinkedIn still showing an old preview?',
+    answer:
+      'Unfurlers cache aggressively. After you change art or copy, use the Facebook Sharing Debugger and LinkedIn Post Inspector to rescrape, or bump a version query on the image URL so CDNs fetch a new object.',
+  },
+  {
+    question: 'What about LLM crawlers (ChatGPT, Perplexity, Claude)?',
+    answer:
+      'Many tools read Open Graph, Twitter cards, and JSON-LD from raw HTML. Pair dynamic images with a concise TechArticle/Article schema and keep /llms.txt updated so agents retrieve canonical URLs and examples.',
+  },
+  {
+    question: 'Is OGKit a “dynamic OG image API”?',
+    answer:
+      'Yes. You call HTTPS endpoints such as /api/og/{template} or /api/og/auto and place the returned PNG URL in metadata. Plans include quotas, demo=1 watermarks, and signed URLs for public pages.',
+  },
+  {
+    question: 'What image size should I target?',
+    answer:
+      'Use 1200×630 PNG cards for universal compatibility with Open Graph and Twitter/X large cards; keep file size reasonable (well under ~1 MB) to avoid unfurl timeouts.',
+  },
+] as const
 
 const DETAILS: Record<string, { template: string; fields: string[]; exampleTitle: string; exampleSubtitle: string; mistakes: string[] }> = {
   blog: {
@@ -109,27 +153,54 @@ function buildUseCaseMetaDescription(type: string, label: string): string {
   return `${label}: OGKit ${details.template} template for 1200×630 Open Graph & Twitter/X cards. Query fields: ${fields}. Hosted API, demo=1 previews, signed URLs on paid plans. Works with Next.js, Astro, Rails, and static sites.`
 }
 
-export function generateMetadata({ params }: Props) {
-  if (!ALLOWED.has(params.type)) return {}
-  const details = DETAILS[params.type]!
-  const label = humanize(params.type)
+function buildUseCasePreviewImageUrl(type: string) {
+  const details = DETAILS[type]!
+  const label = humanize(type)
   const image = new URL(`${siteConfig.url}/api/og/minimal`)
   image.searchParams.set('demo', '1')
   image.searchParams.set('title', `${label} Open Graph images`)
   image.searchParams.set('subtitle', `Template: ${details.template}`)
   image.searchParams.set('accent', '#2563eb')
+  return image.toString()
+}
+
+export function generateMetadata({ params }: Props) {
+  if (!ALLOWED.has(params.type)) return {}
+  const details = DETAILS[params.type]!
+  const label = humanize(params.type)
+  const imageUrl = buildUseCasePreviewImageUrl(params.type)
   const canonical = absoluteSiteUrl(`/use-case/${params.type}`)
   if (params.type === 'dynamic-social-preview-images') {
-    const title = `Dynamic social preview images — ${siteConfig.name}`
+    const title = `Dynamic social preview & Open Graph images (API) — ${siteConfig.name}`
     const description = clipMetaDescription(
-      'Complete guide: dynamic Open Graph and Twitter/X preview images from one URL, metadata patterns for Next.js and other frameworks, OGKit templates, demo mode, signed URLs, and mistakes to avoid in Slack and LinkedIn.',
+      'Dynamic link previews: generate 1200×630 Open Graph & Twitter/X images from one HTTPS URL. Next.js generateMetadata patterns, OGKit templates, demo mode, signed URLs, Slack/LinkedIn cache refresh, JSON-LD, and llms.txt for LLMs.',
     )
+    const keywords = [
+      'dynamic link preview',
+      'dynamic open graph image',
+      'og image api',
+      'twitter card generator',
+      'slack unfurl image',
+      'next.js link preview',
+      'programmatic og:image',
+      'social preview image api',
+    ]
     return {
       title: { absolute: title },
       description,
+      keywords,
       alternates: { canonical },
-      openGraph: { title, description, url: canonical, images: [image.toString()] },
-      twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
+      robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+      openGraph: {
+        title,
+        description,
+        url: canonical,
+        type: 'article',
+        publishedTime: '2026-04-30T12:00:00.000Z',
+        modifiedTime: '2026-05-11T12:00:00.000Z',
+        images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
+      },
+      twitter: { card: 'summary_large_image', title, description, images: [imageUrl] },
     }
   }
   const title = `${label} Open Graph images — ${siteConfig.name}`
@@ -138,8 +209,9 @@ export function generateMetadata({ params }: Props) {
     title: { absolute: title },
     description,
     alternates: { canonical },
-    openGraph: { title, description, url: canonical, images: [image.toString()] },
-    twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+    openGraph: { title, description, url: canonical, images: [{ url: imageUrl, width: 1200, height: 630, alt: title }] },
+    twitter: { card: 'summary_large_image', title, description, images: [imageUrl] },
   }
 }
 
@@ -158,6 +230,72 @@ function humanize(value: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase())
 }
 
+function DynamicPreviewVisual() {
+  const channels = ['Slack', 'LinkedIn', 'Google', 'ChatGPT', 'Discord']
+  return (
+    <figure className="rounded-2xl border bg-slate-950 p-5 text-white shadow-2xl shadow-slate-950/15">
+      <div className="grid gap-5 lg:grid-cols-[1fr_0.95fr]">
+        <div className="rounded-[1.35rem] border border-white/10 bg-[#101216] p-6">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200">
+            <span>Live preview card</span>
+            <span>1200×630</span>
+          </div>
+          <div className="mt-6 rounded-3xl bg-gradient-to-br from-cyan-300 via-blue-500 to-violet-600 p-1">
+            <div className="rounded-[1.35rem] bg-slate-950 p-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Generated from page data</p>
+              <h2 className="mt-5 text-4xl font-black tracking-tight">Dynamic social preview images</h2>
+              <p className="mt-3 max-w-sm text-sm text-slate-300">A unique Open Graph card for every article, launch, docs page, and changelog.</p>
+              <div className="mt-8 flex items-center justify-between text-xs text-slate-500">
+                <span>/api/og/minimal</span>
+                <span className="font-bold text-white">OGKit</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption className="self-center text-sm leading-relaxed text-slate-300">
+          <p className="font-semibold text-white">One canonical image URL travels everywhere.</p>
+          <p className="mt-2">
+            Build the URL on the server, place it in <code className="rounded bg-white/10 px-1 py-0.5 font-mono">og:image</code> and{' '}
+            <code className="rounded bg-white/10 px-1 py-0.5 font-mono">twitter:image</code>, then let social apps, search crawlers, and LLM tools fetch the same PNG.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {channels.map((channel) => (
+              <span key={channel} className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs font-semibold">
+                {channel}
+              </span>
+            ))}
+          </div>
+        </figcaption>
+      </div>
+    </figure>
+  )
+}
+
+function DynamicWorkflowVisual() {
+  const steps = [
+    ['CMS / DB', 'post.title + post.summary'],
+    ['Server route', 'build signed OGKit URL'],
+    ['Metadata', 'og:image + twitter:image'],
+    ['Unfurlers', 'cached 1200×630 PNG'],
+  ] as const
+  return (
+    <figure className="mt-6 rounded-2xl border bg-white p-5 shadow-sm">
+      <figcaption className="text-sm font-semibold">Dynamic preview workflow</figcaption>
+      <div className="mt-4 grid gap-3 md:grid-cols-4">
+        {steps.map(([title, copy], index) => (
+          <div key={title} className="rounded-xl border bg-muted/30 p-4">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-950 text-sm font-bold text-white">
+              {index + 1}
+            </div>
+            <h3 className="mt-4 text-sm font-semibold">{title}</h3>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{copy}</p>
+          </div>
+        ))}
+      </div>
+    </figure>
+  )
+}
+
 function DynamicSocialPreviewGuide() {
   return (
     <div className="space-y-12">
@@ -169,6 +307,7 @@ function DynamicSocialPreviewGuide() {
           docs pages, product launches, and changelogs. One URL becomes the canonical image for every place your link is shared.
         </p>
       </section>
+      <DynamicPreviewVisual />
 
       <section>
         <h2 className="text-2xl font-semibold">The minimal pattern</h2>
@@ -186,6 +325,7 @@ const meta = {
   twitter: { card: "summary_large_image", images: [image.toString()] }
 };`}</CodeBlock>
         </div>
+        <DynamicWorkflowVisual />
       </section>
 
       <section className="grid gap-4 md:grid-cols-3">
@@ -194,7 +334,7 @@ const meta = {
           ['Product launches', 'Generate launch cards from logo, tagline, product name, and artwork.'],
           ['Changelogs', 'Give every release note a unique branded preview instead of reusing the homepage card.'],
         ].map(([title, copy]) => (
-          <div key={title} className="rounded-lg border p-5">
+          <div key={title} className="rounded-2xl border bg-white p-5 shadow-sm">
             <h2 className="font-semibold">{title}</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
           </div>
@@ -242,23 +382,14 @@ const meta = {
         </div>
       </section>
 
-      <section>
+      <section id="faq" className="scroll-mt-24">
         <h2 className="text-2xl font-semibold">Frequently asked questions</h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {[
-            {
-              question: 'What is a dynamic social preview image?',
-              answer: 'It is an Open Graph or Twitter card image generated from page data such as title, subtitle, author, product, or changelog details instead of one static image reused everywhere.',
-            },
-            {
-              question: 'Where should I use the generated image URL?',
-              answer: 'Use the same final HTTPS image URL in og:image and twitter:image metadata so social platforms and chat apps render a consistent preview.',
-            },
-            {
-              question: 'Is OGKit a screenshot API?',
-              answer: 'No. OGKit generates designed 1200x630 cards from structured fields. Screenshot APIs capture already-rendered webpages.',
-            },
-          ].map((item) => (
+        <p className="mt-2 text-sm text-muted-foreground">
+          Matches the FAQPage JSON-LD on this URL—written for the queries people type into Google and into LLMs alongside
+          “dynamic og image” or “Slack preview wrong”.
+        </p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {DYNAMIC_SOCIAL_FAQ.map((item) => (
             <div key={item.question} className="rounded-lg border p-4">
               <h3 className="font-semibold">{item.question}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
@@ -276,21 +407,27 @@ export default function UseCasePage({ params }: Props) {
   if (!ALLOWED.has(params.type)) notFound()
   const details = DETAILS[params.type]!
   const title = humanize(params.type)
-  const faq = [
-    {
-      question: `What is the best OGKit template for ${title.toLowerCase()} pages?`,
-      answer: `Start with the ${details.template} template and pass ${details.fields.join(', ')} as query fields when building the image URL.`,
-    },
-    {
-      question: 'Should I generate Open Graph images dynamically or use one static card?',
-      answer: 'Use dynamic images when each page has a different title, product, release, author, or summary. Static cards are fine for homepages but weak for specific shared links.',
-    },
-    {
-      question: 'Where should I place the generated image URL?',
-      answer: 'Use the final HTTPS image URL in both og:image and twitter:image metadata so social networks, chat apps, and search previews show the same branded card.',
-    },
-  ]
+  const faq =
+    params.type === 'dynamic-social-preview-images'
+      ? DYNAMIC_SOCIAL_FAQ.map((item) => ({ question: item.question, answer: item.answer }))
+      : [
+          {
+            question: `What is the best OGKit template for ${title.toLowerCase()} pages?`,
+            answer: `Start with the ${details.template} template and pass ${details.fields.join(', ')} as query fields when building the image URL.`,
+          },
+          {
+            question: 'Should I generate Open Graph images dynamically or use one static card?',
+            answer:
+              'Use dynamic images when each page has a different title, product, release, author, or summary. Static cards are fine for homepages but weak for specific shared links.',
+          },
+          {
+            question: 'Where should I place the generated image URL?',
+            answer:
+              'Use the final HTTPS image URL in both og:image and twitter:image metadata so social networks, chat apps, and search previews show the same branded card.',
+          },
+        ]
   const canonical = absoluteSiteUrl(`/use-case/${params.type}`)
+  const previewImageUrl = buildUseCasePreviewImageUrl(params.type)
   const breadcrumbLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -315,9 +452,14 @@ export default function UseCasePage({ params }: Props) {
       '@type': 'TechArticle',
       headline: `${title} Open Graph images`,
       description: COPY[params.type],
+      inLanguage: 'en-US',
+      datePublished: '2026-04-30T12:00:00.000Z',
+      dateModified:
+        params.type === 'dynamic-social-preview-images' ? '2026-05-11T12:00:00.000Z' : '2026-04-30T12:00:00.000Z',
+      image: [previewImageUrl],
       author: { '@type': 'Organization', name: siteConfig.name },
       publisher: { '@type': 'Organization', name: siteConfig.name, url: absoluteSiteUrl('') },
-      mainEntityOfPage: canonical,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
     },
   ]
   if (params.type === 'dynamic-social-preview-images') {

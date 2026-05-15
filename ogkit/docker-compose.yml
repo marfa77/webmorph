@@ -1,0 +1,26 @@
+# Local MySQL 8 for OGKit (Drizzle). Usage:
+#   docker compose up -d
+#   DATABASE_URL=mysql://ogkit:ogkit_dev@127.0.0.1:3306/ogkit npm run db:migrate
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: ogkit-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ogkit_dev_root
+      MYSQL_DATABASE: ogkit
+      MYSQL_USER: ogkit
+      MYSQL_PASSWORD: ogkit_dev
+    ports:
+      - '3306:3306'
+    command: ['--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-pogkit_dev_root']
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    volumes:
+      - ogkit_mysql_data:/var/lib/mysql
+
+volumes:
+  ogkit_mysql_data:
