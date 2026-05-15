@@ -1,14 +1,13 @@
 /**
  * POST /api/billing/gumroad/redeem — authenticated Gumroad Pro license redemption.
- * v1: single product (`GUMROAD_PRODUCT_ID`); successful verify → Pro + 30d stacked on `crypto_paid_until`
+ * v1: default product id in `src/config/gumroad.ts`; optional `GUMROAD_PRODUCT_ID` if it ends with `==` (UAE-style).
+ * Successful verify → Pro + 30d stacked on `crypto_paid_until`
  * (same semantics as Cryptomus monthly grant; see `completeCryptoOrderFromWebhook`).
  */
 import { eq } from 'drizzle-orm'
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { auth } from '@/auth'
-import { gumroadRedeemNotConfiguredBody } from '@/config/billing'
-import { isGumroadRedeemConfigured } from '@/config/gumroad'
 import { db } from '@/lib/db'
 import { gumroadRedemptions, users } from '@/lib/db/schema'
 import { hashGumroadLicenseKey } from '@/lib/gumroad/hash-license-key'
@@ -38,10 +37,6 @@ function isDuplicateKeyError(err: unknown): boolean {
 }
 
 export async function POST(req: Request) {
-  if (!isGumroadRedeemConfigured()) {
-    return NextResponse.json(gumroadRedeemNotConfiguredBody(), { status: 503 })
-  }
-
   const session = await auth()
   const userId = session?.user?.id
   if (!userId) {

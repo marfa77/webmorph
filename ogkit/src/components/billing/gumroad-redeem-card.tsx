@@ -10,11 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-type Props = {
-  redeemConfigured: boolean
-}
-
-export function GumroadRedeemCard({ redeemConfigured }: Props) {
+export function GumroadRedeemCard() {
   const [licenseKey, setLicenseKey] = useState('')
   const [loading, setLoading] = useState(false)
   const checkoutUrl = getGumroadCheckoutUrl()
@@ -58,20 +54,6 @@ export function GumroadRedeemCard({ redeemConfigured }: Props) {
     } finally {
       setLoading(false)
     }
-  }
-
-  if (!redeemConfigured) {
-    return (
-      <Card id="gumroad">
-        <CardHeader>
-          <CardTitle>Gumroad</CardTitle>
-          <CardDescription>Gumroad license redemption is not enabled in this deployment.</CardDescription>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          <p>Set <code className="rounded bg-muted px-1">GUMROAD_PRODUCT_ID</code> on the server to activate redemption.</p>
-        </CardContent>
-      </Card>
-    )
   }
 
   return (

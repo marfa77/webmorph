@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { GUMROAD_OGKIT_PRODUCT_ID } from '@/config/gumroad'
 
 const gumroadVerifyJsonSchema = z.object({
   success: z.boolean(),
@@ -18,10 +19,11 @@ export type GumroadVerifyResult =
   | { ok: true; email: string | null; saleId: string | null; test: boolean }
   | { ok: false; message: string }
 
-function resolveGumroadProductId(): string | null {
+/** Same rule as UAEProperty: use env only when it looks like a Gumroad API product id (`…==`). */
+function resolveGumroadProductId(): string {
   const env = process.env.GUMROAD_PRODUCT_ID?.trim()
-  if (!env) return null
-  return env
+  if (env && env.endsWith('==')) return env
+  return GUMROAD_OGKIT_PRODUCT_ID
 }
 
 /**
@@ -35,9 +37,6 @@ export async function verifyGumroadLicense(licenseKey: string): Promise<GumroadV
   }
 
   const productId = resolveGumroadProductId()
-  if (!productId) {
-    return { ok: false, message: 'Gumroad redemption is not configured on this server.' }
-  }
 
   const body = new URLSearchParams({
     product_id: productId,

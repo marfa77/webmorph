@@ -27,10 +27,3 @@ export function billingNotConfiguredBody() {
 export function cryptoBillingNotConfiguredBody() {
   return { error: 'crypto_billing_disabled' as const, message: 'Crypto checkout is not configured.' }
 }
-
-export function gumroadRedeemNotConfiguredBody() {
-  return {
-    error: 'gumroad_disabled' as const,
-    message: 'Gumroad license redemption is not configured (missing GUMROAD_PRODUCT_ID).',
-  }
-}

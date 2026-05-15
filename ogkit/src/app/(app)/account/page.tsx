@@ -5,7 +5,6 @@ import { withBasePath } from '@/config/paths'
 import { signOut } from '@/lib/auth/signout'
 import { PLANS } from '@/config/plans'
 import { isCryptoBillingLive } from '@/config/billing'
-import { isGumroadRedeemConfigured } from '@/config/gumroad'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
 import { GumroadRedeemCard } from '@/components/billing/gumroad-redeem-card'
 import { Button } from '@/components/ui/button'
@@ -55,7 +54,7 @@ export default async function AccountPage() {
         </CardContent>
       </Card>
 
-      <GumroadRedeemCard redeemConfigured={isGumroadRedeemConfigured()} />
+      <GumroadRedeemCard />
 
       <Card>
         <CardHeader>
