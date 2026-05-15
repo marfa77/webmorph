@@ -8,8 +8,6 @@ import { clipMetaDescription } from '@/lib/seo-meta'
 const COPY: Record<string, string> = {
   blog:
     'For blog posts, use the article template with `title`, optional `subtitle`, `author`, and `image` for a hero. OGKit creates a unique social preview image for each post without custom image rendering code.',
-  blogs:
-    'For posts, use the article template with `title`, optional `subtitle`, and `image` for a hero. Share the same image URL in Open Graph and Twitter card meta tags to keep link previews on-brand across Slack, iMessage, and X.',
   changelog:
     'Changelog pages need repeatable, branded preview cards for every release. Use brand, gradient, or minimal templates with release titles and short summaries so every product update has a shareable image.',
   'product-launch':
@@ -32,13 +30,6 @@ const DETAILS: Record<string, { template: string; fields: string[]; exampleTitle
     exampleTitle: 'How we shipped faster',
     exampleSubtitle: 'A practical launch note for builders',
     mistakes: ['Reusing the homepage image for every post', 'Putting the API key in client-side JavaScript', 'Forgetting twitter:image'],
-  },
-  blogs: {
-    template: 'article',
-    fields: ['title', 'subtitle', 'author', 'image'],
-    exampleTitle: 'How we shipped faster',
-    exampleSubtitle: 'A practical launch note for builders',
-    mistakes: ['Reusing one generic card', 'Generating images at build time with stale copy', 'Skipping image width and height metadata'],
   },
   changelog: {
     template: 'gradient',

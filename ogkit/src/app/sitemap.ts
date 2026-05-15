@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/terms',
     '/llms.txt',
     '/llm.txt',
+    // Next.js framework guide: canonical URL is /for/nextjs (/for/next → 301 in next.config.mjs).
     '/for/nextjs',
     '/for/react',
     '/for/remix',
@@ -46,7 +47,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/platform/self-hosted',
     '/use-case/dynamic-social-preview-images',
     '/use-case/blog',
-    '/use-case/blogs',
     '/use-case/changelog',
     '/use-case/product-launch',
     '/use-case/docs',

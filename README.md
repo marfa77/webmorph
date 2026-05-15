@@ -1,4 +1,5 @@
 # webmorp.art
+> **Product (OGKit):** Next.js app and deployment live in [`ogkit/`](ogkit/README.md). This root README describes the legacy static-site offering; see `ogkit/README.md` for OGKit setup and Vercel root directory.
 
 Fast and affordable website transformation service. Get your professional custom website in 24 hours for just $100.
 

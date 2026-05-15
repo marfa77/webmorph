@@ -73,7 +73,6 @@ export function buildLlmsTxtBody(): string {
     '',
     `- ${abs('/use-case/dynamic-social-preview-images')}`,
     `- ${abs('/use-case/blog')}`,
-    `- ${abs('/use-case/blogs')}`,
     `- ${abs('/use-case/changelog')}`,
     `- ${abs('/use-case/product-launch')}`,
     `- ${abs('/use-case/docs')}`,
