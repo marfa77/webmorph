@@ -6,11 +6,14 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
 async function handleMcp(request: Request): Promise<Response> {
+  const meta = {
+    userAgent: request.headers.get('user-agent') ?? undefined,
+  }
   const transport = new WebStandardStreamableHTTPServerTransport({
     sessionIdGenerator: undefined,
     enableJsonResponse: true,
   })
-  const server = createOgkitMcpServer()
+  const server = createOgkitMcpServer(meta)
 
   try {
     await server.connect(transport)

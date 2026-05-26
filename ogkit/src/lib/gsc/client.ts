@@ -27,7 +27,7 @@ export type GscAnalyticsSummary = {
 async function getSearchConsoleClient() {
   const credentials = parseGscServiceAccount()
   if (!credentials) {
-    throw new Error('GSC_SERVICE_ACCOUNT_JSON is missing or invalid')
+    throw new Error('GSC_SERVICE_ACCOUNT_JSON / GOOGLE_APPLICATION_CREDENTIALS is missing or invalid')
   }
   const auth = new google.auth.GoogleAuth({
     credentials,

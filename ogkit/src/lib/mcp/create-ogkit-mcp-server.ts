@@ -6,6 +6,7 @@ import { TEMPLATE_IDS, TEMPLATE_META } from '@/config/templates'
 import { buildNextJsGenerateMetadataSnippet } from '@/lib/mcp/nextjs-snippet'
 import { buildOgImageUrl, parseTemplateId } from '@/lib/mcp/og-url'
 import { validatePageOpenGraph } from '@/lib/mcp/validate-page'
+import { trackMcpToolCall, type McpRequestMeta } from '@/lib/mcp/track-tool-call'
 
 const MCP_INSTRUCTIONS = `OGKit hosted Open Graph image API (${siteConfig.url}).
 
@@ -18,11 +19,18 @@ Production: user signs in at ${absoluteSiteUrl('/login')} for an API key, or use
 Prefer og_build_url + og_nextjs_snippet for Next.js App Router metadata.openGraph.images.
 Human docs: ${absoluteSiteUrl('/docs')} · Machine index: ${absoluteSiteUrl('/llms.txt')}`
 
-export function createOgkitMcpServer(): McpServer {
+type ToolResult = { content: { type: 'text'; text: string }[]; isError?: boolean }
+
+export function createOgkitMcpServer(meta?: McpRequestMeta): McpServer {
   const server = new McpServer(
     { name: 'ogkit', version: '1.0.0' },
     { instructions: MCP_INSTRUCTIONS },
   )
+
+  function finish(tool: string, result: ToolResult): ToolResult {
+    trackMcpToolCall(tool, { ...meta, isError: Boolean(result.isError) })
+    return result
+  }
 
   server.registerTool(
     'og_list_templates',
@@ -31,22 +39,23 @@ export function createOgkitMcpServer(): McpServer {
       description: 'List available OG image templates (article, product, minimal, etc.) with short descriptions.',
       inputSchema: z.object({}),
     },
-    async () => ({
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(
-            TEMPLATE_IDS.map((id) => ({
-              id,
-              description: TEMPLATE_META[id].description,
-              examplePath: `/api/og/${id}`,
-            })),
-            null,
-            2,
-          ),
-        },
-      ],
-    }),
+    async () =>
+      finish('og_list_templates', {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(
+              TEMPLATE_IDS.map((id) => ({
+                id,
+                description: TEMPLATE_META[id].description,
+                examplePath: `/api/og/${id}`,
+              })),
+              null,
+              2,
+            ),
+          },
+        ],
+      }),
   )
 
   server.registerTool(
@@ -71,10 +80,10 @@ export function createOgkitMcpServer(): McpServer {
     async (args) => {
       const template = parseTemplateId(args.template)
       if (!template) {
-        return {
+        return finish('og_build_url', {
           content: [{ type: 'text', text: `Unknown template "${args.template}". Call og_list_templates first.` }],
           isError: true,
-        }
+        })
       }
       const url = buildOgImageUrl({
         template,
@@ -88,7 +97,7 @@ export function createOgkitMcpServer(): McpServer {
         demo: args.demo ?? !args.apiKey,
         apiKey: args.apiKey,
       })
-      return {
+      return finish('og_build_url', {
         content: [
           {
             type: 'text',
@@ -105,7 +114,7 @@ export function createOgkitMcpServer(): McpServer {
             ),
           },
         ],
-      }
+      })
     },
   )
 
@@ -125,10 +134,10 @@ export function createOgkitMcpServer(): McpServer {
     async (args) => {
       const template = parseTemplateId(args.template)
       if (!template) {
-        return {
+        return finish('og_preview', {
           content: [{ type: 'text', text: `Unknown template "${args.template}".` }],
           isError: true,
-        }
+        })
       }
       const url = buildOgImageUrl({
         template,
@@ -138,7 +147,7 @@ export function createOgkitMcpServer(): McpServer {
         accent: args.accent,
         demo: true,
       })
-      return {
+      return finish('og_preview', {
         content: [
           {
             type: 'text',
@@ -152,7 +161,7 @@ export function createOgkitMcpServer(): McpServer {
             ),
           },
         ],
-      }
+      })
     },
   )
 
@@ -173,10 +182,10 @@ export function createOgkitMcpServer(): McpServer {
     async (args) => {
       const template = parseTemplateId(args.template)
       if (!template) {
-        return {
+        return finish('og_nextjs_snippet', {
           content: [{ type: 'text', text: `Unknown template "${args.template}".` }],
           isError: true,
-        }
+        })
       }
       const code = buildNextJsGenerateMetadataSnippet({
         template,
@@ -186,7 +195,7 @@ export function createOgkitMcpServer(): McpServer {
         apiKeyEnv: args.apiKeyEnv,
         previewWithDemo: args.previewWithDemo ?? true,
       })
-      return { content: [{ type: 'text', text: code }] }
+      return finish('og_nextjs_snippet', { content: [{ type: 'text', text: code }] })
     },
   )
 
@@ -201,10 +210,10 @@ export function createOgkitMcpServer(): McpServer {
     },
     async (args) => {
       const result = await validatePageOpenGraph(args.pageUrl)
-      return {
+      return finish('og_validate_page', {
         content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
         isError: result.issues.some((i) => i.level === 'error'),
-      }
+      })
     },
   )
 
@@ -215,28 +224,31 @@ export function createOgkitMcpServer(): McpServer {
       description: 'Return canonical links for docs, pricing, playground, signup, and llms.txt.',
       inputSchema: z.object({}),
     },
-    async () => ({
-      content: [
-        {
-          type: 'text',
-          text: JSON.stringify(
-            {
-              site: siteConfig.url,
-              docs: absoluteSiteUrl('/docs'),
-              playground: absoluteSiteUrl('/playground'),
-              pricing: absoluteSiteUrl('/pricing'),
-              login: absoluteSiteUrl('/login'),
-              llmsTxt: absoluteSiteUrl('/llms.txt'),
-              seoGuide: absoluteSiteUrl('/blog/open-graph-images-seo-guide'),
-              mcpEndpoint: absoluteSiteUrl('/api/mcp'),
-              cursorPlugin: 'https://github.com/marfa77/webmorph/tree/main/ogkit/cursor-plugin',
-            },
-            null,
-            2,
-          ),
-        },
-      ],
-    }),
+    async () =>
+      finish('ogkit_get_started', {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify(
+              {
+                site: siteConfig.url,
+                docs: absoluteSiteUrl('/docs'),
+                playground: absoluteSiteUrl('/playground'),
+                pricing: absoluteSiteUrl('/pricing'),
+                login: absoluteSiteUrl('/login'),
+                onboarding: absoluteSiteUrl('/onboarding'),
+                llmsTxt: absoluteSiteUrl('/llms.txt'),
+                seoGuide: absoluteSiteUrl('/blog/open-graph-images-seo-guide'),
+                mcpEndpoint: absoluteSiteUrl('/api/mcp'),
+                cursorPlugin: 'https://github.com/marfa77/webmorph/tree/main/ogkit/cursor-plugin',
+                cursorMarketplace: 'https://cursor.com/marketplace/publish',
+              },
+              null,
+              2,
+            ),
+          },
+        ],
+      }),
   )
 
   return server

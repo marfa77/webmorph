@@ -10,7 +10,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { Copy, RefreshCw } from 'lucide-react'
+import { Copy, RefreshCw, FileCode } from 'lucide-react'
+import { buildPlaygroundNextJsSnippet } from '@/lib/playground/snippet-from-fields'
 
 const STORAGE_KEY = 'ogkit_playground_api_key'
 
@@ -120,6 +121,7 @@ export function PlaygroundClient() {
   const [apiKey, setApiKey] = useState('')
   const [fields, setFields] = useState<Record<string, string>>({ title: DEFAULT_VALUES.title! })
   const [copyDone, setCopyDone] = useState(false)
+  const [snippetCopied, setSnippetCopied] = useState(false)
   const [requestedImageUrl, setRequestedImageUrl] = useState<string | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [previewStatus, setPreviewStatus] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle')
@@ -222,11 +224,23 @@ export function PlaygroundClient() {
   const appearanceFields: FieldKey[] = template === 'minimal' || template === 'gradient' ? ['theme', 'accent', 'bg', 'font', 'pattern'] : []
   const meta = TEMPLATE_META[template]
 
+  const nextJsSnippet = useMemo(
+    () => buildPlaygroundNextJsSnippet(template, fields, apiKey),
+    [template, fields, apiKey],
+  )
+
   async function copyUrl() {
     if (!cleanImageUrl) return
     await navigator.clipboard.writeText(cleanImageUrl)
     setCopyDone(true)
     setTimeout(() => setCopyDone(false), 2000)
+  }
+
+  async function copySnippet() {
+    if (!nextJsSnippet) return
+    await navigator.clipboard.writeText(nextJsSnippet)
+    setSnippetCopied(true)
+    setTimeout(() => setSnippetCopied(false), 2000)
   }
 
   function generatePreview() {
@@ -394,6 +408,16 @@ export function PlaygroundClient() {
                   type="button"
                   variant="outline"
                   size="sm"
+                  disabled={!nextJsSnippet}
+                  onClick={() => void copySnippet()}
+                >
+                  <FileCode className="mr-2 h-4 w-4" />
+                  {snippetCopied ? 'Copied' : 'Copy Next.js snippet'}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
                   disabled={!(fields.title ?? '').trim()}
                   onClick={generatePreview}
                 >
@@ -401,6 +425,12 @@ export function PlaygroundClient() {
                   Generate preview
                 </Button>
               </div>
+              {nextJsSnippet && (
+                <details className="rounded-md border bg-muted/30 p-2 text-xs">
+                  <summary className="cursor-pointer font-medium">Next.js generateMetadata snippet</summary>
+                  <pre className="mt-2 max-h-48 overflow-auto whitespace-pre-wrap break-all font-mono">{nextJsSnippet}</pre>
+                </details>
+              )}
               {cleanImageUrl && (
                 <pre className="max-h-32 overflow-auto break-all rounded-md border bg-muted/50 p-2 text-xs">
                   {cleanImageUrl}

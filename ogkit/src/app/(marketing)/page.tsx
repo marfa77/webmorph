@@ -186,13 +186,21 @@ export default function HomePage() {
                 <Link href={withBasePath('/playground')}>Try the OG image playground</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-white/80">
-                <Link href={withBasePath('/docs')}>Read the API docs</Link>
+                <Link href={withBasePath('/login')}>Sign in — auto API key</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-white/80">
-                <Link href={withBasePath('/pricing')}>View pricing</Link>
+                <Link href={withBasePath('/docs')}>Read the API docs</Link>
               </Button>
             </div>
-            <p className="mt-6 text-sm text-slate-500">
+            <p className="mt-4 font-mono text-xs text-slate-500">
+              Cursor: add MCP{' '}
+              <code className="rounded bg-slate-100 px-1.5 py-0.5">{siteConfig.url}/api/mcp</code>
+              {' · '}
+              <a className="underline" href="https://cursor.com/marketplace/publish">
+                Marketplace plugin
+              </a>
+            </p>
+            <p className="mt-4 text-sm text-slate-500">
               New to Open Graph images?{' '}
               <Link href={withBasePath('/blog/open-graph-images-seo-guide')} className="font-semibold text-slate-800 underline underline-offset-2">
                 Read the Open Graph image SEO guide 2026 →

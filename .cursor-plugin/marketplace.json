@@ -1,0 +1,9 @@
+{
+  "plugins": [
+    {
+      "name": "ogkit",
+      "path": "ogkit/cursor-plugin",
+      "description": "Open Graph image URLs for Next.js — hosted MCP, skill, and metadata rules."
+    }
+  ]
+}
