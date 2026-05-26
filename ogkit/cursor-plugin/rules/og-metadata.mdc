@@ -1,0 +1,24 @@
+---
+description: Open Graph and Twitter card metadata via OGKit hosted API
+globs:
+  - "**/layout.tsx"
+  - "**/page.tsx"
+  - "**/metadata.ts"
+  - "**/opengraph-image.*"
+  - "**/twitter-image.*"
+alwaysApply: false
+---
+
+# OGKit Open Graph rules
+
+When adding or fixing social preview metadata:
+
+1. Use OGKit hosted URLs: `https://www.webmorp.art/api/og/{template}?…`
+2. Prefer MCP tools (`og_build_url`, `og_nextjs_snippet`) when the ogkit server is connected
+3. Demo without a key: `demo=1` (watermarked). Production: server-side `key=` or Bearer token
+4. Image size is always **1200×630** PNG
+5. Set both `openGraph.images` and `twitter.images` to the same absolute HTTPS URL
+6. Validate with `og_validate_page` or the Playground before shipping
+7. Never commit or expose `ogk_live_*` keys in client code or `NEXT_PUBLIC_*` env vars
+
+Docs: https://www.webmorp.art/docs · MCP: https://www.webmorp.art/api/mcp

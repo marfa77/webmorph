@@ -26,3 +26,4 @@ pipeline/collect_leads.pid
 pipeline/.env
 __pycache__/
 *.pyc
+.vercel

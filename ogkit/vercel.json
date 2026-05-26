@@ -5,6 +5,7 @@
   "outputDirectory": ".next",
   "crons": [
     { "path": "/api/cron/indexnow", "schedule": "0 3 * * 0" },
+    { "path": "/api/cron/gsc", "schedule": "0 4 * * 1" },
     { "path": "/api/cron/daily-summary", "schedule": "0 7 * * *" }
   ]
 }

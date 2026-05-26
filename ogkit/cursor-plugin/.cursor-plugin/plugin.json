@@ -1,0 +1,14 @@
+{
+  "name": "ogkit",
+  "description": "Open Graph image URLs for Next.js — hosted MCP server, skill, and rules for 1200×630 social preview cards.",
+  "version": "1.0.0",
+  "author": {
+    "name": "OGKit",
+    "email": "hello@webmorp.art"
+  },
+  "homepage": "https://www.webmorp.art",
+  "repository": "https://github.com/marfa77/webmorph",
+  "license": "MIT",
+  "keywords": ["open-graph", "og-image", "nextjs", "seo", "social-preview", "mcp"],
+  "logo": "logo.svg"
+}

@@ -309,6 +309,24 @@ const buf = await r.arrayBuffer();
       </section>
 
       <section>
+        <h2 className="text-xl font-semibold">MCP server (Cursor &amp; AI agents)</h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          OGKit exposes a remote Model Context Protocol server at{' '}
+          <code className="font-mono text-foreground">{base}{getApiUrl('/api/mcp')}</code>. Connect it in Cursor via{' '}
+          <code className="font-mono">.cursor/mcp.json</code> or install the plugin bundle from the repo (
+          <code className="font-mono">ogkit/cursor-plugin</code>).
+        </p>
+        <CodeBlock>{`{
+  "mcpServers": {
+    "ogkit": {
+      "url": "${base}${getApiUrl('/api/mcp')}"
+    }
+  }
+}`}</CodeBlock>
+        <p className="mt-3 text-sm text-muted-foreground">Tools: og_list_templates, og_build_url, og_preview, og_nextjs_snippet, og_validate_page, ogkit_get_started.</p>
+      </section>
+
+      <section>
         <h2 className="text-xl font-semibold">LLM and crawler discovery</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           For coding agents and search systems that ingest plain-text site maps, use{' '}

@@ -88,6 +88,37 @@ Open [http://localhost:3000](http://localhost:3000). See **[/docs](http://localh
 
 **Cryptomus webhook (if used):** `https://www.webmorp.art/api/billing/cryptomus/webhook` — add the same URL in the Cryptomus project / webhook settings.
 
+## MCP server & Cursor plugin
+
+Remote MCP endpoint (Streamable HTTP, stateless): **`/api/mcp`** on production (`https://www.webmorp.art/api/mcp`).
+
+**Cursor — manual MCP config** (project `.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "ogkit": {
+      "url": "https://www.webmorp.art/api/mcp"
+    }
+  }
+}
+```
+
+**Cursor plugin bundle** (skill + rules + mcp.json): `cursor-plugin/` — test locally by copying to `~/.cursor/plugins/local/ogkit/`, then submit at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish).
+
+Tools: `og_list_templates`, `og_build_url`, `og_preview`, `og_nextjs_snippet`, `og_validate_page`, `ogkit_get_started`.
+
+## Google Search Console
+
+1. **Verify property** — in [Search Console](https://search.google.com/search-console) choose **URL prefix** `https://www.webmorp.art/`, method **HTML tag**. Copy the `content=` value into Vercel env `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, redeploy.
+2. **API access** — in Google Cloud: create a service account, enable **Google Search Console API**, download JSON key. Set `GSC_SERVICE_ACCOUNT_JSON` to the full JSON (single line). In GSC → **Settings → Users and permissions**, add the service account email as **Owner**.
+3. **Optional env** — `GSC_SITE_URL=https://www.webmorp.art/` (must match the verified property), `GSC_SITEMAP_URL` if non-default.
+4. **Manual checks** (requires `CRON_SECRET`):
+   - `POST /api/gsc/sitemap` — (re)submit sitemap
+   - `GET /api/gsc/analytics?days=28` — clicks, impressions, top queries/pages
+   - `GET /api/gsc/analytics?listSites=1` — list properties visible to the service account
+5. **Weekly cron** — `GET /api/cron/gsc` (Mon 04:00 UTC in `vercel.json`) submits sitemap, pulls 28-day stats, sends a Telegram digest if configured.
+
 ## Funnel analytics
 
 Funnel events are stored in MySQL table `funnel_events` (see Drizzle schema). Telegram notifications are optional side-channel.
