@@ -8,6 +8,8 @@ export type FunnelEventName =
   | 'user_registered'
   | 'api_key_created'
   | 'first_preview_generated'
+  | 'demo_preview_generated'
+  | 'playground_demo_preview'
   | 'og_image_generated'
   | 'waitlist_requested'
   | 'checkout_started'

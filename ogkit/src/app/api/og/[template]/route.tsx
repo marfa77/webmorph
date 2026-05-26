@@ -83,6 +83,12 @@ export async function GET(req: Request, context: RouteCtx) {
         })
       })
       .catch(() => {})
+  } else if (isDemo) {
+    void trackFunnelEvent({
+      eventName: isPlaygroundPreview ? 'playground_demo_preview' : 'demo_preview_generated',
+      source: isPlaygroundPreview ? 'playground' : 'demo',
+      properties: { template },
+    }).catch(() => {})
   }
 
   return new Response(image, {
