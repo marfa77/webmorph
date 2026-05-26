@@ -12,6 +12,7 @@ export type FunnelEventName =
   | 'waitlist_requested'
   | 'checkout_started'
   | 'payment_completed'
+  | 'mcp_tool_called'
 
 type TrackFunnelEventInput = {
   eventName: FunnelEventName

@@ -89,6 +89,12 @@ export default async function DashboardPage() {
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <NavCard
+          href={withBasePath('/onboarding')}
+          title="Setup wizard"
+          desc="Auto API key, Playground walkthrough, and Cursor MCP config in three steps."
+          hint="Start →"
+        />
+        <NavCard
           href={withBasePath('/dashboard/keys')}
           title="API keys"
           desc="Create, revoke, sign, and domain-restrict keys. Use the full secret in the key= query or Authorization header."

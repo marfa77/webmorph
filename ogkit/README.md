@@ -104,14 +104,16 @@ Remote MCP endpoint (Streamable HTTP, stateless): **`/api/mcp`** on production (
 }
 ```
 
-**Cursor plugin bundle** (skill + rules + mcp.json): `cursor-plugin/` — test locally by copying to `~/.cursor/plugins/local/ogkit/`, then submit at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish).
+**Cursor plugin bundle** (skill + rules + mcp.json): `cursor-plugin/` — test locally by copying to `~/.cursor/plugins/local/ogkit/`, then submit at [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish) with repo path `ogkit/cursor-plugin` (see root `.cursor-plugin/marketplace.json`).
+
+**Onboarding:** after magic-link sign-in, `/onboarding` auto-creates a default API key and walks through Playground + Cursor MCP setup.
 
 Tools: `og_list_templates`, `og_build_url`, `og_preview`, `og_nextjs_snippet`, `og_validate_page`, `ogkit_get_started`.
 
 ## Google Search Console
 
 1. **Verify property** — in [Search Console](https://search.google.com/search-console) choose **URL prefix** `https://www.webmorp.art/`, method **HTML tag**. Copy the `content=` value into Vercel env `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION`, redeploy.
-2. **API access** — in Google Cloud: create a service account, enable **Google Search Console API**, download JSON key. Set `GSC_SERVICE_ACCOUNT_JSON` to the full JSON (single line). In GSC → **Settings → Users and permissions**, add the service account email as **Owner**.
+2. **API access** — in Google Cloud: create a service account, enable **Google Search Console API**, download JSON key. Set `GSC_SERVICE_ACCOUNT_JSON` to the full JSON (single line), or reuse existing `GOOGLE_APPLICATION_CREDENTIALS` on Vercel. In GSC → **Settings → Users and permissions**, add the service account email as **Owner** (older accounts work around Google’s “email not found” bug for new SAs).
 3. **Optional env** — `GSC_SITE_URL=https://www.webmorp.art/` (must match the verified property), `GSC_SITEMAP_URL` if non-default.
 4. **Manual checks** (requires `CRON_SECRET`):
    - `POST /api/gsc/sitemap` — (re)submit sitemap

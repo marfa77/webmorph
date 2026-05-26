@@ -324,6 +324,18 @@ const buf = await r.arrayBuffer();
   }
 }`}</CodeBlock>
         <p className="mt-3 text-sm text-muted-foreground">Tools: og_list_templates, og_build_url, og_preview, og_nextjs_snippet, og_validate_page, ogkit_get_started.</p>
+        <p className="mt-3 text-sm text-muted-foreground">
+          <strong className="font-medium text-foreground">Cursor Marketplace:</strong> submit plugin path{' '}
+          <code className="font-mono">ogkit/cursor-plugin</code> at{' '}
+          <a className="underline" href="https://cursor.com/marketplace/publish" target="_blank" rel="noopener noreferrer">
+            cursor.com/marketplace/publish
+          </a>
+          . After sign-in, the{' '}
+          <Link href={withBasePath('/onboarding')} className="font-medium text-foreground underline underline-offset-4">
+            setup wizard
+          </Link>{' '}
+          copies <code className="font-mono">mcp.json</code> for you.
+        </p>
       </section>
 
       <section>

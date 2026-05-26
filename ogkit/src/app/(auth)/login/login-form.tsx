@@ -22,7 +22,7 @@ const authErrorFallback = 'We could not sign you in. Request a new magic link be
 
 export function LoginForm() {
   const searchParams = useSearchParams()
-  const next = searchParams.get('next') ?? '/dashboard'
+  const next = searchParams.get('next') ?? '/onboarding'
   const urlAuth = searchParams.get('error')
   const reason = searchParams.get('reason')
   const authBanner = useMemo(() => {
