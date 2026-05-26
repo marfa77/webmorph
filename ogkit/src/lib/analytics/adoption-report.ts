@@ -56,7 +56,7 @@ const GOAL_PER_DAY = 10
 export async function fetchAdoptionReportData(): Promise<AdoptionReportData> {
   const eventList = ADOPTION_EVENTS.map((e) => `'${e}'`).join(', ')
 
-  const [rowsResult, toolsResult] = await Promise.all([
+  const [rowsRaw, toolsRaw] = await Promise.all([
     db.execute(sql.raw(`
       SELECT DATE(created_at) AS d, event_name, COUNT(*) AS c
       FROM funnel_events
@@ -76,13 +76,16 @@ export async function fetchAdoptionReportData(): Promise<AdoptionReportData> {
     `)),
   ])
 
-  const rows = (rowsResult[0] as Array<{ d: Date | string; event_name: string; c: number }>).map((r) => ({
+  type RowAgg = { d: Date | string; event_name: string; c: number }
+  type ToolAgg = { tool: string; c: number }
+
+  const rows = (rowsRaw as unknown as RowAgg[]).map((r) => ({
     d: r.d instanceof Date ? r.d.toISOString().slice(0, 10) : String(r.d).slice(0, 10),
     event_name: r.event_name,
     c: Number(r.c),
   }))
 
-  const mcpTools = (toolsResult[0] as Array<{ tool: string; c: number }>).map((r) => ({
+  const mcpTools = (toolsRaw as unknown as ToolAgg[]).map((r) => ({
     tool: String(r.tool),
     c: Number(r.c),
   }))
