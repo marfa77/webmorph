@@ -1,16 +1,8 @@
 import { sql } from 'drizzle-orm'
 import { db } from '@/lib/db'
+import { ADOPTION_EVENTS } from '@/lib/analytics/funnel'
 
-export const ADOPTION_EVENTS = [
-  'mcp_tool_called',
-  'playground_demo_preview',
-  'homepage_demo_preview',
-  'demo_preview_generated',
-  'api_key_created',
-  'user_registered',
-  'first_preview_generated',
-  'og_image_generated',
-] as const
+export { ADOPTION_EVENTS }
 
 export type AdoptionEventName = (typeof ADOPTION_EVENTS)[number]
 

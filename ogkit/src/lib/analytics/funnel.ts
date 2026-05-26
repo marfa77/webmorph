@@ -10,11 +10,24 @@ export type FunnelEventName =
   | 'first_preview_generated'
   | 'demo_preview_generated'
   | 'playground_demo_preview'
+  | 'homepage_demo_preview'
   | 'og_image_generated'
   | 'waitlist_requested'
   | 'checkout_started'
   | 'payment_completed'
   | 'mcp_tool_called'
+
+/** Events tracked in the daily adoption digest — also notify Telegram instantly by default. */
+export const ADOPTION_EVENTS = [
+  'mcp_tool_called',
+  'playground_demo_preview',
+  'homepage_demo_preview',
+  'demo_preview_generated',
+  'api_key_created',
+  'user_registered',
+  'first_preview_generated',
+  'og_image_generated',
+] as const satisfies readonly FunnelEventName[]
 
 type TrackFunnelEventInput = {
   eventName: FunnelEventName
@@ -31,7 +44,52 @@ function compactProperties(properties: Record<string, Json | undefined> = {}) {
   return Object.fromEntries(Object.entries(properties).filter(([, value]) => value !== undefined)) as Record<string, Json>
 }
 
+const ADOPTION_EVENT_EMOJI: Partial<Record<FunnelEventName, string>> = {
+  mcp_tool_called: '🔌',
+  playground_demo_preview: '🎮',
+  homepage_demo_preview: '🏠',
+  demo_preview_generated: '🖼',
+  user_registered: '👤',
+  api_key_created: '🔑',
+  first_preview_generated: '🎉',
+  og_image_generated: '✅',
+}
+
+function propString(props: Record<string, Json | undefined>, key: string): string | undefined {
+  const value = props[key]
+  if (value === null || value === undefined || typeof value === 'object') return undefined
+  return String(value)
+}
+
+/** Compact one-line alert for instant Telegram notifications. */
+export function formatFunnelTelegramAlert(input: TrackFunnelEventInput): string {
+  const emoji = ADOPTION_EVENT_EMOJI[input.eventName] ?? '📊'
+  const props = compactProperties(input.properties)
+  const bits: string[] = [`${emoji} ${input.eventName}`]
+
+  if (input.eventName === 'mcp_tool_called') {
+    const tool = propString(props, 'tool')
+    if (tool) bits.push(tool)
+  }
+
+  const template = propString(props, 'template')
+  if (template) bits.push(template)
+
+  if (input.email) bits.push(input.email)
+  else if (input.source) bits.push(input.source)
+
+  if (input.eventName === 'og_image_generated' && props.firstUsage === true) {
+    bits.push('first')
+  }
+
+  return bits.join(' · ')
+}
+
 function formatTelegramEvent(input: TrackFunnelEventInput) {
+  if ((ADOPTION_EVENTS as readonly string[]).includes(input.eventName)) {
+    return formatFunnelTelegramAlert(input)
+  }
+
   const lines = [`OGKit funnel: ${input.eventName}`]
   if (input.email) lines.push(`Email: ${input.email}`)
   if (input.userId) lines.push(`User: ${input.userId}`)
@@ -55,6 +113,9 @@ function isDuplicateKeyError(e: unknown): boolean {
 }
 
 export async function trackFunnelEvent(input: TrackFunnelEventInput) {
+  const notify =
+    input.notify ?? (ADOPTION_EVENTS as readonly string[]).includes(input.eventName)
+
   try {
     const props = compactProperties(input.properties)
     const values = {
@@ -77,7 +138,7 @@ export async function trackFunnelEvent(input: TrackFunnelEventInput) {
         .limit(1)
 
       if (existing) {
-        if (input.notify && input.userId && existing.notifiedAt == null) {
+        if (notify && input.userId && existing.notifiedAt == null) {
           const notification = await sendTelegramMessage({ text: formatTelegramEvent(input) })
           if (notification.ok) {
             await db.update(funnelEvents).set({ notifiedAt: new Date() }).where(eq(funnelEvents.id, existing.id))
@@ -90,7 +151,7 @@ export async function trackFunnelEvent(input: TrackFunnelEventInput) {
     try {
       await db.insert(funnelEvents).values(values)
     } catch (e) {
-      if (input.notify && input.userId && isDuplicateKeyError(e)) {
+      if (notify && input.userId && isDuplicateKeyError(e)) {
         const [existing] = await db
           .select({ id: funnelEvents.id })
           .from(funnelEvents)
@@ -118,7 +179,7 @@ export async function trackFunnelEvent(input: TrackFunnelEventInput) {
       return
     }
 
-    if (input.notify) {
+    if (notify) {
       const parts = [eq(funnelEvents.eventName, input.eventName)]
       if (input.userId) parts.push(eq(funnelEvents.userId, input.userId))
       else if (input.email) parts.push(eq(funnelEvents.email, input.email.trim().toLowerCase()))
