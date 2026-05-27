@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server'
 import { fetchAdoptionReportData, formatAdoptionTelegramReport } from '@/lib/analytics/adoption-report'
 import { authorizeCron } from '@/lib/gsc/auth-cron'
-import { sendTelegramMessage } from '@/lib/notifications/telegram'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
-/** Daily 07:00 UTC — adoption funnel digest + conclusions to Telegram. */
+/** Manual-only: adoption funnel digest preview (daily Telegram cron disabled). */
 export async function GET(request: Request) {
   const denied = authorizeCron(request)
   if (denied) return denied
@@ -14,11 +13,10 @@ export async function GET(request: Request) {
   try {
     const data = await fetchAdoptionReportData()
     const text = formatAdoptionTelegramReport(data)
-    const telegram = await sendTelegramMessage({ text })
 
     return NextResponse.json({
       ok: true,
-      telegram: telegram.ok ? 'sent' : telegram.skipped ? 'skipped' : 'failed',
+      telegram: 'disabled',
       preview: text,
     })
   } catch (err) {
