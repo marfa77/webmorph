@@ -21,6 +21,7 @@ export async function GET(req: Request, context: RouteCtx) {
   const url = new URL(req.url)
   const key = url.searchParams.get('key') || req.headers.get('authorization')?.replace(/^Bearer\s+/i, '') || null
   const isPlaygroundPreview = url.searchParams.get('source') === 'playground'
+  const isHomepageDemo = url.searchParams.get('source') === 'homepage'
   const isDemo = url.searchParams.get('demo') === '1' && !key
 
   const auth = isDemo ? null : await authenticateKey(key)
@@ -84,9 +85,15 @@ export async function GET(req: Request, context: RouteCtx) {
       })
       .catch(() => {})
   } else if (isDemo) {
+    const demoEvent = isPlaygroundPreview
+      ? 'playground_demo_preview'
+      : isHomepageDemo
+        ? 'homepage_demo_preview'
+        : 'demo_preview_generated'
+    const demoSource = isPlaygroundPreview ? 'playground' : isHomepageDemo ? 'homepage' : 'demo'
     void trackFunnelEvent({
-      eventName: isPlaygroundPreview ? 'playground_demo_preview' : 'demo_preview_generated',
-      source: isPlaygroundPreview ? 'playground' : 'demo',
+      eventName: demoEvent,
+      source: demoSource,
       properties: { template },
     }).catch(() => {})
   }

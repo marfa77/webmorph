@@ -1,4 +1,4 @@
-import { absoluteSiteUrl, withBasePath } from '@/config/paths'
+import { absoluteSiteUrl } from '@/config/paths'
 import { isTemplateId, TEMPLATE_IDS, type TemplateId } from '@/config/templates'
 
 export type OgUrlOptions = {
@@ -16,8 +16,7 @@ export type OgUrlOptions = {
 }
 
 export function buildOgImageUrl(options: OgUrlOptions): string {
-  const path = withBasePath(`/api/og/${options.template}`)
-  const url = new URL(absoluteSiteUrl(path))
+  const url = new URL(absoluteSiteUrl(`/api/og/${options.template}`))
 
   url.searchParams.set('title', options.title)
   if (options.subtitle) url.searchParams.set('subtitle', options.subtitle)

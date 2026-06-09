@@ -1,8 +1,8 @@
 import { siteConfig } from '@/config/site'
 
 /**
- * Leave empty when OGKit owns the site root. Set only if the app is mounted
- * below another path by the hosting layer.
+ * Set NEXT_PUBLIC_BASE_PATH=/ogkit in production so OGKit lives at /ogkit
+ * and static website landings can own the site root (/).
  */
 export const publicBasePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
 

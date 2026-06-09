@@ -16,6 +16,9 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: 'Applebot-Extended', allow: '/' },
       { userAgent: 'CCBot', allow: '/' },
     ],
-    sitemap: absoluteSiteUrl('/sitemap.xml'),
+    sitemap: [
+      absoluteSiteUrl('/sitemap.xml'),
+      'https://www.webmorp.art/sitemap.xml',
+    ],
   }
 }

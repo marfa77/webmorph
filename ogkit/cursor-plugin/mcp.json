@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "ogkit": {
-      "url": "https://www.webmorp.art/api/mcp"
+      "url": "https://www.webmorp.art/ogkit/api/mcp"
     }
   }
 }

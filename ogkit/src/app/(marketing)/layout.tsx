@@ -15,6 +15,9 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
             {siteConfig.name}
           </Link>
           <nav className="flex items-center gap-4 text-sm text-muted-foreground">
+            <Link href="/" className="font-medium text-slate-800 hover:text-foreground">
+              Websites — $100
+            </Link>
             <Link href={withBasePath('/pricing')} className="hover:text-foreground">
               Pricing
             </Link>
@@ -45,6 +48,9 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         <div className="container max-w-6xl flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           <p>© {new Date().getFullYear()} {siteConfig.name}</p>
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            <Link href="/" className="hover:text-foreground">
+              Websites — $100 / 24h
+            </Link>
             <Link href={withBasePath('/pricing')} className="hover:text-foreground">
               Pricing
             </Link>

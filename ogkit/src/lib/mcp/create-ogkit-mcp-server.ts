@@ -107,7 +107,7 @@ export function createOgkitMcpServer(meta?: McpRequestMeta): McpServer {
                 template,
                 dimensions: '1200x630',
                 usage: 'Set metadata.openGraph.images and twitter.images to this URL (server-side).',
-                playground: absoluteSiteUrl(withBasePath('/playground')),
+                playground: absoluteSiteUrl('/playground'),
               },
               null,
               2,

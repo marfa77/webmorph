@@ -12,14 +12,18 @@ import { Badge } from '@/components/ui/badge'
 export const metadata = marketingMetadata({
   title: 'Open Graph image API pricing — OGKit Free, Pro $19, Scale $99',
   description:
-    'OGKit Open Graph image API pricing: free watermarked tier, Pro $19/mo (100k images), Scale $99/mo (1M). Cryptomus crypto checkout, signed URLs included on paid plans, monthly quota with no auto-renew.',
+    'OGKit Open Graph image API pricing: free watermarked tier, Pro $19/mo (100k images), Scale $99/mo (1M). Pay by card (Gumroad) or crypto (Cryptomus). Signed URLs on paid plans, monthly quota with no auto-renew.',
   pathname: '/pricing',
 })
 
 const faq = [
   {
-    q: 'Do I need a credit card?',
-    a: 'No. OGKit uses Cryptomus for crypto checkout. You pay with any supported cryptocurrency — no card processor, no regional billing block, no subscription lock-in.',
+    q: 'Can I pay with a credit card?',
+    a: 'Yes. OGKit Pro is available on Gumroad with card checkout. After purchase, sign in and redeem your license key on the account page. Scale is available via crypto checkout.',
+  },
+  {
+    q: 'Do you support crypto?',
+    a: 'Yes. Pro and Scale can be purchased with cryptocurrency via Cryptomus — useful if you prefer on-chain payment or cannot use card checkout in your region.',
   },
   {
     q: 'What is the free tier?',
@@ -45,6 +49,7 @@ const faq = [
 
 export default function PricingPage() {
   const pricingRoot = absoluteSiteUrl('/pricing')
+  const gumroadUrl = getGumroadCheckoutUrl()
   const productJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -98,13 +103,13 @@ export default function PricingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      <h1 className="text-center text-3xl font-bold">Crypto-native pricing</h1>
+      <h1 className="text-center text-3xl font-bold">Pricing</h1>
       <p className="mt-2 text-center text-muted-foreground">
-        Start with demo previews, then pay globally with crypto when you need production quota.
+        Start with demo previews, then upgrade when you need production quota.
       </p>
-      <p className="mx-auto mt-4 max-w-lg text-center text-sm text-muted-foreground">
-        <span className="font-medium text-foreground">Crypto-only by design.</span> OGKit uses Cryptomus for global
-        developer checkout without card processors, regional billing blocks, or subscription lock-in.
+      <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
+        <span className="font-medium text-foreground">Pay your way.</span> Pro on Gumroad (card) or crypto. Scale via
+        crypto. One-time monthly quota — no auto-renewal.
       </p>
 
       <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -133,10 +138,35 @@ export default function PricingPage() {
                   <Button asChild className="w-full" variant="outline">
                     <Link href={withBasePath('/login')}>Get started free</Link>
                   </Button>
+                ) : id === 'pro' ? (
+                  <>
+                    <Button asChild className="w-full">
+                      <a href={gumroadUrl} target="_blank" rel="noopener noreferrer">
+                        Buy Pro — card (Gumroad)
+                      </a>
+                    </Button>
+                    <Button asChild className="w-full" variant="outline">
+                      <a href={withBasePath('/api/billing/checkout/crypto?plan=pro')}>Pay with crypto</a>
+                    </Button>
+                    <p className="text-center text-xs text-muted-foreground">
+                      Already bought on Gumroad?{' '}
+                      <Link href={withBasePath('/account#gumroad')} className="underline hover:text-foreground">
+                        Redeem license
+                      </Link>
+                    </p>
+                  </>
                 ) : (
-                  <Button asChild className="w-full">
-                    <a href={withBasePath(`/api/billing/checkout/crypto?plan=${id}`)}>Pay with crypto · {p.name}</a>
-                  </Button>
+                  <>
+                    <Button asChild className="w-full">
+                      <a href={withBasePath('/api/billing/checkout/crypto?plan=scale')}>Pay with crypto · Scale</a>
+                    </Button>
+                    <p className="text-center text-xs text-muted-foreground">
+                      Need card checkout?{' '}
+                      <a href={gumroadUrl} target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">
+                        Pro on Gumroad
+                      </a>
+                    </p>
+                  </>
                 )}
               </CardFooter>
             </Card>
@@ -144,22 +174,22 @@ export default function PricingPage() {
         })}
       </div>
 
-      <section className="mt-12 rounded-lg border bg-card p-6">
-        <h2 className="text-lg font-semibold">Gumroad (card checkout)</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          OGKit Pro is also available on Gumroad if you prefer card checkout through their checkout. After purchase,
-          sign in and redeem your license key on the account page.
-        </p>
-        <p className="mt-3 flex flex-wrap gap-3 text-sm">
-          <Button asChild variant="outline" size="sm">
-            <a href={getGumroadCheckoutUrl()} target="_blank" rel="noopener noreferrer">
-              Buy Pro on Gumroad
-            </a>
-          </Button>
-          <Button asChild variant="ghost" size="sm">
-            <Link href={withBasePath('/account#gumroad')}>Redeem license</Link>
-          </Button>
-        </p>
+      <section className="mt-12 rounded-lg border bg-muted/30 p-6 text-sm text-muted-foreground space-y-3">
+        <p className="font-medium text-foreground">How checkout works</p>
+        <ul className="list-inside list-disc space-y-1">
+          <li>
+            <strong className="text-foreground">Gumroad (Pro, card):</strong> checkout on Gumroad → sign in to OGKit →
+            redeem license key on{' '}
+            <Link href={withBasePath('/account#gumroad')} className="underline hover:text-foreground">
+              account page
+            </Link>
+            .
+          </li>
+          <li>
+            <strong className="text-foreground">Crypto (Pro &amp; Scale):</strong> pay via Cryptomus → quota activates
+            after on-chain confirmation.
+          </li>
+        </ul>
       </section>
 
       <section className="mt-14 space-y-4">
@@ -181,17 +211,27 @@ export default function PricingPage() {
       <div className="mt-12 rounded-lg border bg-muted/30 p-6 text-sm text-muted-foreground space-y-2">
         <p className="font-medium text-foreground">Payment & refund policy</p>
         <p>
-          All payments are processed in cryptocurrency via Cryptomus and are <strong>non-refundable</strong> once the
-          monthly quota has been activated. If you experience a technical failure on our end before quota is granted,
-          use our <Link href={withBasePath('/contact')} className="underline hover:text-foreground">contact form</Link> within 7 days and we will investigate.
+          Gumroad and Cryptomus payments are <strong>non-refundable</strong> once the monthly quota has been activated.
+          If you experience a technical failure on our end before quota is granted, use our{' '}
+          <Link href={withBasePath('/contact')} className="underline hover:text-foreground">
+            contact form
+          </Link>{' '}
+          within 7 days and we will investigate.
         </p>
         <p>
-          Subscriptions are one-time monthly payments — there is no automatic renewal. You pay again when you need
-          quota for the next month.
+          Subscriptions are one-time monthly payments — there is no automatic renewal. You pay again when you need quota
+          for the next month.
         </p>
         <p>
-          Questions? Read the <Link href={withBasePath('/terms')} className="underline hover:text-foreground">Terms of Service</Link> or{' '}
-          <Link href={withBasePath('/contact')} className="underline hover:text-foreground">use the contact form</Link>.
+          Questions? Read the{' '}
+          <Link href={withBasePath('/terms')} className="underline hover:text-foreground">
+            Terms of Service
+          </Link>{' '}
+          or{' '}
+          <Link href={withBasePath('/contact')} className="underline hover:text-foreground">
+            use the contact form
+          </Link>
+          .
         </p>
       </div>
 

@@ -1,3 +1,4 @@
+import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 
 const GSC_SCOPE = 'https://www.googleapis.com/auth/webmasters'
@@ -44,7 +45,7 @@ export function getGscSiteUrl(): string {
 export function getGscSitemapUrl(): string {
   const custom = process.env.GSC_SITEMAP_URL?.trim()
   if (custom) return custom
-  return `${siteConfig.url.replace(/\/$/, '')}/sitemap.xml`
+  return absoluteSiteUrl('/sitemap.xml')
 }
 
 export function isGscConfigured(): boolean {
