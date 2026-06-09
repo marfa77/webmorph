@@ -41,5 +41,27 @@
     { "source": "/platform/:path*", "destination": "/ogkit/platform/:path*", "permanent": true },
     { "source": "/use-case/:path*", "destination": "/ogkit/use-case/:path*", "permanent": true },
     { "source": "/api/:path*", "destination": "/ogkit/api/:path*", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/", "destination": "/ogkit/index.html" },
+    { "source": "/freelancer", "destination": "/ogkit/freelancer/index.html" },
+    { "source": "/freelancer/", "destination": "/ogkit/freelancer/index.html" },
+    { "source": "/small-business", "destination": "/ogkit/small-business/index.html" },
+    { "source": "/small-business/", "destination": "/ogkit/small-business/index.html" },
+    { "source": "/restaurant", "destination": "/ogkit/restaurant/index.html" },
+    { "source": "/restaurant/", "destination": "/ogkit/restaurant/index.html" },
+    { "source": "/startup", "destination": "/ogkit/startup/index.html" },
+    { "source": "/startup/", "destination": "/ogkit/startup/index.html" },
+    { "source": "/privacy.html", "destination": "/ogkit/privacy.html" },
+    { "source": "/terms.html", "destination": "/ogkit/terms.html" },
+    { "source": "/robots.txt", "destination": "/ogkit/website-robots.txt" },
+    { "source": "/sitemap.xml", "destination": "/ogkit/website-sitemap.xml" },
+    { "source": "/llms.txt", "destination": "/ogkit/website-llms.txt" },
+    { "source": "/llm.txt", "destination": "/ogkit/website-llms.txt" },
+    { "source": "/previews/:path*", "destination": "/ogkit/previews/:path*" },
+    { "source": "/favicon.svg", "destination": "/ogkit/favicon.svg" },
+    { "source": "/favicon.png", "destination": "/ogkit/favicon.png" },
+    { "source": "/apple-touch-icon.png", "destination": "/ogkit/apple-touch-icon.png" },
+    { "source": "/og-image.jpg", "destination": "/ogkit/og-image.jpg" }
   ]
 }

@@ -40,9 +40,8 @@ for (const name of ['favicon.png', 'apple-touch-icon.png']) {
 copyFile(path.join(root, 'og-image.jpg'), path.join(publicDir, 'og-image.jpg'))
 copyFile(path.join(root, 'privacy.html'), path.join(publicDir, 'privacy.html'))
 copyFile(path.join(root, 'terms.html'), path.join(publicDir, 'terms.html'))
-copyFile(path.join(root, 'robots.txt'), path.join(publicDir, 'robots.txt'))
-copyFile(path.join(root, 'llms.txt'), path.join(publicDir, 'llms.txt'))
-copyFile(path.join(root, 'llms.txt'), path.join(publicDir, 'llm.txt'))
+copyFile(path.join(root, 'robots.txt'), path.join(publicDir, 'website-robots.txt'))
+copyFile(path.join(root, 'llms.txt'), path.join(publicDir, 'website-llms.txt'))
 
 // $100 website service at site root (OGKit lives under /ogkit via NEXT_PUBLIC_BASE_PATH)
 copyFile(path.join(root, 'index.html'), path.join(publicDir, 'index.html'))
@@ -77,5 +76,5 @@ ${websiteRoutes
   .join('\n')}
 </urlset>
 `
-fs.writeFileSync(path.join(publicDir, 'sitemap.xml'), sitemapXml)
-console.log('[copy-webmorph-assets] ogkit/public/sitemap.xml (website landings)')
+fs.writeFileSync(path.join(publicDir, 'website-sitemap.xml'), sitemapXml)
+console.log('[copy-webmorph-assets] ogkit/public/website-sitemap.xml (website landings)')
