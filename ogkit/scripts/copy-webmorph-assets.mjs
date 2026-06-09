@@ -46,10 +46,26 @@ copyFile(path.join(root, '12b40bee030e4be1bd2e571d9f5c43a1.txt'), path.join(publ
 
 // $100 website service at site root (OGKit lives under /ogkit via NEXT_PUBLIC_BASE_PATH)
 copyFile(path.join(root, 'index.html'), path.join(publicDir, 'index.html'))
-for (const niche of ['freelancer', 'small-business', 'restaurant', 'startup']) {
+for (const niche of ['freelancer', 'small-business', 'restaurant', 'startup', 'channel', 'africa-dream']) {
   copyDir(path.join(root, niche), path.join(publicDir, niche))
 }
 copyDir(path.join(root, 'previews'), path.join(publicDir, 'previews'))
+
+function collectHtmlRoutes(dir, urlPrefix, priority, changefreq) {
+  const routes = []
+  if (!fs.existsSync(dir)) return routes
+  for (const name of fs.readdirSync(dir)) {
+    const full = path.join(dir, name)
+    if (fs.statSync(full).isDirectory()) {
+      routes.push(...collectHtmlRoutes(full, `${urlPrefix}/${name}`, priority, changefreq))
+      continue
+    }
+    if (!name.endsWith('.html')) continue
+    const slug = name === 'index.html' ? urlPrefix : `${urlPrefix}/${name.replace(/\.html$/, '')}`
+    routes.push({ loc: `${siteHost}${slug}`, priority, changefreq })
+  }
+  return routes
+}
 
 const lastmod = new Date().toISOString().slice(0, 10)
 const websiteRoutes = [
@@ -58,10 +74,12 @@ const websiteRoutes = [
   { loc: `${siteHost}/small-business`, priority: '0.9', changefreq: 'monthly' },
   { loc: `${siteHost}/restaurant`, priority: '0.9', changefreq: 'monthly' },
   { loc: `${siteHost}/startup`, priority: '0.9', changefreq: 'monthly' },
+  { loc: `${siteHost}/channel`, priority: '0.9', changefreq: 'monthly' },
   { loc: `${siteHost}/privacy.html`, priority: '0.3', changefreq: 'yearly' },
   { loc: `${siteHost}/terms.html`, priority: '0.3', changefreq: 'yearly' },
   { loc: `${siteHost}/llms.txt`, priority: '0.5', changefreq: 'monthly' },
   { loc: `${siteHost}/llm.txt`, priority: '0.5', changefreq: 'monthly' },
+  ...collectHtmlRoutes(path.join(root, 'africa-dream'), '/africa-dream', '0.8', 'weekly'),
 ]
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

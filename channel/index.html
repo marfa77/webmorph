@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Channel → Website — webmorp.art</title>
+    <meta name="description" content="Turn your Telegram channel into an SEO website with automatic post sync. Multi-page static site, custom domain, rule-based publishing — same pipeline as Barakhlo. From $280.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.webmorp.art/channel/">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.webmorp.art/channel/">
+    <meta property="og:title" content="Telegram Channel → Website — webmorp.art">
+    <meta property="og:description" content="Your Telegram content, indexed by Google — with automatic sync and a custom domain.">
+    <meta property="og:image" content="https://www.webmorp.art/og-image.jpg">
+    <meta property="og:site_name" content="webmorp.art">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Channel → Site",
+      "provider": { "@type": "Organization", "name": "webmorp.art", "url": "https://www.webmorp.art/" },
+      "description": "Convert a Telegram channel into a multi-page static website with automatic post sync, custom domain, and SEO.",
+      "areaServed": "Worldwide",
+      "offers": [
+        { "@type": "Offer", "name": "Channel Live", "price": "280", "priceCurrency": "USD", "description": "Multi-page site + domain setup + Telegram sync" },
+        { "@type": "Offer", "name": "Card site", "price": "100", "priceCurrency": "USD", "description": "One-page static site, 24h delivery" }
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { heading: ['"Space Grotesk"', 'sans-serif'], body: ['Inter', 'sans-serif'] },
+          colors: { brand: { DEFAULT: '#0066FF', light: '#3388FF', dark: '#0044CC' }, surface: { dark: '#060611', card: '#0d0d1f' } },
+        },
+      },
+    }
+    </script>
+    <style>
+        .gradient-text { background: linear-gradient(135deg, #0066FF 0%, #7C3AED 50%, #EC4899 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-gradient { background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0,102,255,0.15) 0%, transparent 60%), radial-gradient(ellipse 60% 40% at 80% 50%, rgba(124,58,237,0.1) 0%, transparent 50%); }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); }
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="font-body bg-white text-gray-900 antialiased">
+
+    <header class="fixed top-0 inset-x-0 z-50 bg-surface-dark/90 backdrop-blur-md border-b border-white/5">
+        <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-xl font-heading font-bold text-white">webmorp<span class="text-brand">.art</span></a>
+            <div class="flex items-center gap-4">
+                <a href="/" class="text-white/60 hover:text-white text-sm hidden sm:inline">$100 sites</a>
+                <a href="/#contact" class="bg-brand hover:bg-brand-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors">Get a quote</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="pt-20">
+        <section class="bg-surface-dark hero-gradient py-24 sm:py-32">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+                <p class="text-brand font-semibold text-sm uppercase tracking-wider mb-4">Channel → Site</p>
+                <h1 class="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+                    Your Telegram channel,<br><span class="gradient-text">indexed by Google</span>
+                </h1>
+                <p class="text-lg text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    Travel agencies, local businesses, creators — if your best content lives in Telegram, we turn it into a fast static website on your own domain. New posts sync automatically. No WordPress, no LLM roulette.
+                </p>
+                <a href="/#contact" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-light text-white px-8 py-4 rounded-xl text-lg font-semibold transition-colors">Request Channel → Site</a>
+            </div>
+        </section>
+
+        <section class="py-20 sm:py-28 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <div>
+                        <h2 class="font-heading text-3xl font-bold mb-4">The problem</h2>
+                        <p class="text-gray-600 leading-relaxed mb-4">Telegram is great for community and daily posts. Google does not index your channel feed. A customer searching “tour to Namibia 2026” or “immigrant marketplace Berlin” finds competitors with websites — not your pinned post from three weeks ago.</p>
+                        <p class="text-gray-600 leading-relaxed">You end up re-explaining the same FAQs in DMs and losing leads who never joined the channel.</p>
+                    </div>
+                    <div>
+                        <h2 class="font-heading text-3xl font-bold mb-4">What we build</h2>
+                        <ul class="space-y-3 text-gray-600">
+                            <li class="flex gap-3"><span class="text-brand font-bold">1.</span> Multi-page static site — tours, guides, catalog, about, booking CTA</li>
+                            <li class="flex gap-3"><span class="text-brand font-bold">2.</span> Custom domain + SSL (we help connect DNS, ~$15/year for the domain)</li>
+                            <li class="flex gap-3"><span class="text-brand font-bold">3.</span> Automatic sync from your public channel on a schedule</li>
+                            <li class="flex gap-3"><span class="text-brand font-bold">4.</span> SEO — titles, schema, sitemap, OG images via <a href="/ogkit" class="text-brand hover:underline">OGKit</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-gray-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-14">
+                    <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4">Sync without AI guesswork</h2>
+                    <p class="text-gray-500 max-w-2xl mx-auto">We reuse the Telethon pipeline from <a href="https://barakhlo.online/" target="_blank" rel="noopener" class="text-brand hover:underline">Barakhlo</a> — 38+ Telegram channels synced to a live product today. For your site we swap the database for static HTML and use <strong>rules, not LLMs</strong>.</p>
+                </div>
+                <div class="grid sm:grid-cols-3 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <p class="text-brand font-bold text-sm mb-2">Tags (recommended)</p>
+                        <p class="text-gray-600 text-sm leading-relaxed">End posts with <code class="bg-gray-100 px-1 rounded">#guide</code> or <code class="bg-gray-100 px-1 rounded">#tour</code> — we publish only what you mark.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <p class="text-brand font-bold text-sm mb-2">Regex patterns</p>
+                        <p class="text-gray-600 text-sm leading-relaxed">Prices, dates, “visa”, “from $” — keyword filters like Barakhlo’s prefilter, tuned for your niche.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <p class="text-brand font-bold text-sm mb-2">Noise skipped</p>
+                        <p class="text-gray-600 text-sm leading-relaxed">Polls, “hey are you there?”, promos without structure — stay in Telegram only.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 sm:py-28 bg-surface-dark text-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold text-center mb-12">Packages</h2>
+                <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                    <div class="glass rounded-2xl p-8">
+                        <p class="text-white/50 text-sm uppercase tracking-wider mb-2">Entry</p>
+                        <h3 class="font-heading text-2xl font-bold mb-2">Card site — $100</h3>
+                        <p class="text-white/60 text-sm mb-6">One strong landing page. 24h delivery. Your texts or we write them. No sync.</p>
+                        <a href="/#contact" class="text-brand font-semibold text-sm hover:text-brand-light">Start for $100 →</a>
+                    </div>
+                    <div class="glass rounded-2xl p-8 ring-2 ring-brand/40">
+                        <p class="text-brand text-sm uppercase tracking-wider mb-2">Channel → Site Live</p>
+                        <h3 class="font-heading text-2xl font-bold mb-2">From $280</h3>
+                        <p class="text-white/60 text-sm mb-4">Multi-page site · domain setup · Telegram sync (3 months included) · one revision round.</p>
+                        <ul class="text-white/50 text-xs space-y-1 mb-6">
+                            <li>+ domain registration ~$15/year (billed to you or bundled)</li>
+                            <li>Then ~$25–30/mo for ongoing sync + hosting (optional)</li>
+                        </ul>
+                        <a href="/#contact" class="inline-block bg-brand hover:bg-brand-light text-white px-6 py-2.5 rounded-full text-sm font-semibold">Get a quote</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white" id="faq">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 space-y-3">
+                <h2 class="font-heading text-3xl font-bold text-center mb-10">FAQ</h2>
+                <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm open:ring-1 open:ring-brand/15">
+                    <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">Do I stop posting in Telegram?</summary>
+                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">No. Telegram stays your daily feed and community. The website catches Google search and gives you a link for ads, email signatures, and partners.</p>
+                </details>
+                <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">How often does sync run?</summary>
+                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Typically once a week — same cron model as Barakhlo. Daily is possible for high-volume channels; we quote separately.</p>
+                </details>
+                <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">Who is this for?</summary>
+                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Tour operators, Telegram-first shops, local service businesses, niche media — anyone with structured posts (prices, dates, guides) that deserve permanent URLs.</p>
+                </details>
+                <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm">
+                    <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">Is this the same tech as Barakhlo?</summary>
+                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Same Telethon parser, cursors, and regex prefilter philosophy. Barakhlo writes to Postgres + Next.js; Channel → Site writes static HTML and deploys to your domain. No Gemini/LLM in the sync path.</p>
+                </details>
+            </div>
+        </section>
+
+        <section class="py-20 bg-gray-50 text-center">
+            <div class="max-w-xl mx-auto px-4">
+                <h2 class="font-heading text-2xl font-bold mb-4">Send your channel handle</h2>
+                <p class="text-gray-600 mb-8">We’ll reply with scope, timeline, and a fixed quote — usually within a few hours.</p>
+                <a href="/#contact" class="inline-flex items-center gap-2 bg-brand text-white px-8 py-3 rounded-full font-semibold hover:bg-brand-light transition-colors">Contact webmorp.art</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-surface-dark border-t border-white/5 py-8 text-center text-sm text-white/30">
+        <p>&copy; 2024–2026 <a href="/" class="text-white/50 hover:text-white">webmorp.art</a> · <a href="/channel/" class="text-white/50">Channel → Site</a> · <a href="https://www.pixid.studio/" class="text-white/50">PixID Studio</a></p>
+    </footer>
+
+    <script>
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    </script>
+</body>
+</html>

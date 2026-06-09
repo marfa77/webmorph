@@ -40,6 +40,8 @@
 /public/restaurant/**
 /public/small-business/**
 /public/startup/**
+/public/channel/**
+/public/africa-dream/**
 
 # misc
 .DS_Store
