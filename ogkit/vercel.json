@@ -62,6 +62,7 @@
     { "source": "/favicon.svg", "destination": "/ogkit/favicon.svg" },
     { "source": "/favicon.png", "destination": "/ogkit/favicon.png" },
     { "source": "/apple-touch-icon.png", "destination": "/ogkit/apple-touch-icon.png" },
-    { "source": "/og-image.jpg", "destination": "/ogkit/og-image.jpg" }
+    { "source": "/og-image.jpg", "destination": "/ogkit/og-image.jpg" },
+    { "source": "/12b40bee030e4be1bd2e571d9f5c43a1.txt", "destination": "/ogkit/12b40bee030e4be1bd2e571d9f5c43a1.txt" }
   ]
 }

@@ -1,15 +1,11 @@
 import { NextResponse } from 'next/server'
-import { publicBasePath } from '@/config/paths'
-import { siteConfig } from '@/config/site'
-import { submitIndexNowUrls } from '@/lib/indexnow'
+import { isAllowedIndexNowUrl, submitIndexNowUrls } from '@/lib/indexnow'
 
 export const runtime = 'nodejs'
 
-const canonicalPrefix = `${siteConfig.url.replace(/\/$/, '')}${publicBasePath}`.replace(/\/$/, '')
-
 /**
  * POST JSON `{ "urls": string[] }` to ping IndexNow after deploy or content changes.
- * Secured with CRON_SECRET (same pattern as other internal hooks): `Authorization: Bearer <CRON_SECRET>`
+ * Secured with CRON_SECRET: `Authorization: Bearer <CRON_SECRET>`
  */
 export async function POST(req: Request) {
   const secret = process.env.CRON_SECRET?.trim()
@@ -30,9 +26,11 @@ export async function POST(req: Request) {
   }
   const list = urls as string[]
   for (const u of list) {
-    const s = u.trim()
-    if (!s.startsWith(`${canonicalPrefix}/`) && s !== canonicalPrefix) {
-      return NextResponse.json({ error: 'urls_must_match_site_canonical', prefix: canonicalPrefix }, { status: 400 })
+    if (!isAllowedIndexNowUrl(u)) {
+      return NextResponse.json(
+        { error: 'urls_must_be_https_on_site_host', example: 'https://www.webmorp.art/...' },
+        { status: 400 },
+      )
     }
   }
 

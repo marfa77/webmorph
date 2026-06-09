@@ -42,6 +42,7 @@ copyFile(path.join(root, 'privacy.html'), path.join(publicDir, 'privacy.html'))
 copyFile(path.join(root, 'terms.html'), path.join(publicDir, 'terms.html'))
 copyFile(path.join(root, 'robots.txt'), path.join(publicDir, 'website-robots.txt'))
 copyFile(path.join(root, 'llms.txt'), path.join(publicDir, 'website-llms.txt'))
+copyFile(path.join(root, '12b40bee030e4be1bd2e571d9f5c43a1.txt'), path.join(publicDir, '12b40bee030e4be1bd2e571d9f5c43a1.txt'))
 
 // $100 website service at site root (OGKit lives under /ogkit via NEXT_PUBLIC_BASE_PATH)
 copyFile(path.join(root, 'index.html'), path.join(publicDir, 'index.html'))
