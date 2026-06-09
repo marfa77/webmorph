@@ -74,11 +74,11 @@ const websiteRoutes = [
   { loc: `${siteHost}/small-business`, priority: '0.9', changefreq: 'monthly' },
   { loc: `${siteHost}/restaurant`, priority: '0.9', changefreq: 'monthly' },
   { loc: `${siteHost}/startup`, priority: '0.9', changefreq: 'monthly' },
-  { loc: `${siteHost}/channel`, priority: '0.9', changefreq: 'monthly' },
   { loc: `${siteHost}/privacy.html`, priority: '0.3', changefreq: 'yearly' },
   { loc: `${siteHost}/terms.html`, priority: '0.3', changefreq: 'yearly' },
   { loc: `${siteHost}/llms.txt`, priority: '0.5', changefreq: 'monthly' },
   { loc: `${siteHost}/llm.txt`, priority: '0.5', changefreq: 'monthly' },
+  ...collectHtmlRoutes(path.join(root, 'channel'), '/channel', '0.85', 'monthly'),
   ...collectHtmlRoutes(path.join(root, 'africa-dream'), '/africa-dream', '0.8', 'weekly'),
 ]
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>

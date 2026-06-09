@@ -35,6 +35,7 @@ We make **client business card sites** with **their texts and design** when prov
 - Restaurants: https://www.webmorp.art/restaurant
 - Startups: https://www.webmorp.art/startup
 - Telegram → Site: https://www.webmorp.art/channel
+- Сайт из Telegram (RU): https://www.webmorp.art/channel/ru
 - Privacy: https://www.webmorp.art/privacy.html
 - Terms: https://www.webmorp.art/terms.html
 - OGKit (separate product): https://www.webmorp.art/ogkit
@@ -63,7 +64,26 @@ Multi-page static site built from an existing Telegram channel, with **automatic
 - **Sync tech**: Telethon parser + regex/tags (no LLM) — same pipeline family as [Barakhlo](https://barakhlo.online/)
 - **Tags**: `#guide` / `#tour` on posts (recommended) or niche-specific keyword rules
 - **Ongoing**: ~$25–30/mo for sync + hosting after pilot period (optional)
-- **Landing**: https://www.webmorp.art/channel/
+
+### SEO landing pages (target queries)
+
+- RU hub (primary): https://www.webmorp.art/channel/ru — «сайт из telegram канала»
+- EN hub: https://www.webmorp.art/channel/
+- RU aliases: https://www.webmorp.art/telegram-sait · https://www.webmorp.art/sait-iz-telegram-kanala
+- RU guide: https://www.webmorp.art/channel/guides/kak-sdelat-sait-iz-telegram-kanala.html
+- RU compare: https://www.webmorp.art/channel/guides/sait-iz-telegram-vs-bot.html
+- RU indexing: https://www.webmorp.art/channel/guides/indeksaciya-telegram-google-yandex.html
+- EN guide: https://www.webmorp.art/channel/guides/telegram-channel-to-website.html
+- Demo case: https://www.webmorp.art/africa-dream/
+
+### Target keywords (RU)
+
+сайт из телеграм канала · telegram канал в сайт · сделать сайт из telegram · индексация телеграм канала google · автосинк telegram сайт
+
+### Target keywords (EN)
+
+telegram channel to website · turn telegram into website · telegram channel seo · sync telegram to website
+
 - **Good for**: tour operators, Telegram-first shops, local services, niche media
 
 ## Secondary product — OGKit (Open Graph image API)

@@ -40,7 +40,11 @@
     { "source": "/compare/:path*", "destination": "/ogkit/compare/:path*", "permanent": true },
     { "source": "/platform/:path*", "destination": "/ogkit/platform/:path*", "permanent": true },
     { "source": "/use-case/:path*", "destination": "/ogkit/use-case/:path*", "permanent": true },
-    { "source": "/api/:path*", "destination": "/ogkit/api/:path*", "permanent": true }
+    { "source": "/api/:path*", "destination": "/ogkit/api/:path*", "permanent": true },
+    { "source": "/telegram-sait", "destination": "/channel/ru", "permanent": true },
+    { "source": "/telegram-sait/", "destination": "/channel/ru", "permanent": true },
+    { "source": "/sait-iz-telegram-kanala", "destination": "/channel/ru", "permanent": true },
+    { "source": "/sait-iz-telegram-kanala/", "destination": "/channel/ru", "permanent": true }
   ],
   "rewrites": [
     { "source": "/", "destination": "/ogkit/index.html" },
@@ -54,6 +58,9 @@
     { "source": "/startup/", "destination": "/ogkit/startup/index.html" },
     { "source": "/channel", "destination": "/ogkit/channel/index.html" },
     { "source": "/channel/", "destination": "/ogkit/channel/index.html" },
+    { "source": "/channel/ru", "destination": "/ogkit/channel/ru/index.html" },
+    { "source": "/channel/ru/", "destination": "/ogkit/channel/ru/index.html" },
+    { "source": "/channel/:path*", "destination": "/ogkit/channel/:path*" },
     { "source": "/africa-dream", "destination": "/ogkit/africa-dream/index.html" },
     { "source": "/africa-dream/", "destination": "/ogkit/africa-dream/index.html" },
     { "source": "/africa-dream/:path*", "destination": "/ogkit/africa-dream/:path*" },
