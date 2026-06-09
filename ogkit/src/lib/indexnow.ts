@@ -102,18 +102,26 @@ export async function submitIndexNowUrls(urlList: string[]): Promise<{ ok: boole
     return { ok: false, status: 500, body: 'key_location_unavailable' }
   }
   const host = new URL(siteConfig.url).host
-  const res = await fetch(INDEXNOW_ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    body: JSON.stringify({
-      host,
-      key,
-      keyLocation,
-      urlList: urlList.slice(0, 10_000),
-    }),
-  })
-  const body = await res.text()
-  return { ok: res.ok, status: res.status, body: body.slice(0, 500) }
+  const payload = {
+    host,
+    key,
+    keyLocation,
+    urlList: urlList.slice(0, 10_000),
+  }
+
+  const endpoints = [INDEXNOW_ENDPOINT, 'https://www.bing.com/indexnow']
+  let last = { ok: false, status: 500, body: 'no_endpoints' }
+  for (const endpoint of endpoints) {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify(payload),
+    })
+    const body = await res.text()
+    last = { ok: res.ok || res.status === 202, status: res.status, body: body.slice(0, 500) }
+    if (!last.ok) return last
+  }
+  return last
 }
 
 /** Legacy API key route path (still works if linked from docs). */

@@ -103,8 +103,17 @@ async function main() {
     body: JSON.stringify({ host, key, keyLocation, urlList }),
   })
   const body = await res.text()
-  console.log(`IndexNow response: HTTP ${res.status}`, body || '(empty)')
-  if (!res.ok && res.status !== 202) process.exit(1)
+  console.log(`IndexNow (api.indexnow.org): HTTP ${res.status}`, body || '(empty)')
+
+  const bingRes = await fetch('https://www.bing.com/indexnow', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json; charset=utf-8' },
+    body: JSON.stringify({ host, key, keyLocation, urlList }),
+  })
+  const bingBody = await bingRes.text()
+  console.log(`IndexNow (bing.com): HTTP ${bingRes.status}`, bingBody || '(empty)')
+
+  if (!(res.ok || res.status === 202) && !(bingRes.ok || bingRes.status === 202)) process.exit(1)
   console.log('Submitted successfully')
 }
 
