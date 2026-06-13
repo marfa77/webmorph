@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'sonner'
 import { AuthSessionProvider } from '@/components/auth-session-provider'
+import { PixidOrganizationSchema } from '@/components/PixidOrganizationSchema'
 import { siteConfig } from '@/config/site'
 import './globals.css'
 
@@ -71,6 +72,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body>
+        <PixidOrganizationSchema />
         <AuthSessionProvider>{children}</AuthSessionProvider>
         <Toaster position="top-center" />
       </body>

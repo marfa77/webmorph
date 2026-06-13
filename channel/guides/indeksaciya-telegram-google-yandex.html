@@ -4,15 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Индексация Telegram в Google и Яндекс — как попасть в поиск | webmorp.art</title>
-    <meta name="description" content="Индексирует ли Google Telegram-канал? Как работает t.me/s/, почему ленты мало, и как получить SEO-трафик через отдельный сайт из канала.">
+    <meta name="description" content="Индексирует ли Google Telegram? Как попасть в Яндекс? Отдельный гайд по индексации канала в Яндексе + Google: t.me/s/, sitemap, Вебмастер, IndexNow.">
     <link rel="canonical" href="https://www.webmorp.art/channel/guides/indeksaciya-telegram-google-yandex.html">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <!-- website-seo-extra:start -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:site" content="@webmorp_art">
+    <meta name="twitter:creator" content="@webmorp_art">
+    <link rel="alternate" type="text/plain" href="https://www.webmorp.art/llms.txt" title="LLM-readable site summary">
+    <link rel="alternate" type="text/plain" href="https://www.webmorp.art/llm.txt" title="LLM-readable site summary (alias)">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.webmorp.art/sitemap.xml">
+<!-- website-seo-extra:end -->
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"Article","headline":"Индексация Telegram в Google и Яндекс","author":{"@type":"Organization","name":"webmorp.art"},"datePublished":"2026-06-09"}
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={theme:{extend:{fontFamily:{heading:['Space Grotesk','sans-serif'],body:['Inter','sans-serif']},colors:{brand:'#0066FF',surface:{dark:'#060611'}}}}}</script>
+<!-- pixid-org-jsonld:start -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.pixid.studio/#org",
+      "name": "PixID Studio",
+      "url": "https://www.pixid.studio/",
+      "founder": {
+        "@type": "Person",
+        "name": "Pavel Veselov"
+      },
+      "sameAs": [
+        "https://www.webmorp.art/",
+        "https://www.barakhlo.online/",
+        "https://www.pixid.studio/",
+        "https://www.prep2go.study/",
+        "https://uniprep2go.study/",
+        "https://www.uaeproperty.vip/",
+        "https://www.truve.online/",
+        "https://www.bench.energy/",
+        "https://pveselov.space/",
+        "https://www.sbunkov.ru/",
+        "https://www.inoutcreator.com/",
+        "https://github.com/marfa77"
+      ]
+    }
+    </script>
+<!-- pixid-org-jsonld:end -->
 </head>
 <body class="font-body bg-white text-gray-800 antialiased">
     <header class="bg-surface-dark py-4"><nav class="max-w-3xl mx-auto px-4"><a href="/channel/ru/" class="text-white font-bold text-sm">← Сайт из Telegram</a></nav></header>
@@ -20,14 +60,32 @@
         <h1 class="font-heading text-4xl font-bold mb-4">Индексация Telegram в Google и Яндекс</h1>
         <p class="text-gray-600 text-lg mb-8">Публичные каналы доступны по адресу <code>t.me/s/username</code> — это HTML-версия ленты. Поисковики могут её обходить, но это слабая замена полноценному сайту.</p>
 
-        <h2 class="font-heading text-2xl font-bold mt-8 mb-3">Что индексируется</h2>
+        <h2 class="font-heading text-2xl font-bold mt-8 mb-3">Google vs Яндекс: в чём разница для канала</h2>
+        <p class="text-gray-600 leading-relaxed mb-4">Оба поисковика <em>могут</em> обходить <code>t.me/s/</code>, но для коммерческих и экспертных ниш (кулинария, travel, услуги) лента Telegram почти не конкурирует с нормальными сайтами. Разница — в аудитории и инструментах:</p>
+        <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-6">
+            <li><strong>Google</strong> — Search Console, sitemap, IndexNow, schema.org; сильнее на EN и глобальных запросах</li>
+            <li><strong>Яндекс</strong> — Вебмастер, региональность RU/CIS, часто выше доля «как сделать / где купить» на русском</li>
+        </ul>
+
+        <h2 class="font-heading text-2xl font-bold mt-8 mb-3">Как индексировать Telegram-канал в Яндексе</h2>
+        <p class="text-gray-600 leading-relaxed mb-4">Яндекс не индексирует канал как полноценный сайт. Рабочая схема та же, что и для Google:</p>
+        <ol class="list-decimal pl-6 text-gray-600 space-y-2 mb-6">
+            <li>Сайт на <strong>своём домене</strong> — отдельная страница на каждый гайд, товар, тур или услугу</li>
+            <li>Добавить сайт в <strong>Яндекс.Вебмастер</strong>, загрузить sitemap.xml</li>
+            <li>Ссылка на сайт в описании канала, закрепе и новых постах</li>
+            <li>IndexNow или ручная переобходка при публикации новых страниц</li>
+            <li>Внутренняя перелинковка между разделами (каталог ↔ гайды)</li>
+        </ol>
+        <p class="text-gray-600 leading-relaxed mb-8 text-sm">Лента t.me/s/ может попасть в выдачу по брендовым запросам, но не заменит SEO-страницы с title, description и постоянным URL.</p>
+
+        <h2 class="font-heading text-2xl font-bold mt-8 mb-3">Что индексируется в Google</h2>
         <p class="text-gray-600 leading-relaxed mb-4">Отдельные посты иногда попадают в выдачу по long-tail запросам. Но у ленты нет нормальных title/description, посты конкурируют друг с другом, старые материалы уходят вниз без постоянного URL.</p>
 
         <h2 class="font-heading text-2xl font-bold mt-8 mb-3">Почему нужен отдельный сайт</h2>
         <ul class="list-disc pl-6 text-gray-600 space-y-2 mb-8">
-            <li>Постоянный URL на каждый гайд или тур</li>
+            <li>Постоянный URL на каждый рецепт, гайд, товар или услугу</li>
             <li>Sitemap.xml для Google Search Console и Яндекс.Вебмастер</li>
-            <li>Schema.org — FAQ, Service, TouristTrip</li>
+            <li>Schema.org — FAQ, Article, Product, Service (под нишу)</li>
             <li>Свой домен — ссылки, доверие, бренд</li>
             <li>PageSpeed 95–100 на статическом HTML</li>
         </ul>

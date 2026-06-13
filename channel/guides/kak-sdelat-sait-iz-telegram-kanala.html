@@ -4,47 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Как сделать сайт из Telegram-канала — пошаговая инструкция | webmorp.art</title>
-    <meta name="description" content="Пошагово: как превратить Telegram-канал в SEO-сайт на своём домене. Структура, автосинк постов, индексация в Google и Яндекс. Без WordPress и без LLM.">
+    <meta name="description" content="Пошагово: как превратить Telegram-канал в SEO-сайт на своём домене — кулинария, здоровье, авто, travel и любая ниша. Структура, автосинк постов, индексация в Google и Яндекс.">
     <link rel="canonical" href="https://www.webmorp.art/channel/guides/kak-sdelat-sait-iz-telegram-kanala.html">
     <link rel="alternate" hreflang="ru" href="https://www.webmorp.art/channel/guides/kak-sdelat-sait-iz-telegram-kanala.html">
     <link rel="alternate" hreflang="en" href="https://www.webmorp.art/channel/guides/telegram-channel-to-website.html">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <!-- website-seo-extra:start -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:site" content="@webmorp_art">
+    <meta name="twitter:creator" content="@webmorp_art">
+    <link rel="alternate" type="text/plain" href="https://www.webmorp.art/llms.txt" title="LLM-readable site summary">
+    <link rel="alternate" type="text/plain" href="https://www.webmorp.art/llm.txt" title="LLM-readable site summary (alias)">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.webmorp.art/sitemap.xml">
+<!-- website-seo-extra:end -->
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"Article","headline":"Как сделать сайт из Telegram-канала","author":{"@type":"Organization","name":"webmorp.art"},"publisher":{"@type":"Organization","name":"webmorp.art"},"datePublished":"2026-06-09","dateModified":"2026-06-09"}
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>tailwind.config={theme:{extend:{fontFamily:{heading:['Space Grotesk','sans-serif'],body:['Inter','sans-serif']},colors:{brand:'#0066FF',surface:{dark:'#060611'}}}}}</script>
+<!-- pixid-org-jsonld:start -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.pixid.studio/#org",
+      "name": "PixID Studio",
+      "url": "https://www.pixid.studio/",
+      "founder": {
+        "@type": "Person",
+        "name": "Pavel Veselov"
+      },
+      "sameAs": [
+        "https://www.webmorp.art/",
+        "https://www.barakhlo.online/",
+        "https://www.pixid.studio/",
+        "https://www.prep2go.study/",
+        "https://uniprep2go.study/",
+        "https://www.uaeproperty.vip/",
+        "https://www.truve.online/",
+        "https://www.bench.energy/",
+        "https://pveselov.space/",
+        "https://www.sbunkov.ru/",
+        "https://www.inoutcreator.com/",
+        "https://github.com/marfa77"
+      ]
+    }
+    </script>
+<!-- pixid-org-jsonld:end -->
 </head>
 <body class="font-body bg-white text-gray-800 antialiased">
     <header class="bg-surface-dark py-4"><nav class="max-w-3xl mx-auto px-4 flex justify-between text-sm"><a href="/channel/ru/" class="text-white font-bold">← Сайт из Telegram</a><a href="/#contact" class="text-brand">Заказать</a></nav></header>
     <article class="max-w-3xl mx-auto px-4 py-12 prose prose-lg">
         <h1 class="font-heading text-4xl font-bold text-gray-900 mb-4">Как сделать сайт из Telegram-канала</h1>
-        <p class="text-gray-600 text-lg leading-relaxed mb-8">Если вы ведёте канал с турами, гайдами, меню или каталогом — у вас уже есть контент. Проблема в том, что Google и Яндекс плохо индексируют ленту t.me/s/. Отдельный сайт на своём домене превращает посты в постоянные SEO-страницы.</p>
+        <p class="text-gray-600 text-lg leading-relaxed mb-8">Если вы ведёте канал — у вас уже есть контент. Это может быть <strong>кулинарный блог</strong> с рецептами, <strong>канал о здоровье</strong>, <strong>авто</strong>, travel, финансы, образование или магазин с каталогом. Проблема в том, что Google и Яндекс плохо индексируют ленту t.me/s/. Отдельный сайт на своём домене превращает посты в постоянные SEO-страницы.</p>
 
         <h2 class="font-heading text-2xl font-bold mt-10 mb-4">Шаг 1. Разберите контент канала</h2>
-        <p class="text-gray-600 leading-relaxed mb-4">Выделите типы постов: <strong>товары/туры</strong> (цена, даты), <strong>гайды</strong> (инструкции, FAQ), <strong>новости</strong> (можно не выносить на сайт). Для автосинка удобно ставить метки <code>#гайд</code> и <code>#тур</code> в конце поста.</p>
+        <p class="text-gray-600 leading-relaxed mb-4">Выделите типы постов под вашу нишу:</p>
+        <ul class="list-disc pl-6 space-y-2 text-gray-600 mb-4">
+            <li><strong>Каталог</strong> — товары, услуги, туры, авто, тарифы (цена, характеристики, даты)</li>
+            <li><strong>Статьи и гайды</strong> — рецепты, разборы, инструкции, FAQ, обзоры</li>
+            <li><strong>Новости и анонсы</strong> — можно не выносить на сайт или складывать в блог</li>
+        </ul>
+        <p class="text-gray-600 leading-relaxed mb-4">Для автосинка удобно ставить метки в конце поста: <code>#гайд</code>, <code>#рецепт</code>, <code>#товар</code>, <code>#тур</code> — под то, что у вас публикуется чаще всего.</p>
 
         <h2 class="font-heading text-2xl font-bold mt-10 mb-4">Шаг 2. Спроектируйте структуру сайта</h2>
+        <p class="text-gray-600 leading-relaxed mb-4">Структура зависит от темы, но логика одна:</p>
         <ul class="list-disc pl-6 space-y-2 text-gray-600">
             <li>Главная — кто вы и главный CTA</li>
-            <li>Каталог / туры — страница на каждый продукт</li>
-            <li>Гайды — статьи из информационных постов</li>
+            <li>Каталог — рецепты, товары, услуги, туры: отдельная страница на каждый «продукт»</li>
+            <li>Блог / гайды — статьи из информационных постов</li>
             <li>О нас + контакты / запись в Telegram</li>
         </ul>
+        <p class="text-gray-600 leading-relaxed mt-4 text-sm">Примеры: у кулинарного канала — раздел «Рецепты»; у авто — «Обзоры» и «Подборки»; у travel — «Туры» и «Гайды по странам».</p>
 
         <h2 class="font-heading text-2xl font-bold mt-10 mb-4">Шаг 3. Выберите подход</h2>
         <p class="text-gray-600 leading-relaxed mb-4"><strong>Бот за 2 минуты</strong> — быстро, но субдомен чужого сервиса и лента постов 1:1. <strong>Сайт на своём домене</strong> — дизайн под бренд, структура, PageSpeed 95–100. <a href="/channel/guides/sait-iz-telegram-vs-bot.html" class="text-brand font-semibold">Сравнение →</a></p>
 
-        <h2 class="font-heading text-2xl font-bold mt-10 mb-4">Шаг 4. Настройте автосинк</h2>
-        <p class="text-gray-600 leading-relaxed mb-4">Telethon-парсер читает новые посты канала, фильтрует по правилам (regex, метки) и публикует HTML-страницы. Так работает <a href="https://barakhlo.online/" class="text-brand" target="_blank" rel="noopener">Barakhlo</a> для 38+ каналов. LLM не обязателен — правила предсказуемее.</p>
+        <h2 class="font-heading text-2xl font-bold mt-10 mb-4">Шаг 4. Настройте автосинк и сопровождение</h2>
+        <p class="text-gray-600 leading-relaxed mb-4">Telethon-парсер читает новые посты, фильтрует по правилам и складывает в <strong>базу контента</strong>. Оттуда генерируются HTML-страницы и выкладываются на ваш домен. Так работает <a href="https://barakhlo.online/" class="text-brand" target="_blank" rel="noopener">Barakhlo</a> — у нас та же логика, но сайт статический. LLM не обязателен.</p>
+        <p class="text-gray-600 leading-relaxed mb-4">Пока синк включён — нужен тариф <strong>Care</strong> (~2 500–3 000 ₽/мес, ~$25–30 после первых 3 месяцев): парсер, база, хостинг, деплой. Это не «опция», а стоимость живого сервиса.</p>
 
         <h2 class="font-heading text-2xl font-bold mt-10 mb-4">Шаг 5. SEO и индексация</h2>
         <p class="text-gray-600 leading-relaxed mb-4">Sitemap.xml, schema.org (FAQ, Service, Article), canonical URL, IndexNow. Подробнее: <a href="/channel/guides/indeksaciya-telegram-google-yandex.html" class="text-brand font-semibold">индексация Telegram в Google и Яндекс</a>.</p>
 
+        <h2 class="font-heading text-2xl font-bold mt-10 mb-4">Шаг 6. Монетизация канала через сайт</h2>
+        <p class="text-gray-600 leading-relaxed mb-4">Сайт не заменяет Telegram — он добавляет канал продаж:</p>
+        <ul class="list-disc pl-6 space-y-2 text-gray-600 mb-4">
+            <li><strong>Поисковый трафик</strong> — люди ищут «рецепт X», «тур в Y», «услуга Z» в Google и Яндексе, не зная про ваш канал</li>
+            <li><strong>Постоянные URL</strong> — ссылки в рекламе, партнёрках, email и на визитках ведут на ваш домен, а не на t.me</li>
+            <li><strong>Доверие</strong> — свой домен и структура (каталог, о нас, контакты) повышают конверсию в заявку</li>
+            <li><strong>Автосинк</strong> — публикуете в Telegram как раньше; новые посты с метками попадают на сайт по расписанию</li>
+        </ul>
+
         <div class="mt-12 p-6 bg-gray-50 rounded-2xl border border-gray-200">
             <p class="font-heading font-bold text-gray-900 mb-2">Сделаем под ключ</p>
-            <p class="text-gray-600 text-sm mb-4">webmorp.art: сайт из вашего канала + домен + автосинк от $280.</p>
+            <p class="text-gray-600 text-sm mb-4">webmorp.art: сайт из вашего канала + домен + автосинк от ~28 000 ₽ (от $280).</p>
             <a href="/channel/ru/" class="text-brand font-semibold">Channel → Site →</a>
         </div>
     </article>
