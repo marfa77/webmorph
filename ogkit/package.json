@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "node scripts/sync-website-seo-head.mjs && node scripts/copy-webmorph-assets.mjs",
+    "prebuild": "node scripts/sync-website-seo-head.mjs && node scripts/inject-pixid-organization.mjs && node scripts/copy-webmorph-assets.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint && node scripts/check-seo.mjs",

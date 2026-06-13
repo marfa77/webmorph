@@ -23,7 +23,7 @@ const websitePaths = [
   '/restaurant',
   '/startup',
   '/channel',
-  '/channel/ru',
+  '/channel/ru/',
   '/channel/guides/kak-sdelat-sait-iz-telegram-kanala.html',
   '/channel/guides/sait-iz-telegram-vs-bot.html',
   '/channel/guides/indeksaciya-telegram-google-yandex.html',

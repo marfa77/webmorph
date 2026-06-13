@@ -43,6 +43,7 @@ copyFile(path.join(root, 'terms.html'), path.join(publicDir, 'terms.html'))
 copyFile(path.join(root, 'robots.txt'), path.join(publicDir, 'website-robots.txt'))
 copyFile(path.join(root, 'llms.txt'), path.join(publicDir, 'website-llms.txt'))
 copyFile(path.join(root, '12b40bee030e4be1bd2e571d9f5c43a1.txt'), path.join(publicDir, '12b40bee030e4be1bd2e571d9f5c43a1.txt'))
+copyFile(path.join(root, 'yandex_d641785ff7934adc.html'), path.join(publicDir, 'yandex_d641785ff7934adc.html'))
 
 // $100 website service at site root (OGKit lives under /ogkit via NEXT_PUBLIC_BASE_PATH)
 copyFile(path.join(root, 'index.html'), path.join(publicDir, 'index.html'))
@@ -61,7 +62,9 @@ function collectHtmlRoutes(dir, urlPrefix, priority, changefreq) {
       continue
     }
     if (!name.endsWith('.html')) continue
-    const slug = name === 'index.html' ? urlPrefix : `${urlPrefix}/${name.replace(/\.html$/, '')}`
+    const slug = name === 'index.html'
+      ? `${urlPrefix.replace(/\/$/, '')}/`
+      : `${urlPrefix}/${name.replace(/\.html$/, '')}`
     routes.push({ loc: `${siteHost}${slug}`, priority, changefreq })
   }
   return routes

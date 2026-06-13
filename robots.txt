@@ -1,4 +1,5 @@
 # webmorp.art — website landings at / ; OGKit API at /ogkit
+# LLM / AI discovery: https://www.webmorp.art/llms.txt
 User-agent: *
 Allow: /
 
