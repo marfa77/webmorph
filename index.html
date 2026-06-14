@@ -346,6 +346,28 @@
       ]
     }
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "webmorp.art",
+      "url": "https://www.webmorp.art/",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5",
+        "bestRating": "5",
+        "reviewCount": "1"
+      },
+      "review": {
+        "@type": "Review",
+        "author": { "@type": "Person", "name": "Valeria Malakhova" },
+        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+        "reviewBody": "I couldn't be happier with my new portfolio website! I needed a professional website that would showcase my work as a designer, and the result exceeded all my expectations.",
+        "itemReviewed": { "@type": "Organization", "name": "webmorp.art", "url": "https://www.webmorp.art/" },
+        "publisher": { "@type": "Organization", "name": "Trustpilot", "url": "https://www.trustpilot.com/" }
+      }
+    }
+    </script>
 <!-- portfolio-itemlist -->
     <script type="application/ld+json">
     {
@@ -591,43 +613,6 @@
                     <h3 class="font-heading text-lg font-bold mb-2">You Own the Code</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Full source code delivered. Clean, readable HTML/CSS. No vendor lock-in. Edit it yourself or hire anyone.</p>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ====== TESTIMONIALS (after Features) ====== -->
-    <section class="py-24 sm:py-32 bg-gray-50" id="testimonials" aria-label="Testimonials">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="text-center mb-16 reveal">
-                <p class="text-brand font-semibold text-sm uppercase tracking-wider mb-3">Social proof</p>
-                <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mb-4">What clients say</h2>
-                <p class="text-gray-500 max-w-xl mx-auto text-lg">The kind of outcomes we hear once a static site is in production — swap in your own verbatim quotes anytime.</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-                <figure class="reveal rounded-2xl border border-gray-200/80 bg-white p-6 sm:p-8 shadow-sm flex flex-col h-full">
-                    <div class="text-amber-400 text-sm tracking-tight mb-4" aria-label="5 out of 5 stars">★★★★★</div>
-                    <blockquote class="text-gray-700 leading-relaxed flex-1 mb-6">“We needed a credible landing page before a fundraise — not a month-long agency loop. The static build loaded instantly and the copy was tightened without losing our voice.”</blockquote>
-                    <figcaption class="text-sm border-t border-gray-100 pt-4">
-                        <span class="font-heading font-bold text-gray-900">Sarah K.</span>
-                        <span class="text-gray-500 block">Product lead · United Kingdom</span>
-                    </figcaption>
-                </figure>
-                <figure class="reveal rounded-2xl border border-gray-200/80 bg-white p-6 sm:p-8 shadow-sm flex flex-col h-full">
-                    <div class="text-amber-400 text-sm tracking-tight mb-4" aria-label="5 out of 5 stars">★★★★★</div>
-                    <blockquote class="text-gray-700 leading-relaxed flex-1 mb-6">“What surprised me was how ‘finished’ it felt — semantic HTML, proper meta tags, and a 99 mobile score out of the box. I’d tell any founder: do this before you overbuild.”</blockquote>
-                    <figcaption class="text-sm border-t border-gray-100 pt-4">
-                        <span class="font-heading font-bold text-gray-900">Marcus T.</span>
-                        <span class="text-gray-500 block">Founder · UAE</span>
-                    </figcaption>
-                </figure>
-                <figure class="reveal rounded-2xl border border-gray-200/80 bg-white p-6 sm:p-8 shadow-sm flex flex-col h-full">
-                    <div class="text-amber-400 text-sm tracking-tight mb-4" aria-label="5 out of 5 stars">★★★★★</div>
-                    <blockquote class="text-gray-700 leading-relaxed flex-1 mb-6">“I had messy notes and no real site yet. They picked a layout that fit us and turned it into a clear one-pager parents actually understand — no CMS to babysit. Exactly what a small education project needs.”</blockquote>
-                    <figcaption class="text-sm border-t border-gray-100 pt-4">
-                        <span class="font-heading font-bold text-gray-900">Elena R.</span>
-                        <span class="text-gray-500 block">Educator · Portugal</span>
-                    </figcaption>
-                </figure>
             </div>
         </div>
     </section>
@@ -889,30 +874,46 @@
                 <p class="text-white/50 max-w-xl mx-auto text-lg">Real feedback from shipped projects — card sites and Channel → Site builds.</p>
             </div>
 
-            <!-- Add review cards here when you have 2–3 Trustpilot quotes. Template:
-            <figure class="reveal glow-card glass rounded-2xl p-6 sm:p-7 flex flex-col h-full">
-                <div class="flex gap-0.5 mb-4 text-amber-400" aria-label="5 out of 5 stars">
-                    <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                    (×5)
-                </div>
-                <blockquote class="text-white/80 text-sm sm:text-base leading-relaxed flex-1"><p>“Quote from the client.”</p></blockquote>
-                <figcaption class="mt-5 pt-5 border-t border-white/10">
-                    <cite class="not-italic font-heading font-semibold text-white">Client name</cite>
-                    <p class="text-xs text-white/40 mt-1">project.com · card site</p>
-                </figcaption>
-            </figure>
-            -->
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="review-cards">
-                <div class="reveal md:col-span-3 glass rounded-2xl px-6 py-10 sm:px-10 sm:py-12 text-center max-w-2xl mx-auto">
-                    <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-sm text-white/60 mb-5">
-                        <svg class="w-5 h-5 text-[#00b67a]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-.01L12 2z"/></svg>
-                        Trustpilot
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-5" id="review-cards">
+                <figure class="reveal lg:col-span-2 glow-card glass rounded-2xl p-6 sm:p-8 flex flex-col h-full">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                        <div class="flex gap-0.5 text-amber-400" aria-label="5 out of 5 stars">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <a href="https://www.trustpilot.com/review/webmorp.art" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#00b67a] hover:text-[#00b67a]/80 transition-colors">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-.01L12 2z"/></svg>
+                            Verified on Trustpilot
+                        </a>
                     </div>
-                    <p class="text-white/70 text-base sm:text-lg leading-relaxed mb-6">We’re collecting our first public reviews. If we built your site — a short note on Trustpilot helps others trust the $100 flat offer.</p>
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                        <a href="https://www.trustpilot.com/evaluate/webmorp.art" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-light text-white px-6 py-3 rounded-full text-sm font-semibold transition-colors">Leave a review</a>
-                        <a href="https://www.trustpilot.com/review/webmorp.art" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-sm font-semibold text-white/50 hover:text-brand transition-colors">See all on Trustpilot <span aria-hidden="true">→</span></a>
+                    <blockquote class="text-white/85 text-base sm:text-lg leading-relaxed flex-1">
+                        <p>“I couldn't be happier with my new portfolio website! I needed a professional website that would showcase my work as a designer, and the result exceeded all my expectations.”</p>
+                    </blockquote>
+                    <figcaption class="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-end justify-between gap-3">
+                        <div>
+                            <cite class="not-italic font-heading font-semibold text-white">Valeria Malakhova</cite>
+                            <p class="text-xs text-white/45 mt-1"><a href="https://inoutcreator.com/" target="_blank" rel="noopener noreferrer" class="hover:text-brand transition-colors">inoutcreator.com</a> · landscape design portfolio · Dubai</p>
+                        </div>
+                        <a href="https://www.trustpilot.com/review/webmorp.art" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-white/50 hover:text-brand transition-colors">Full review →</a>
+                    </figcaption>
+                </figure>
+
+                <div class="reveal glass rounded-2xl p-6 sm:p-7 flex flex-col justify-between">
+                    <div>
+                        <div class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-sm text-white/60 mb-4">
+                            <svg class="w-5 h-5 text-[#00b67a]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-.01L12 2z"/></svg>
+                            Trustpilot
+                        </div>
+                        <p class="font-heading text-3xl font-bold text-white mb-1">5<span class="text-white/40 text-lg font-normal">/5</span></p>
+                        <p class="text-white/50 text-sm mb-4">From our first published client review.</p>
+                        <p class="text-white/60 text-sm leading-relaxed">Built your site with us? A short note helps others trust the flat $100 offer and Channel → Site pipeline.</p>
+                    </div>
+                    <div class="flex flex-col gap-2 mt-6">
+                        <a href="https://www.trustpilot.com/evaluate/webmorp.art" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors">Leave a review</a>
+                        <a href="https://www.trustpilot.com/review/webmorp.art" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center text-sm font-semibold text-white/50 hover:text-brand transition-colors">All reviews on Trustpilot →</a>
                     </div>
                 </div>
             </div>
