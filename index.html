@@ -356,16 +356,26 @@
         "@type": "AggregateRating",
         "ratingValue": "5",
         "bestRating": "5",
-        "reviewCount": "1"
+        "reviewCount": "2"
       },
-      "review": {
-        "@type": "Review",
-        "author": { "@type": "Person", "name": "Valeria Malakhova" },
-        "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
-        "reviewBody": "I couldn't be happier with my new portfolio website! I needed a professional website that would showcase my work as a designer, and the result exceeded all my expectations.",
-        "itemReviewed": { "@type": "Organization", "name": "webmorp.art", "url": "https://www.webmorp.art/" },
-        "publisher": { "@type": "Organization", "name": "Trustpilot", "url": "https://www.trustpilot.com/" }
-      }
+      "review": [
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Sergey Bunkov" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "Absolutely brilliant team! They whipped up a personal landing page for me in just 5 minutes – yes, FIVE! Straight out of the box, it was perfect – zero tweaks needed. And as a sweet bonus, they threw in a professionally generated photo at no extra cost. The pricing? Super fair for the quality and speed. I'll definitely be coming back to them again!",
+          "itemReviewed": { "@type": "Organization", "name": "webmorp.art", "url": "https://www.webmorp.art/" },
+          "publisher": { "@type": "Organization", "name": "Trustpilot", "url": "https://www.trustpilot.com/" }
+        },
+        {
+          "@type": "Review",
+          "author": { "@type": "Person", "name": "Valeria Malakhova" },
+          "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+          "reviewBody": "I couldn't be happier with my new portfolio website! I needed a professional website that would showcase my work as a designer, and the result exceeded all my expectations.",
+          "itemReviewed": { "@type": "Organization", "name": "webmorp.art", "url": "https://www.webmorp.art/" },
+          "publisher": { "@type": "Organization", "name": "Trustpilot", "url": "https://www.trustpilot.com/" }
+        }
+      ]
     }
     </script>
 <!-- portfolio-itemlist -->
@@ -875,7 +885,33 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5" id="review-cards">
-                <figure class="reveal lg:col-span-2 glow-card glass rounded-2xl p-6 sm:p-8 flex flex-col h-full">
+                <figure class="reveal glow-card glass rounded-2xl p-6 sm:p-8 flex flex-col h-full">
+                    <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                        <div class="flex gap-0.5 text-amber-400" aria-label="5 out of 5 stars">
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        </div>
+                        <a href="https://www.trustpilot.com/review/webmorp.art" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#00b67a] hover:text-[#00b67a]/80 transition-colors">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.1-.01L12 2z"/></svg>
+                            Verified on Trustpilot
+                        </a>
+                    </div>
+                    <blockquote class="text-white/85 text-base sm:text-lg leading-relaxed flex-1">
+                        <p>“Absolutely brilliant team! They whipped up a personal landing page for me in just 5 minutes — yes, FIVE! Straight out of the box, it was perfect — zero tweaks needed.”</p>
+                    </blockquote>
+                    <figcaption class="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-end justify-between gap-3">
+                        <div>
+                            <cite class="not-italic font-heading font-semibold text-white">Sergey Bunkov</cite>
+                            <p class="text-xs text-white/45 mt-1"><a href="https://www.sbunkov.ru/" target="_blank" rel="noopener noreferrer" class="hover:text-brand transition-colors">sbunkov.ru</a> · personal card · fuel retail executive</p>
+                        </div>
+                        <a href="https://www.trustpilot.com/review/webmorp.art" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-white/50 hover:text-brand transition-colors">Full review →</a>
+                    </figcaption>
+                </figure>
+
+                <figure class="reveal glow-card glass rounded-2xl p-6 sm:p-8 flex flex-col h-full">
                     <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                         <div class="flex gap-0.5 text-amber-400" aria-label="5 out of 5 stars">
                             <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
@@ -908,7 +944,7 @@
                             Trustpilot
                         </div>
                         <p class="font-heading text-3xl font-bold text-white mb-1">5<span class="text-white/40 text-lg font-normal">/5</span></p>
-                        <p class="text-white/50 text-sm mb-4">From our first published client review.</p>
+                        <p class="text-white/50 text-sm mb-4">2 verified client reviews · 100% five-star.</p>
                         <p class="text-white/60 text-sm leading-relaxed">Built your site with us? A short note helps others trust the flat $100 offer and Channel → Site pipeline.</p>
                     </div>
                     <div class="flex flex-col gap-2 mt-6">

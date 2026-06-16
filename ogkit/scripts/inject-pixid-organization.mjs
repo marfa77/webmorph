@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 import {
   normalizeProviderRefs,
   upsertPixidOrganization,
-} from '../../shared/pixid-organization.jsonld.mjs'
+} from '../shared/pixid-organization.jsonld.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..', '..')
