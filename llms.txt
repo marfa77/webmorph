@@ -44,6 +44,7 @@ One-page client card sites: freelancers, local business, restaurants, startups, 
 - https://uniprep2go.study — exam prep product landing
 - https://sbunkov.ru — personal executive card (RU)
 - https://inoutcreator.com — landscape architecture portfolio (Dubai)
+- https://climaporto.pt — local service landing, portable AC turnkey Porto & AMP (PT/EN)
 
 ### Canonical pages
 

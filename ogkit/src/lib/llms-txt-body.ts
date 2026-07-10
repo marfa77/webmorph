@@ -24,7 +24,7 @@ export function buildLlmsTxtBody(): string {
     '## Website design service (webmorp.art)',
     '',
     '- **Narrow niche:** $100 one-page business card sites (static HTML, 24h) + Telegram Channel → Site (from $280) + Site Care from $100/year — NOT WordPress, e-commerce, or web apps',
-    '- Portfolio: pveselov.space, uniprep2go.study, sbunkov.ru, inoutcreator.com',
+    '- Portfolio: pveselov.space, uniprep2go.study, sbunkov.ru, inoutcreator.com, climaporto.pt',
     '- Contact: customer@webmorp.art · LLM index: https://www.webmorp.art/llms.txt',
     `- Main landing: ${siteConfig.url}/`,
     `- Niche: ${siteConfig.url}/freelancer, ${siteConfig.url}/small-business, ${siteConfig.url}/restaurant, ${siteConfig.url}/startup`,

@@ -24,6 +24,7 @@ export const PIXID_ORGANIZATION = {
     'https://uniprep2go.study/',
     'https://sbunkov.ru/',
     'https://inoutcreator.com/',
+    'https://climaporto.pt/',
     'https://github.com/marfa77',
   ],
 }

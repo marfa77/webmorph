@@ -82,7 +82,7 @@ One strong landing page for freelancers, local business, restaurants, startups, 
 
 - **Stack:** semantic HTML5 + CSS, JSON-LD, no database on the public site
 - **Delivery:** ~24 hours, one revision included
-- **Examples:** [pveselov.space](https://pveselov.space) · [uniprep2go.study](https://uniprep2go.study) · [sbunkov.ru](https://sbunkov.ru) · [inoutcreator.com](https://inoutcreator.com)
+- **Examples:** [pveselov.space](https://pveselov.space) · [uniprep2go.study](https://uniprep2go.study) · [sbunkov.ru](https://sbunkov.ru) · [inoutcreator.com](https://inoutcreator.com) · [climaporto.pt](https://climaporto.pt)
 
 Niche landings: [/freelancer](https://www.webmorp.art/freelancer) · [/small-business](https://www.webmorp.art/small-business) · [/restaurant](https://www.webmorp.art/restaurant) · [/startup](https://www.webmorp.art/startup)
 
