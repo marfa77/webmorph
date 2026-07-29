@@ -20,7 +20,6 @@
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <link rel="canonical" href="https://www.webmorp.art/">
     <link rel="alternate" hreflang="en" href="https://www.webmorp.art/">
-    <link rel="alternate" hreflang="ru" href="https://www.webmorp.art/channel/ru/">
     <link rel="alternate" hreflang="x-default" href="https://www.webmorp.art/">
 
     <!-- website-seo-extra:start -->
@@ -73,6 +72,9 @@
       },
       "email": "customer@webmorp.art",
       "priceRange": "$100",
+      "sameAs": [
+        "https://www.trustpilot.com/review/webmorp.art"
+      ],
       "provider": { "@id": "https://www.pixid.studio/#org" },
       "brand": {
         "@type": "Brand",
@@ -270,7 +272,7 @@
           "name": "Can you turn my Telegram channel into a Google-indexed website?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — Channel → Site imports posts into a content database, builds a multi-page static site on your domain, and syncs on a schedule. From $280 launch; ~$25–30/mo sync Care while auto-updates are on. See /channel/ and /channel/ru/."
+            "text": "Yes — Channel → Site imports posts into a content database, builds a multi-page static site on your domain, and syncs on a schedule. From $280 launch; ~$25–30/mo sync Care while auto-updates are on. See /channel and /channel/ru."
           }
         }
       ]
@@ -286,9 +288,12 @@
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "pveselov.space", "url": "https://pveselov.space/" },
         { "@type": "ListItem", "position": 2, "name": "uniprep2go.study", "url": "https://uniprep2go.study/" },
-        { "@type": "ListItem", "position": 3, "name": "sbunkov.ru", "url": "https://sbunkov.ru/" },
-        { "@type": "ListItem", "position": 4, "name": "inoutcreator.com", "url": "https://inoutcreator.com/" },
-        { "@type": "ListItem", "position": 5, "name": "climaporto.pt", "url": "https://climaporto.pt/" }
+        { "@type": "ListItem", "position": 3, "name": "emigro.online", "url": "https://www.emigro.online/" },
+        { "@type": "ListItem", "position": 4, "name": "prep2go.study", "url": "https://www.prep2go.study/" },
+        { "@type": "ListItem", "position": 5, "name": "barakhlo.online", "url": "https://www.barakhlo.online/" },
+        { "@type": "ListItem", "position": 6, "name": "sbunkov.ru", "url": "https://sbunkov.ru/" },
+        { "@type": "ListItem", "position": 7, "name": "inoutcreator.com", "url": "https://inoutcreator.com/" },
+        { "@type": "ListItem", "position": 8, "name": "climaporto.pt", "url": "https://climaporto.pt/" }
       ]
     }
     </script>
@@ -310,6 +315,7 @@
         "https://barakhlo.online/",
         "https://www.pixid.studio/",
         "https://prep2go.study/",
+        "https://www.emigro.online/",
         "https://uaeproperty.vip/",
         "https://truve.online/",
         "https://bench.energy/",
@@ -354,6 +360,9 @@
       "@type": "Organization",
       "name": "webmorp.art",
       "url": "https://www.webmorp.art/",
+      "sameAs": [
+        "https://www.trustpilot.com/review/webmorp.art"
+      ],
       "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "5",
@@ -471,14 +480,10 @@
                 webmorp<span class="text-brand">.art</span>
             </a>
             <div class="flex items-center gap-2 sm:gap-4">
-                <a href="/channel/ru/" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">Сайт из TG</a>
-                <a href="/channel/" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">Telegram → Site</a>
                 <a href="#how-it-works" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">How It Works</a>
                 <a href="#work" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">Portfolio</a>
                 <a href="#reviews" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">Reviews</a>
-                <a href="#care" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">Site Care</a>
                 <a href="#faq" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">FAQ</a>
-                <a href="/ogkit" class="text-white/70 hover:text-white text-sm font-medium hidden sm:inline transition-colors">OGKit</a>
                 <a href="#contact" class="group relative inline-flex items-center gap-2 bg-brand hover:bg-brand-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-brand/25">
                     Get Started
                     <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -490,68 +495,50 @@
     <main>
 
     <!-- ====== HERO ====== -->
-    <section class="relative min-h-screen flex items-center bg-surface-dark hero-gradient overflow-hidden" aria-label="Hero">
+    <section class="relative min-h-screen flex flex-col bg-surface-dark hero-gradient overflow-hidden" aria-label="Hero">
         <div class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-            <div class="blob absolute top-1/4 left-1/4 w-72 h-72 bg-brand/20 rounded-full blur-[120px]"></div>
-            <div class="blob-delay absolute top-1/2 right-1/4 w-96 h-96 bg-purple-500/15 rounded-full blur-[150px]"></div>
-            <div class="blob-slow absolute bottom-1/4 left-1/2 w-80 h-80 bg-pink-500/10 rounded-full blur-[130px]"></div>
+            <div class="blob absolute top-1/4 left-1/4 w-72 h-72 bg-brand/15 rounded-full blur-[120px]"></div>
+            <div class="blob-slow absolute bottom-1/4 right-1/4 w-80 h-80 bg-brand/10 rounded-full blur-[130px]"></div>
         </div>
 
-        <div class="relative max-w-6xl mx-auto px-4 sm:px-6 py-32 sm:py-40 text-center">
-            <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-8 text-sm text-white/80">
-                <span class="relative flex h-2 w-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                Available now — 24h delivery
+        <div class="relative max-w-6xl mx-auto px-4 sm:px-6 pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-36 lg:pb-24 flex-1 flex flex-col lg:flex-row lg:items-center lg:gap-12 xl:gap-16 w-full">
+            <div class="flex-1 text-center lg:text-left">
+                <p class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-6 animate-fade-up">
+                    webmorp<span class="text-brand">.art</span>
+                </p>
+
+                <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-[1.1] mb-5 tracking-tight">
+                    Your <span class="gradient-text">$100 Website</span>,<br class="hidden sm:inline"> live in 24 hours
+                </h1>
+
+                <p class="text-lg sm:text-xl text-white/60 max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed">
+                    Flat-rate one-page business card sites — static HTML you own, no WordPress. Freelancers, local shops, personal brands.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+                    <a href="#contact" class="group relative inline-flex items-center gap-2 bg-brand hover:bg-brand-light text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-brand/30 hover:-translate-y-0.5">
+                        Start your $100 site
+                        <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                    </a>
+                    <a href="#work" class="inline-flex items-center gap-2 text-white/70 hover:text-white px-6 py-4 rounded-xl text-lg font-medium transition-colors">
+                        See portfolio
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                    </a>
+                </div>
             </div>
 
-            <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-6 tracking-tight">
-                Your <span class="gradient-text">$100 Website</span>,<br>
-                Live in 24 Hours
-            </h1>
-
-            <p class="text-lg sm:text-xl text-white/60 max-w-2xl mx-auto mb-6 leading-relaxed">
-                Flat-rate <strong class="text-white/80 font-medium">$100 one-page business card sites</strong> in 24 hours — static HTML, no WordPress. Freelancers, local shops, personal brands. Also <strong class="text-white/80 font-medium">Telegram → Site</strong> when your channel needs Google SEO.
-            </p>
-            <p class="text-sm text-white/40 max-w-xl mx-auto mb-10">Not e-commerce · not web apps · not WordPress migrations — narrow focus, fast delivery.</p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-                <a href="#contact" class="group relative inline-flex items-center gap-2 bg-brand hover:bg-brand-light text-white px-8 py-4 rounded-xl text-lg font-semibold transition-all duration-300 hover:shadow-xl hover:shadow-brand/30 hover:-translate-y-0.5">
-                    Start Your Project
-                    <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-                <a href="#work" class="inline-flex items-center gap-2 text-white/70 hover:text-white px-6 py-4 rounded-xl text-lg font-medium transition-colors">
-                    See Our Work
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                </a>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-4 max-w-4xl mx-auto">
-                <div class="glass rounded-2xl p-4 text-center">
-                    <span class="block text-2xl sm:text-3xl font-heading font-bold text-white stat-number">$100</span>
-                    <span class="text-xs sm:text-sm text-white/50 mt-1 block">Flat fee</span>
-                </div>
-                <div class="glass rounded-2xl p-4 text-center">
-                    <span class="block text-2xl sm:text-3xl font-heading font-bold text-white stat-number">24h</span>
-                    <span class="text-xs sm:text-sm text-white/50 mt-1 block">Delivery</span>
-                </div>
-                <div class="glass rounded-2xl p-4 text-center">
-                    <span class="block text-2xl sm:text-3xl font-heading font-bold text-white stat-number">100</span>
-                    <span class="text-xs sm:text-sm text-white/50 mt-1 block">PageSpeed score</span>
-                </div>
-                <div class="glass rounded-2xl p-4 text-center">
-                    <span class="block text-2xl sm:text-3xl font-heading font-bold text-white stat-number">50+</span>
-                    <span class="text-xs sm:text-sm text-white/50 mt-1 block">Sites shipped</span>
-                </div>
-                <div class="glass rounded-2xl p-4 text-center col-span-2 sm:col-span-1 lg:col-span-1">
-                    <span class="block text-2xl sm:text-3xl font-heading font-bold text-white stat-number">$0</span>
-                    <span class="text-xs sm:text-sm text-white/50 mt-1 block">Maintenance</span>
+            <div class="flex-1 mt-12 lg:mt-0 w-full max-w-2xl mx-auto lg:max-w-none">
+                <div class="relative w-full -mx-4 sm:mx-0 lg:-mr-6 xl:-mr-12 animate-float">
+                    <div class="absolute -inset-4 bg-brand/10 rounded-3xl blur-2xl opacity-60" aria-hidden="true"></div>
+                    <div class="relative overflow-hidden rounded-none sm:rounded-2xl border-y sm:border border-white/10 shadow-2xl shadow-black/40">
+                        <img src="https://uniprep2go.study/home/hero.webp" alt="Recent webmorp.art client site — uniprep2go.study landing page preview" width="1200" height="750" fetchpriority="high" decoding="async" class="w-full h-auto object-cover object-top" />
+                    </div>
+                    <p class="mt-3 text-center lg:text-right text-xs text-white/40">uniprep2go.study — shipped card site from webmorp.art</p>
                 </div>
             </div>
         </div>
 
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden sm:block" aria-hidden="true">
             <svg class="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
         </div>
     </section>
@@ -559,15 +546,26 @@
     <!-- ====== NICHE FOCUS (SEO / GEO / LLM) ====== -->
     <section class="py-14 sm:py-16 bg-white border-b border-gray-100" id="niche" aria-label="Who we build for">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center reveal">
-            <p class="text-brand font-semibold text-sm uppercase tracking-wider mb-3">Narrow niche</p>
-            <h2 class="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-4">One-page cards &amp; Telegram → Site — not a general agency</h2>
-            <p class="text-gray-600 leading-relaxed text-sm sm:text-base mb-6">We ship <strong>static HTML business card sites</strong> ($100, 24h) and <strong>Channel → Site</strong> with auto-sync (from $280). Optional <a href="#care" class="text-brand hover:underline">Site Care from $100/year</a>. Remote worldwide — English and Russian.</p>
-            <div class="flex flex-wrap justify-center gap-2 text-xs sm:text-sm text-gray-500">
-                <span class="rounded-full border border-gray-200 bg-gray-50 px-3 py-1">$100 business card website</span>
-                <span class="rounded-full border border-gray-200 bg-gray-50 px-3 py-1">static HTML no WordPress</span>
-                <span class="rounded-full border border-gray-200 bg-gray-50 px-3 py-1">telegram channel to website</span>
-                <span class="rounded-full border border-gray-200 bg-gray-50 px-3 py-1">сайт из telegram канала</span>
-                <span class="rounded-full border border-gray-200 bg-gray-50 px-3 py-1">site care $100/year</span>
+            <p class="text-brand font-semibold text-sm uppercase tracking-wider mb-3">Who it’s for</p>
+            <h2 class="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-4">One-page business card sites — $100, 24h</h2>
+            <p class="text-gray-600 leading-relaxed text-sm sm:text-base mb-8">Static HTML you own. Not WordPress, not e-commerce — narrow focus, fast delivery.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto text-left">
+                <a href="/freelancer" class="group rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all">
+                    <span class="font-heading font-bold text-gray-900 group-hover:text-brand">Freelancers</span>
+                    <span class="block text-sm text-gray-500 mt-1">Portfolio + contact card</span>
+                </a>
+                <a href="/small-business" class="group rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all">
+                    <span class="font-heading font-bold text-gray-900 group-hover:text-brand">Small business</span>
+                    <span class="block text-sm text-gray-500 mt-1">Local shop or service landing</span>
+                </a>
+                <a href="/restaurant" class="group rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all">
+                    <span class="font-heading font-bold text-gray-900 group-hover:text-brand">Restaurants</span>
+                    <span class="block text-sm text-gray-500 mt-1">Menu, hours, reservations CTA</span>
+                </a>
+                <a href="/startup" class="group rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4 hover:border-brand/40 hover:bg-white hover:shadow-md transition-all">
+                    <span class="font-heading font-bold text-gray-900 group-hover:text-brand">Startups</span>
+                    <span class="block text-sm text-gray-500 mt-1">Pre-seed launch landing</span>
+                </a>
             </div>
             <p class="mt-6 text-xs text-gray-400 max-w-2xl mx-auto">Machine-readable summary for AI assistants: <a href="/llms.txt" class="text-brand hover:underline">llms.txt</a></p>
         </div>
@@ -624,59 +622,6 @@
                     </div>
                     <h3 class="font-heading text-lg font-bold mb-2">You Own the Code</h3>
                     <p class="text-gray-500 text-sm leading-relaxed">Full source code delivered. Clean, readable HTML/CSS. No vendor lock-in. Edit it yourself or hire anyone.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ====== TELEGRAM → SITE ====== -->
-    <section class="py-24 sm:py-32 bg-surface-dark relative overflow-hidden" id="channel-to-site" aria-label="Telegram channel to website">
-        <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-            <div class="blob absolute top-0 left-1/4 w-96 h-96 bg-brand/10 rounded-full blur-[150px]"></div>
-            <div class="blob-delay absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-[130px]"></div>
-        </div>
-        <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-                <div class="reveal">
-                    <p class="text-brand font-semibold text-sm uppercase tracking-wider mb-3">Also from webmorp.art</p>
-                    <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-5">Turn your Telegram channel into a website</h2>
-                    <p class="text-white/60 text-lg leading-relaxed mb-6">You already publish recipes, guides, reviews, menus, or catalog posts in Telegram — cooking, health, auto, travel, shop, any niche. We turn that content into a fast static site Google can index — and keep it updated with an automatic sync pipeline. No LLM guesswork: rules, tags, and the same Telethon stack we run for <a href="https://barakhlo.online/" target="_blank" rel="noopener noreferrer" class="text-brand hover:text-brand-light underline underline-offset-2">Barakhlo</a>.</p>
-                    <ul class="space-y-3 text-white/70 text-sm mb-8">
-                        <li class="flex gap-3"><span class="text-brand shrink-0">→</span> Channel stays your daily feed; the site catches search traffic</li>
-                        <li class="flex gap-3"><span class="text-brand shrink-0">→</span> Custom domain + SSL — we help connect it (~$15/year for the domain)</li>
-                        <li class="flex gap-3"><span class="text-brand shrink-0">→</span> New tagged posts become pages on a schedule — no manual copy-paste</li>
-                    </ul>
-                    <a href="/channel/ru/" class="inline-flex items-center gap-2 border border-white/30 hover:border-gold text-white hover:text-gold px-6 py-3 rounded-full text-sm font-semibold transition-colors mr-3">Сайт из Telegram (RU)</a>
-                    <a href="/channel/" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-light text-white px-6 py-3 rounded-full text-sm font-semibold transition-colors">Channel → Site details <span aria-hidden="true">→</span></a>
-                </div>
-                <div class="reveal glass rounded-2xl p-6 sm:p-8">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-brand mb-4">How it fits together</p>
-                    <div class="space-y-4 text-sm">
-                        <div class="flex gap-4 items-start">
-                            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-brand/20 text-brand font-bold text-xs">TG</span>
-                            <div>
-                                <p class="text-white font-medium">Telegram channel</p>
-                                <p class="text-white/50 mt-0.5">Posts with <code class="text-brand/90">#guide</code> / <code class="text-brand/90">#recipe</code> / <code class="text-brand/90">#product</code> or price + date patterns</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center"><span class="text-white/30">↓</span></div>
-                        <div class="flex gap-4 items-start">
-                            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-purple-500/20 text-purple-300 font-bold text-xs">⟳</span>
-                            <div>
-                                <p class="text-white font-medium">Sync (weekly cron)</p>
-                                <p class="text-white/50 mt-0.5">Telethon parser · regex filters · static HTML generator</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-center"><span class="text-white/30">↓</span></div>
-                        <div class="flex gap-4 items-start">
-                            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-300 font-bold text-xs">🌐</span>
-                            <div>
-                                <p class="text-white font-medium">Your domain</p>
-                                <p class="text-white/50 mt-0.5">SEO pages, booking CTA, OG previews — 95–100 PageSpeed</p>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="mt-6 pt-6 border-t border-white/10 text-xs text-white/40">From <strong class="text-white/60">$280</strong> for multi-page + domain setup + sync. The flat <strong class="text-white/60">$100</strong> card site is still the entry tier.</p>
                 </div>
             </div>
         </div>
@@ -833,7 +778,7 @@
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <a href="https://pveselov.space/" target="_blank" rel="noopener noreferrer" class="reveal group glow-card flex flex-col overflow-hidden glass rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-brand/10 hover:-translate-y-1">
+                <a href="https://pveselov.space/" target="_blank" rel="noopener" class="reveal group glow-card flex flex-col overflow-hidden glass rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-brand/10 hover:-translate-y-1">
                     <div class="aspect-[16/10] bg-[#0f172a] overflow-hidden flex items-center justify-center">
                         <img src="https://pveselov.space/avatar.png" alt="pveselov.space — executive IT advisory card site" width="400" height="400" loading="lazy" decoding="async" class="max-w-[45%] max-h-[70%] w-auto h-auto object-contain transition-transform duration-500 group-hover:scale-105" />
                     </div>
@@ -843,13 +788,43 @@
                         <span class="text-sm text-brand font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Visit site <span aria-hidden="true">→</span></span>
                     </div>
                 </a>
-                <a href="https://uniprep2go.study/" target="_blank" rel="noopener noreferrer" class="reveal group glow-card flex flex-col overflow-hidden glass rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-brand/10 hover:-translate-y-1">
+                <a href="https://uniprep2go.study/" target="_blank" rel="noopener" class="reveal group glow-card flex flex-col overflow-hidden glass rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-brand/10 hover:-translate-y-1">
                     <div class="aspect-[16/10] bg-surface-card overflow-hidden">
                         <img src="https://uniprep2go.study/home/hero.webp" alt="uniprep2go.study — exam prep Anki decks landing page" width="800" height="500" loading="lazy" decoding="async" class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105" />
                     </div>
                     <div class="p-6 flex flex-col flex-1">
                         <h3 class="font-heading text-lg font-bold text-white mb-2 group-hover:text-brand transition-colors">uniprep2go.study</h3>
                         <p class="text-sm text-white/50 mb-4 flex-1 leading-relaxed">Exam prep product card — FINRA, CFA, FRM decks with free readiness checks and pass/no-pass reports.</p>
+                        <span class="text-sm text-brand font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Visit site <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a href="https://www.emigro.online/ru/portugal" target="_blank" rel="noopener" class="reveal group glow-card flex flex-col overflow-hidden glass rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-brand/10 hover:-translate-y-1">
+                    <div class="aspect-[16/10] bg-[#ecfdf5] overflow-hidden flex items-center justify-center p-8">
+                        <p class="font-heading text-3xl font-bold text-teal-800 text-center">Emigro<br/><span class="text-base font-medium text-teal-600">Relocation corridors</span></p>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h3 class="font-heading text-lg font-bold text-white mb-2 group-hover:text-brand transition-colors">emigro.online</h3>
+                        <p class="text-sm text-white/50 mb-4 flex-1 leading-relaxed">Corridor navigator for Russian-speaking movers — Portugal/Spain residency wizard, guides, and weekly news.</p>
+                        <span class="text-sm text-brand font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Visit site <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a href="https://www.prep2go.study/ciple-a2" target="_blank" rel="noopener" class="reveal group glow-card flex flex-col overflow-hidden glass rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-brand/10 hover:-translate-y-1">
+                    <div class="aspect-[16/10] bg-[#f7eee9] overflow-hidden flex items-center justify-center p-8">
+                        <p class="font-heading text-3xl font-bold text-[#4b2f35] text-center">Prep2Go<br/><span class="text-base font-medium text-[#9d5b47]">CIPLE A2 &amp; citizenship exams</span></p>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h3 class="font-heading text-lg font-bold text-white mb-2 group-hover:text-brand transition-colors">prep2go.study</h3>
+                        <p class="text-sm text-white/50 mb-4 flex-1 leading-relaxed">Citizenship language exam readiness — CIPLE, DELE, CELI mocks with AI scoring.</p>
+                        <span class="text-sm text-brand font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Visit site <span aria-hidden="true">→</span></span>
+                    </div>
+                </a>
+                <a href="https://www.barakhlo.online/" target="_blank" rel="noopener" class="reveal group glow-card flex flex-col overflow-hidden glass rounded-2xl transition-all duration-300 hover:shadow-xl hover:shadow-brand/10 hover:-translate-y-1">
+                    <div class="aspect-[16/10] bg-[#fff7ed] overflow-hidden flex items-center justify-center p-8">
+                        <p class="font-heading text-3xl font-bold text-orange-800 text-center">Barakhlo<br/><span class="text-base font-medium text-orange-600">EU classifieds from Telegram</span></p>
+                    </div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <h3 class="font-heading text-lg font-bold text-white mb-2 group-hover:text-brand transition-colors">barakhlo.online</h3>
+                        <p class="text-sm text-white/50 mb-4 flex-1 leading-relaxed">Classifieds aggregated from Russian-speaking Telegram chats across EU cities — Channel → Site pipeline in production.</p>
                         <span class="text-sm text-brand font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Visit site <span aria-hidden="true">→</span></span>
                     </div>
                 </a>
@@ -883,6 +858,19 @@
                         <span class="text-sm text-brand font-semibold inline-flex items-center gap-1 group-hover:gap-2 transition-all">Visit site <span aria-hidden="true">→</span></span>
                     </div>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== TELEGRAM → SITE (secondary offer) ====== -->
+    <section class="py-16 sm:py-20 bg-surface-dark relative overflow-hidden border-t border-white/5" id="channel-to-site" aria-label="Telegram channel to website">
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center reveal">
+            <p class="text-white/40 font-semibold text-xs uppercase tracking-wider mb-3">Also available</p>
+            <h2 class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-white mb-4">Telegram channel → website</h2>
+            <p class="text-white/55 text-base leading-relaxed mb-6 max-w-2xl mx-auto">If your content already lives in Telegram — recipes, guides, catalog posts — we can turn it into a multi-page SEO site with auto-sync. From <strong class="text-white/75">$280</strong>. Separate from the $100 card site.</p>
+            <div class="flex flex-wrap justify-center gap-3">
+                <a href="/channel" class="inline-flex items-center gap-2 bg-brand/90 hover:bg-brand-light text-white px-6 py-3 rounded-full text-sm font-semibold transition-colors">Channel → Site (EN)</a>
+                <a href="/channel/ru" class="inline-flex items-center gap-2 border border-white/25 hover:border-white/50 text-white/80 hover:text-white px-6 py-3 rounded-full text-sm font-medium transition-colors">Сайт из Telegram (RU)</a>
             </div>
         </div>
     </section>
@@ -1032,7 +1020,7 @@
                         <li class="flex gap-3"><span class="text-brand shrink-0">→</span> Required while auto-sync is active</li>
                         <li class="flex gap-3"><span class="text-brand shrink-0">→</span> Cancel → site stays as last snapshot</li>
                     </ul>
-                    <a href="/channel/" class="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-dark transition-colors">Channel → Site details <span aria-hidden="true">→</span></a>
+                    <a href="/channel" class="inline-flex items-center gap-1 text-sm font-semibold text-brand hover:text-brand-dark transition-colors">Channel → Site details <span aria-hidden="true">→</span></a>
                 </div>
             </div>
         </div>
@@ -1046,7 +1034,7 @@
                 <div class="min-w-0">
                     <p class="text-brand font-semibold text-sm uppercase tracking-wider mb-2">Who is behind</p>
                     <h2 class="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-4">I’m Pavel</h2>
-                    <p class="text-gray-600 leading-relaxed mb-3">I run <strong>PixID Studio</strong> and built card sites like <a href="https://pveselov.space/" class="text-brand hover:text-brand-dark">pveselov.space</a>, <a href="https://uniprep2go.study/" class="text-brand hover:text-brand-dark">uniprep2go.study</a>, <a href="https://sbunkov.ru/" class="text-brand hover:text-brand-dark">sbunkov.ru</a>, <a href="https://inoutcreator.com/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">inoutcreator.com</a>, and <a href="https://climaporto.pt/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">climaporto.pt</a>. I also run the Telegram sync behind <a href="https://barakhlo.online/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">Barakhlo</a> — and offer the same pipeline as <a href="/channel/" class="text-brand hover:text-brand-dark">Channel → Site</a> for businesses that live in Telegram. <strong>webmorp.art</strong> is the same offer for you: your texts and design if you have them — otherwise we write and design the site ourselves. $100 flat for a card site; optional <a href="#care" class="text-brand hover:text-brand-dark">Site Care from $100/year</a>; Channel → Site from $280 with sync.</p>
+                    <p class="text-gray-600 leading-relaxed mb-3">I run <strong>PixID Studio</strong> and built card sites like <a href="https://pveselov.space/" class="text-brand hover:text-brand-dark" rel="noopener">pveselov.space</a>, <a href="https://uniprep2go.study/" class="text-brand hover:text-brand-dark" rel="noopener">uniprep2go.study</a>, <a href="https://www.emigro.online/" class="text-brand hover:text-brand-dark" rel="noopener">emigro.online</a>, <a href="https://www.prep2go.study/" class="text-brand hover:text-brand-dark" rel="noopener">prep2go.study</a>, <a href="https://sbunkov.ru/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">sbunkov.ru</a>, <a href="https://inoutcreator.com/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">inoutcreator.com</a>, and <a href="https://climaporto.pt/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">climaporto.pt</a>. I also run the Telegram sync behind <a href="https://barakhlo.online/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener">Barakhlo</a> — available separately as <a href="/channel" class="text-brand hover:text-brand-dark">Channel → Site</a>. <strong>webmorp.art</strong> is the $100 card offer: your texts and design if you have them — otherwise we write and design the site ourselves.</p>
                     <p class="text-gray-600 leading-relaxed">No WordPress, no plugins, no surprise bills — just a fast one-page site that looks like you on day one.</p>
                 </div>
             </div>
@@ -1064,20 +1052,11 @@
             <div class="space-y-3">
                 <details class="reveal group rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-md open:shadow-lg open:ring-1 open:ring-brand/15">
                     <summary class="flex cursor-pointer select-none items-center gap-4 px-5 py-4 sm:px-6 sm:py-5">
-                        <div class="min-w-0 flex-1 text-left font-heading font-bold text-gray-900 group-open:text-brand transition-colors">Can you turn my Telegram channel into a website?</div>
-                        <svg class="h-5 w-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                    </summary>
-                    <div class="border-t border-gray-100 px-5 pb-5 pt-4 sm:px-6">
-                        <p class="text-gray-600 leading-relaxed">Yes — that is our <a href="/channel/" class="text-brand hover:text-brand-dark font-medium">Channel → Site</a> offer. We import channel posts into a <strong>content database</strong>, build a multi-page static site on your domain, and sync on a schedule (same Telethon stack as <a href="https://barakhlo.online/" target="_blank" rel="noopener noreferrer" class="text-brand hover:text-brand-dark font-medium">Barakhlo</a>). From <strong>$280</strong> launch + <strong>~$25–30/mo sync Care</strong> while auto-sync is on. The <strong>$100</strong> tier is a one-page card without sync. Static card sites can use separate <a href="#care" class="text-brand hover:text-brand-dark font-medium">Site Care from $100/year</a>.</p>
-                    </div>
-                </details>
-                <details class="reveal group rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-md open:shadow-lg open:ring-1 open:ring-brand/15">
-                    <summary class="flex cursor-pointer select-none items-center gap-4 px-5 py-4 sm:px-6 sm:py-5">
                         <div class="min-w-0 flex-1 text-left font-heading font-bold text-gray-900 group-open:text-brand transition-colors">How much does it cost to create a website with webmorp.art?</div>
                         <svg class="h-5 w-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="border-t border-gray-100 px-5 pb-5 pt-4 sm:px-6">
-                        <p class="text-gray-600 leading-relaxed">A flat <strong>$100</strong> for a one-page card site — no hidden fees. Optional <a href="#care" class="text-brand hover:text-brand-dark font-medium">Site Care from $100/year</a> for hosting, deploy, and small updates. <strong>Channel → Site</strong> starts from <strong>$280</strong> (launch + 3 months sync Care); ongoing auto-sync is <strong>~$25–30/mo</strong>. See <a href="/channel/" class="text-brand hover:text-brand-dark font-medium">/channel/</a>. One revision round included on launch.</p>
+                        <p class="text-gray-600 leading-relaxed">A flat <strong>$100</strong> for a one-page card site — no hidden fees. Optional <a href="#care" class="text-brand hover:text-brand-dark font-medium">Site Care from $100/year</a> for hosting, deploy, and small updates. <strong>Channel → Site</strong> starts from <strong>$280</strong> (launch + 3 months sync Care); ongoing auto-sync is <strong>~$25–30/mo</strong>. See <a href="/channel" class="text-brand hover:text-brand-dark font-medium">/channel</a>. One revision round included on launch.</p>
                     </div>
                 </details>
                 <details class="reveal group rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-md open:shadow-lg open:ring-1 open:ring-brand/15">
@@ -1131,7 +1110,7 @@
                         <svg class="h-5 w-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="border-t border-gray-100 px-5 pb-5 pt-4 sm:px-6">
-                        <p class="text-gray-600 leading-relaxed">Yes — <strong>Site Care from $100/year</strong> for static card sites we shipped (multi-page quoted separately). Includes hosting &amp; deploy on your domain, SSL and uptime checks, domain-renewal reminders, and small text or image updates. <strong>Channel → Site</strong> with auto-sync uses a separate Care plan (~$25–30/mo) — see <a href="/channel/" class="text-brand hover:text-brand-dark font-medium">/channel/</a> and <a href="#care" class="text-brand hover:text-brand-dark font-medium">#care</a>.</p>
+                        <p class="text-gray-600 leading-relaxed">Yes — <strong>Site Care from $100/year</strong> for static card sites we shipped (multi-page quoted separately). Includes hosting &amp; deploy on your domain, SSL and uptime checks, domain-renewal reminders, and small text or image updates. <strong>Channel → Site</strong> with auto-sync uses a separate Care plan (~$25–30/mo) — see <a href="/channel" class="text-brand hover:text-brand-dark font-medium">/channel</a> and <a href="#care" class="text-brand hover:text-brand-dark font-medium">#care</a>.</p>
                     </div>
                 </details>
                 <details class="reveal group rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-md open:shadow-lg open:ring-1 open:ring-brand/15">
@@ -1181,11 +1160,20 @@
                 </details>
                 <details class="reveal group rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-md open:shadow-lg open:ring-1 open:ring-brand/15">
                     <summary class="flex cursor-pointer select-none items-center gap-4 px-5 py-4 sm:px-6 sm:py-5">
+                        <div class="min-w-0 flex-1 text-left font-heading font-bold text-gray-900 group-open:text-brand transition-colors">Can you turn my Telegram channel into a website?</div>
+                        <svg class="h-5 w-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </summary>
+                    <div class="border-t border-gray-100 px-5 pb-5 pt-4 sm:px-6">
+                        <p class="text-gray-600 leading-relaxed">Yes — that is our <a href="/channel" class="text-brand hover:text-brand-dark font-medium">Channel → Site</a> offer (from <strong>$280</strong>, separate from the $100 card). We import channel posts into a content database, build a multi-page static site on your domain, and sync on a schedule. Mention “Channel → Site” in the form if that is what you need.</p>
+                    </div>
+                </details>
+                <details class="reveal group rounded-2xl border border-gray-200/80 bg-white shadow-sm transition-all duration-300 hover:shadow-md open:shadow-lg open:ring-1 open:ring-brand/15">
+                    <summary class="flex cursor-pointer select-none items-center gap-4 px-5 py-4 sm:px-6 sm:py-5">
                         <div class="min-w-0 flex-1 text-left font-heading font-bold text-gray-900 group-open:text-brand transition-colors">Who is behind webmorp.art?</div>
                         <svg class="h-5 w-5 shrink-0 text-gray-400 transition-transform duration-300 group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                     </summary>
                     <div class="border-t border-gray-100 px-5 pb-5 pt-4 sm:px-6">
-                        <p class="text-gray-600 leading-relaxed"><strong>Pavel</strong> runs webmorp.art under PixID Studio. Recent sites: <a href="https://pveselov.space/" class="text-brand hover:text-brand-dark">pveselov.space</a>, <a href="https://uniprep2go.study/" class="text-brand hover:text-brand-dark">uniprep2go.study</a>, <a href="https://sbunkov.ru/" class="text-brand hover:text-brand-dark">sbunkov.ru</a>, <a href="https://inoutcreator.com/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">inoutcreator.com</a>, <a href="https://climaporto.pt/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">climaporto.pt</a>. Same offer for you — your texts and design, or we create both. See <a href="#about" class="text-brand hover:text-brand-dark">a short intro and photo</a> above.</p>
+                        <p class="text-gray-600 leading-relaxed"><strong>Pavel</strong> runs webmorp.art under PixID Studio. Recent sites: <a href="https://pveselov.space/" class="text-brand hover:text-brand-dark" rel="noopener">pveselov.space</a>, <a href="https://uniprep2go.study/" class="text-brand hover:text-brand-dark" rel="noopener">uniprep2go.study</a>, <a href="https://www.emigro.online/" class="text-brand hover:text-brand-dark" rel="noopener">emigro.online</a>, <a href="https://www.prep2go.study/" class="text-brand hover:text-brand-dark" rel="noopener">prep2go.study</a>, <a href="https://sbunkov.ru/" class="text-brand hover:text-brand-dark">sbunkov.ru</a>, <a href="https://inoutcreator.com/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">inoutcreator.com</a>, <a href="https://climaporto.pt/" class="text-brand hover:text-brand-dark" target="_blank" rel="noopener noreferrer">climaporto.pt</a>. Same offer for you — your texts and design, or we create both. See <a href="#about" class="text-brand hover:text-brand-dark">a short intro and photo</a> above.</p>
                     </div>
                 </details>
             </div>
@@ -1202,7 +1190,16 @@
             <div class="reveal">
                 <p class="text-brand font-semibold text-sm uppercase tracking-wider mb-3">Ready?</p>
                 <h2 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-6">Get Your Website<br><span class="gradient-text">In 24 Hours</span></h2>
-                <p class="text-white/75 text-lg mb-8 max-w-lg mx-auto leading-relaxed">Send your texts, logo, and design references if you have them — or just bullet notes. We build with your materials; anything missing we create ourselves. Usually reply the same day.</p>
+                <p class="text-white/75 text-lg mb-6 max-w-lg mx-auto leading-relaxed">Send your texts, logo, and design references if you have them — or just bullet notes. We build with your materials; anything missing we create ourselves. Usually reply the same day.</p>
+
+                <div class="mb-6 text-left max-w-lg mx-auto">
+                    <p class="text-sm font-semibold text-white/80 mb-3">Which offer?</p>
+                    <div class="flex flex-col sm:flex-row gap-2 text-sm">
+                        <span class="inline-flex items-center justify-center rounded-full bg-brand/20 border border-brand/40 text-white px-4 py-2 font-medium">$100 business card site — default</span>
+                        <a href="/channel" class="inline-flex items-center justify-center rounded-full border border-white/20 text-white/70 hover:text-white hover:border-white/40 px-4 py-2 transition-colors">Channel → Site ($280+)</a>
+                    </div>
+                    <p class="mt-2 text-xs text-white/45">Using the form below? Leave it as-is for a $100 card — or write “Channel → Site” in your message.</p>
+                </div>
 
                 <!-- Tally Pdl0Rb: Share → Transparent background ON. Customize → Dark: page bg #0d0d1f/transparent, label #e2e8f0, input bg #12122a, border #334155, placeholder #94a3b8, button #0066FF. Remove “Last name” + duplicate $100 blurb inside form if redundant. -->
                 <div class="contact-tally-card rounded-2xl text-left mb-6 border border-white/10 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.65)] ring-1 ring-white/[0.08] overflow-hidden">
@@ -1246,8 +1243,9 @@
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-white/30">
                 <span>&copy; 2024–2026 webmorp.art by <a href="https://www.pixid.studio/" class="text-white/50 hover:text-white transition-colors">PixID Studio</a></span>
                 <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
-                    <a href="/channel/ru/" class="hover:text-white/60 transition-colors">Сайт из TG</a>
-                    <a href="/channel/" class="hover:text-white/60 transition-colors">Telegram → Site</a>
+                    <a href="/freelancer" class="hover:text-white/60 transition-colors">Freelancers</a>
+                    <a href="/channel/ru" class="hover:text-white/60 transition-colors">Сайт из TG</a>
+                    <a href="/channel" class="hover:text-white/60 transition-colors">Telegram → Site</a>
                     <a href="#how-it-works" class="hover:text-white/60 transition-colors">How It Works</a>
                     <a href="#work" class="hover:text-white/60 transition-colors">Portfolio</a>
                     <a href="#reviews" class="hover:text-white/60 transition-colors">Reviews</a>

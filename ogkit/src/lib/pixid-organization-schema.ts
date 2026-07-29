@@ -14,6 +14,7 @@ export const pixidOrganizationJsonLd = {
     "https://barakhlo.online/",
     "https://www.pixid.studio/",
     "https://prep2go.study/",
+    "https://www.emigro.online/",
     "https://uaeproperty.vip/",
     "https://truve.online/",
     "https://bench.energy/",
