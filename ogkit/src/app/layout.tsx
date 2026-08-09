@@ -1,21 +1,21 @@
 import type { Metadata } from 'next'
-import { IBM_Plex_Mono, Syne } from 'next/font/google'
+import { Inter, Space_Grotesk } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { AuthSessionProvider } from '@/components/auth-session-provider'
 import { PixidOrganizationSchema } from '@/components/PixidOrganizationSchema'
 import { siteConfig } from '@/config/site'
 import './globals.css'
 
-const syne = Syne({
+/** Same stack as webmorp.art homepage: Space Grotesk headings + Inter body. */
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
-  variable: '--font-display',
+  variable: '--font-heading',
   display: 'swap',
 })
 
-const plexMono = IBM_Plex_Mono({
+const inter = Inter({
   subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
+  variable: '--font-body',
   display: 'swap',
 })
 
@@ -85,7 +85,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           async
         />
       </head>
-      <body className={`${syne.variable} ${plexMono.variable} font-sans antialiased`}>
+      <body className={`${spaceGrotesk.variable} ${inter.variable} font-body antialiased`}>
         <PixidOrganizationSchema />
         <AuthSessionProvider>{children}</AuthSessionProvider>
         <Toaster position="top-center" />

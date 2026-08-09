@@ -9,28 +9,29 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen flex-col">
       <Ga4 />
-      <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/80 backdrop-blur-md">
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
-          <Link href={withBasePath('/')} className="font-display text-lg font-bold tracking-tight">
+      <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-white/80 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
+          <Link href={withBasePath('/')} className="font-heading text-lg font-bold tracking-tight text-gray-900">
             {siteConfig.name}
           </Link>
-          <nav className="flex items-center gap-3 text-sm text-muted-foreground sm:gap-5">
-            <Link href={withBasePath('/playground')} className="hidden hover:text-foreground sm:inline">
+          <nav className="flex items-center gap-3 text-sm text-gray-600 sm:gap-5">
+            <Link href={withBasePath('/playground')} className="hidden hover:text-gray-900 sm:inline">
               Playground
             </Link>
-            <Link href={withBasePath('/docs')} className="hover:text-foreground">
+            <Link href={withBasePath('/docs')} className="hover:text-gray-900">
               API
             </Link>
-            <Link href={withBasePath('/guides')} className="hidden hover:text-foreground md:inline">
+            <Link href={withBasePath('/guides')} className="hidden hover:text-gray-900 md:inline">
               Guides
             </Link>
-            <Link href={withBasePath('/pricing')} className="hover:text-foreground">
+            <Link href={withBasePath('/pricing')} className="hover:text-gray-900">
               Pricing
             </Link>
-            <Link href={withBasePath('/blog')} className="hidden hover:text-foreground md:inline">
-              Blog
-            </Link>
-            <Button asChild size="sm" className="font-semibold">
+            <Button
+              asChild
+              size="sm"
+              className="rounded-full bg-brand px-4 font-semibold text-white hover:bg-brand-light"
+            >
               <Link href={withBasePath('/login')}>Sign in</Link>
             </Button>
           </nav>
@@ -38,36 +39,32 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       </header>
       <main className="flex-1">{children}</main>
       <CookieBanner />
-      <footer className="border-t py-8 text-sm text-muted-foreground">
-        <div className="container max-w-6xl flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
-          <p>© {new Date().getFullYear()} {siteConfig.name}</p>
-          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            <Link href="/" className="hover:text-foreground">
-              Websites — $100 / 24h
+      <footer className="border-t border-gray-100 bg-white py-8 text-sm text-gray-500">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 sm:flex-row sm:justify-between sm:px-6">
+          <p>
+            © {new Date().getFullYear()} {siteConfig.name} ·{' '}
+            <Link href="/" className="font-heading font-semibold text-gray-800 hover:text-brand">
+              webmorp<span className="text-brand">.art</span>
             </Link>
-            <Link href={withBasePath('/pricing')} className="hover:text-foreground">
+          </p>
+          <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+            <Link href="/" className="hover:text-gray-900">
+              Websites — $100
+            </Link>
+            <Link href={withBasePath('/pricing')} className="hover:text-gray-900">
               Pricing
             </Link>
-            <Link href={withBasePath('/docs')} className="hover:text-foreground">
+            <Link href={withBasePath('/docs')} className="hover:text-gray-900">
               API docs
             </Link>
-            <Link href={withBasePath('/tools')} className="hover:text-foreground">
-              Resources
+            <Link href={withBasePath('/guides')} className="hover:text-gray-900">
+              Guides
             </Link>
-            <Link href={withBasePath('/blog')} className="hover:text-foreground">
+            <Link href={withBasePath('/blog')} className="hover:text-gray-900">
               Blog
             </Link>
-            <Link href={withBasePath('/llms.txt')} className="hover:text-foreground">
-              llms.txt
-            </Link>
-            <Link href={withBasePath('/contact')} className="hover:text-foreground">
+            <Link href={withBasePath('/contact')} className="hover:text-gray-900">
               Contact
-            </Link>
-            <Link href={withBasePath('/terms')} className="hover:text-foreground">
-              Terms
-            </Link>
-            <Link href={withBasePath('/privacy')} className="hover:text-foreground">
-              Privacy
             </Link>
           </nav>
         </div>

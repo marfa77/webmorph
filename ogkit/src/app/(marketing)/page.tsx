@@ -141,29 +141,15 @@ export default function HomePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
-      {/* Hero: one composition — brand, headline, line, CTAs, full-bleed live OG plane */}
-      <section className="relative overflow-hidden bg-[var(--ogkit-ink)] text-white">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 animate-ogkit-drift bg-[radial-gradient(ellipse_at_20%_0%,rgba(61,255,168,0.22),transparent_42%),radial-gradient(ellipse_at_85%_30%,rgba(56,189,248,0.14),transparent_38%),linear-gradient(180deg,#0b1210_0%,#102018_55%,#0b1210_100%)]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.12]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)',
-            backgroundSize: '72px 72px',
-            maskImage: 'radial-gradient(ellipse at center, black 20%, transparent 75%)',
-          }}
-        />
+      <section className="relative overflow-hidden bg-surface-dark text-white">
+        <div aria-hidden className="pointer-events-none absolute inset-0 hero-gradient" />
 
-        <div className="relative mx-auto flex min-h-[72svh] max-w-6xl flex-col justify-end px-6 pb-10 pt-16 sm:min-h-[68svh] sm:pb-12 sm:pt-20">
-          <div className="max-w-3xl animate-ogkit-fade-up">
-            <p className="font-display text-5xl font-bold tracking-[-0.06em] text-[var(--ogkit-glow)] sm:text-7xl md:text-8xl">
-              {siteConfig.name}
+        <div className="relative mx-auto flex min-h-[64svh] max-w-6xl flex-col justify-end px-4 pb-10 pt-16 sm:min-h-[60svh] sm:px-6 sm:pb-12 sm:pt-20">
+          <div className="max-w-3xl animate-fade-up">
+            <p className="font-heading text-5xl font-bold tracking-tight sm:text-7xl md:text-8xl">
+              <span className="gradient-text">{siteConfig.name}</span>
             </p>
-            <h1 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
+            <h1 className="mt-4 max-w-2xl font-heading text-3xl font-semibold tracking-tight text-white sm:text-5xl">
               Social cards from one HTTPS URL
             </h1>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-white/70 sm:text-lg">
@@ -175,7 +161,7 @@ export default function HomePage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-[var(--ogkit-glow)] px-6 font-semibold text-[var(--ogkit-ink)] hover:bg-white"
+                className="rounded-full bg-brand px-7 font-semibold text-white hover:bg-brand-light"
               >
                 <Link href={withBasePath('/playground')}>Try playground</Link>
               </Button>
@@ -183,7 +169,7 @@ export default function HomePage() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white/25 bg-transparent px-6 text-white hover:bg-white/10 hover:text-white"
+                className="rounded-full border-white/25 bg-transparent px-7 text-white hover:bg-white/10 hover:text-white"
               >
                 <Link href={withBasePath('/login')}>Get API key</Link>
               </Button>
@@ -196,28 +182,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
         <section className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
           <div>
-            <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">One URL in. PNG out.</h2>
-            <p className="mt-4 max-w-md text-muted-foreground leading-relaxed">
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+              One URL in. PNG out.
+            </h2>
+            <p className="mt-4 max-w-md leading-relaxed text-gray-600">
               Build the image URL on the server, put it in{' '}
-              <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-xs text-foreground">og:image</code>, and
+              <code className="rounded-md bg-gray-100 px-1.5 py-0.5 font-mono text-xs text-gray-900">og:image</code>, and
               let social scrapers cache the same bytes forever.
             </p>
           </div>
-          <ol className="space-y-8 border-l border-border pl-6">
+          <ol className="space-y-8 border-l border-gray-200 pl-6">
             {[
               ['Pick a template', 'article, product, minimal, gradient, brand, dark-code, and more.'],
               ['Pass fields as query params', 'title, subtitle, author, logo, price, accent — URL-encoded.'],
               ['Drop the HTTPS URL into metadata', 'Works with Next.js, Astro, Rails, Django, Hugo, static HTML.'],
             ].map(([step, copy], i) => (
               <li key={step} className="relative">
-                <span className="absolute -left-[1.9rem] top-0 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full bg-[var(--ogkit-ink)] font-mono text-[10px] text-[var(--ogkit-glow)]">
+                <span className="absolute -left-[1.9rem] top-0 flex h-5 w-5 -translate-x-1/2 items-center justify-center rounded-full bg-brand font-heading text-[10px] font-bold text-white">
                   {i + 1}
                 </span>
-                <p className="font-display text-lg font-semibold tracking-tight">{step}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{copy}</p>
+                <p className="font-heading text-lg font-semibold tracking-tight text-gray-900">{step}</p>
+                <p className="mt-1 text-sm text-gray-600">{copy}</p>
               </li>
             ))}
           </ol>
@@ -226,18 +214,23 @@ export default function HomePage() {
         <section className="mt-24">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
             <div>
-              <h2 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">Templates that ship</h2>
-              <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+              <h2 className="font-heading text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">
+                Templates that ship
+              </h2>
+              <p className="mt-2 max-w-xl text-sm text-gray-600">
                 Real 1200×630 cards for articles, products, and developer docs.
               </p>
             </div>
-            <Link href={withBasePath('/docs')} className="text-sm font-medium text-primary underline-offset-4 hover:underline">
+            <Link
+              href={withBasePath('/docs')}
+              className="text-sm font-semibold text-brand underline-offset-4 hover:underline"
+            >
               Full API reference
             </Link>
           </div>
-          <div className="mt-8 grid gap-px overflow-hidden rounded-none bg-border sm:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {previewTemplates.map(([label, src, alt]) => (
-              <figure key={src} className="group bg-background">
+              <figure key={src} className="group overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
                 <Image
                   src={src}
                   width={1200}
@@ -247,7 +240,7 @@ export default function HomePage() {
                   sizes="(min-width: 1024px) 350px, 100vw"
                   className="aspect-[1200/630] w-full object-cover transition duration-500 group-hover:scale-[1.02]"
                 />
-                <figcaption className="px-4 py-3 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                <figcaption className="px-4 py-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
                   {label}
                 </figcaption>
               </figure>
@@ -255,7 +248,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mt-24 grid gap-10 border-y border-border py-16 sm:grid-cols-3">
+        <section className="mt-24 grid gap-10 border-y border-gray-100 py-16 sm:grid-cols-3">
           {[
             [
               'For AI-built sites',
@@ -273,75 +266,70 @@ export default function HomePage() {
             ],
           ].map(([title, copy]) => (
             <div key={title}>
-              <h2 className="font-display text-xl font-semibold tracking-tight">{title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
+              <h2 className="font-heading text-xl font-semibold tracking-tight text-gray-900">{title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">{copy}</p>
             </div>
           ))}
         </section>
 
-        <section className="mt-24 overflow-hidden bg-[var(--ogkit-ink)] px-6 py-12 text-white sm:px-10">
-          <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-[var(--ogkit-glow)]">Request shape</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight">How the API looks</h2>
+        <section className="relative mt-24 overflow-hidden rounded-3xl bg-surface-dark px-6 py-12 text-white sm:px-10">
+          <div aria-hidden className="pointer-events-none absolute inset-0 hero-gradient opacity-60" />
+          <div className="relative">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-brand-light">Request shape</p>
+          <h2 className="mt-3 font-heading text-3xl font-semibold tracking-tight">How the API looks</h2>
           <div className="mt-8 grid gap-3 font-mono text-xs sm:grid-cols-3">
             {[
               ['GET', '/api/og/article?title=Ship%20notes', '200 image/png'],
               ['Cache', 'public, s-maxage=31536000', 'CDN ready'],
               ['Use', 'metadata.openGraph.images', 'Next.js'],
             ].map(([label, value, status]) => (
-              <div key={value} className="border border-white/10 bg-white/[0.04] p-4">
+              <div key={value} className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
                 <div className="flex items-center justify-between gap-3 text-white/45">
                   <span>{label}</span>
-                  <span className="text-[var(--ogkit-glow)]">{status}</span>
+                  <span className="text-brand-light">{status}</span>
                 </div>
                 <p className="mt-3 break-all text-sm text-white">{value}</p>
               </div>
             ))}
           </div>
           <p className="mt-6 max-w-2xl text-sm leading-relaxed text-white/60">
-            MCP for Cursor:{' '}
-            <code className="text-[var(--ogkit-glow)]">
-              {siteConfig.url}/api/mcp
-            </code>
-            . Read the{' '}
+            MCP for Cursor: <code className="text-brand-light">{siteConfig.url}/api/mcp</code>. Read the{' '}
             <Link className="text-white underline underline-offset-4" href={withBasePath('/blog/open-graph-images-seo-guide')}>
               Open Graph SEO guide
             </Link>{' '}
             for caching and rescrape patterns.
           </p>
+          </div>
         </section>
 
         <section className="mt-24 grid gap-14 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-3xl font-semibold tracking-tight">Use cases</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-gray-900">Use cases</h2>
             <ul className="mt-6 space-y-3">
               {useCases.map(([label, href]) => (
                 <li key={href}>
                   <Link
                     href={withBasePath(href)}
-                    className="group flex items-center justify-between border-b border-border py-3 text-sm font-medium transition hover:text-primary"
+                    className="group flex items-center justify-between border-b border-gray-100 py-3 text-sm font-medium text-gray-800 transition hover:text-brand"
                   >
                     <span>{label}</span>
-                    <span className="text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-primary">
-                      →
-                    </span>
+                    <span className="text-gray-400 transition group-hover:translate-x-0.5 group-hover:text-brand">→</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h2 className="font-display text-3xl font-semibold tracking-tight">Compare</h2>
+            <h2 className="font-heading text-3xl font-semibold tracking-tight text-gray-900">Compare</h2>
             <ul className="mt-6 space-y-3">
               {comparisons.map(([label, href]) => (
                 <li key={href}>
                   <Link
                     href={withBasePath(href)}
-                    className="group flex items-center justify-between border-b border-border py-3 text-sm font-medium transition hover:text-primary"
+                    className="group flex items-center justify-between border-b border-gray-100 py-3 text-sm font-medium text-gray-800 transition hover:text-brand"
                   >
                     <span>{label}</span>
-                    <span className="text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-primary">
-                      →
-                    </span>
+                    <span className="text-gray-400 transition group-hover:translate-x-0.5 group-hover:text-brand">→</span>
                   </Link>
                 </li>
               ))}
@@ -350,27 +338,29 @@ export default function HomePage() {
         </section>
 
         <section className="mt-24">
-          <h2 className="font-display text-3xl font-semibold tracking-tight">FAQ</h2>
+          <h2 className="font-heading text-3xl font-semibold tracking-tight text-gray-900">FAQ</h2>
           <div className="mt-8 grid gap-8 sm:grid-cols-2">
             {faq.map((item) => (
               <div key={item.question}>
-                <h3 className="font-display text-lg font-semibold tracking-tight">{item.question}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.answer}</p>
+                <h3 className="font-heading text-lg font-semibold tracking-tight text-gray-900">{item.question}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600">{item.answer}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mt-24 border-t border-border pt-12">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">Also from webmorp.art</p>
+        <section className="mt-24 border-t border-gray-100 pt-12">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-gray-400">Also from webmorp.art</p>
           <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="font-display text-2xl font-semibold tracking-tight">Business card websites — $100</h2>
-              <p className="mt-2 max-w-lg text-sm text-muted-foreground">
+              <h2 className="font-heading text-2xl font-semibold tracking-tight text-gray-900">
+                Business card websites — $100
+              </h2>
+              <p className="mt-2 max-w-lg text-sm text-gray-600">
                 One-page sites live in 24 hours. Examples: pveselov.space, uniprep2go.study.
               </p>
             </div>
-            <Button asChild variant="outline">
+            <Button asChild variant="outline" className="rounded-full border-brand text-brand hover:bg-brand hover:text-white">
               <Link href="/">Get a website →</Link>
             </Button>
           </div>

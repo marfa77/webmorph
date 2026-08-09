@@ -4,51 +4,54 @@
 
 @layer base {
   :root {
-    --background: 150 12% 98%;
-    --foreground: 160 18% 8%;
+    /* Match webmorp.art: white body, brand blue #0066FF, dark surface #060611 */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 160 18% 8%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 160 18% 8%;
-    --primary: 168 84% 28%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 216 100% 50%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 160 12% 94%;
-    --secondary-foreground: 160 18% 12%;
-    --muted: 160 10% 94%;
-    --muted-foreground: 160 8% 38%;
-    --accent: 168 40% 94%;
-    --accent-foreground: 168 84% 18%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 40%;
+    --accent: 214 100% 96%;
+    --accent-foreground: 216 100% 40%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 160 10% 88%;
-    --input: 160 10% 88%;
-    --ring: 168 84% 28%;
-    --radius: 0.5rem;
-    --ogkit-ink: #0b1210;
-    --ogkit-mist: #e8f2ee;
-    --ogkit-glow: #3dffa8;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 216 100% 50%;
+    --radius: 0.75rem;
+    --brand: #0066ff;
+    --brand-light: #3388ff;
+    --brand-dark: #0044cc;
+    --surface-dark: #060611;
+    --surface-card: #0d0d1f;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 240 33% 5%;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 240 30% 9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 240 30% 9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
+    --primary: 216 100% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 20% 14%;
     --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
+    --muted: 240 20% 14%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 240 20% 14%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 240 16% 18%;
+    --input: 240 16% 18%;
+    --ring: 216 100% 55%;
   }
 }
 
@@ -57,12 +60,30 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-body text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
   }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .gradient-text {
+    background: linear-gradient(135deg, #0066ff 0%, #7c3aed 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-gradient {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0, 102, 255, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(124, 58, 237, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
   }
 }

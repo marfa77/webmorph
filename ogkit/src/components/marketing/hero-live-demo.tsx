@@ -40,7 +40,6 @@ export function HeroLiveDemo() {
   useEffect(() => {
     if (typeof window === 'undefined') return
     setRequestedUrl(buildDemoUrl(window.location.origin, template, title, subtitle, Date.now()))
-    // Initial load only — later updates go through Generate.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -88,22 +87,15 @@ export function HeroLiveDemo() {
 
   return (
     <div className="w-full">
-      <div
-        className="relative w-full overflow-hidden bg-[var(--ogkit-ink)] animate-ogkit-reveal"
-        style={{ aspectRatio: '1200/630' }}
-      >
+      <div className="relative w-full overflow-hidden bg-surface-card" style={{ aspectRatio: '1200/630' }}>
         {status === 'loading' && !previewUrl && (
-          <div className="absolute inset-0 flex items-center justify-center font-mono text-sm text-white/50">
+          <div className="absolute inset-0 flex items-center justify-center text-sm text-white/50">
             Rendering 1200×630…
           </div>
         )}
         {previewUrl && (status === 'ready' || status === 'loading') && (
           // eslint-disable-next-line @next/next/no-img-element -- live OG API response
-          <img
-            src={previewUrl}
-            alt="Live Open Graph preview from OGKit"
-            className="h-full w-full object-cover"
-          />
+          <img src={previewUrl} alt="Live Open Graph preview from OGKit" className="h-full w-full object-cover" />
         )}
         {status === 'error' && error && (
           <div className="absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-rose-200">
@@ -112,34 +104,34 @@ export function HeroLiveDemo() {
         )}
       </div>
 
-      <div className="border-t border-white/10 bg-[var(--ogkit-ink)] px-4 py-4 text-white sm:px-6">
+      <div className="border-t border-white/10 bg-surface-card px-4 py-4 text-white sm:px-6">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 lg:flex-row lg:items-end">
           <label className="block min-w-0 flex-1 space-y-1.5">
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">Template</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-white/45">Template</span>
             <select
-              className="flex h-10 w-full rounded-md border border-white/15 bg-white/5 px-3 text-sm text-white"
+              className="flex h-10 w-full rounded-xl border border-white/15 bg-white/5 px-3 text-sm text-white"
               value={template}
               onChange={(e) => setTemplate(e.target.value as TemplateId)}
             >
               {DEMO_TEMPLATES.map((id) => (
-                <option key={id} value={id} className="bg-[var(--ogkit-ink)]">
+                <option key={id} value={id} className="bg-surface-card">
                   {TEMPLATE_META[id].title}
                 </option>
               ))}
             </select>
           </label>
           <label className="block min-w-0 flex-[1.2] space-y-1.5">
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">Title</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-white/45">Title</span>
             <Input
-              className="h-10 border-white/15 bg-white/5 text-sm text-white placeholder:text-white/30"
+              className="h-10 rounded-xl border-white/15 bg-white/5 text-sm text-white placeholder:text-white/30"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
           </label>
           <label className="block min-w-0 flex-[1.2] space-y-1.5">
-            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">Subtitle</span>
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-white/45">Subtitle</span>
             <Input
-              className="h-10 border-white/15 bg-white/5 text-sm text-white placeholder:text-white/30"
+              className="h-10 rounded-xl border-white/15 bg-white/5 text-sm text-white placeholder:text-white/30"
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
             />
@@ -148,7 +140,7 @@ export function HeroLiveDemo() {
             <Button
               type="button"
               size="sm"
-              className="h-10 bg-[var(--ogkit-glow)] px-4 font-semibold text-[var(--ogkit-ink)] hover:bg-white"
+              className="h-10 rounded-xl bg-brand px-4 font-semibold text-white hover:bg-brand-light"
               disabled={!title.trim()}
               onClick={generate}
             >
@@ -159,14 +151,20 @@ export function HeroLiveDemo() {
               type="button"
               size="sm"
               variant="outline"
-              className="h-10 border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              className="h-10 rounded-xl border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
               disabled={!title.trim()}
               onClick={() => void copyUrl()}
             >
               <Copy className="mr-2 h-3.5 w-3.5" />
               {copied ? 'Copied' : 'Copy URL'}
             </Button>
-            <Button asChild type="button" size="sm" variant="ghost" className="h-10 text-white/70 hover:bg-white/10 hover:text-white">
+            <Button
+              asChild
+              type="button"
+              size="sm"
+              variant="ghost"
+              className="h-10 rounded-xl text-white/70 hover:bg-white/10 hover:text-white"
+            >
               <Link href={withBasePath('/playground')}>Playground</Link>
             </Button>
           </div>

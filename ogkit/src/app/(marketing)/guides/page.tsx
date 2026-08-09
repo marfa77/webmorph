@@ -46,7 +46,7 @@ export default function GuidesIndexPage() {
     <div className="container max-w-3xl space-y-10 py-12">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <header>
-        <h1 className="font-display text-4xl font-bold tracking-tight">Guides</h1>
+        <h1 className="font-heading text-4xl font-bold tracking-tight">Guides</h1>
         <p className="mt-3 text-muted-foreground">
           Operational depth for {siteConfig.name} — beyond the HTTP reference. For SEO narrative, see the{' '}
           <Link href={withBasePath('/blog/open-graph-images-seo-guide')} className="text-primary underline">
@@ -59,7 +59,7 @@ export default function GuidesIndexPage() {
         {GUIDES.map((g) => (
           <li key={g.href} className="border-b border-border pb-4">
             <Link href={withBasePath(g.href)} className="group block">
-              <h2 className="font-display text-xl font-semibold tracking-tight group-hover:text-primary">{g.title}</h2>
+              <h2 className="font-heading text-xl font-semibold tracking-tight group-hover:text-primary">{g.title}</h2>
               <p className="mt-1 text-sm text-muted-foreground">{g.desc}</p>
             </Link>
           </li>

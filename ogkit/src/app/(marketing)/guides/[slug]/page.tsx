@@ -536,13 +536,13 @@ export default function GuidePage({ params }: Props) {
             Guides
           </Link>
         </p>
-        <h1 className="mt-1 font-display text-4xl font-bold tracking-tight">{guide.h1}</h1>
+        <h1 className="mt-1 font-heading text-4xl font-bold tracking-tight">{guide.h1}</h1>
         <p className="mt-4 text-lg leading-relaxed text-muted-foreground">{guide.intro}</p>
       </header>
 
       {guide.sections.map((section) => (
         <section key={section.heading} className="space-y-3">
-          <h2 className="font-display text-2xl font-semibold tracking-tight">{section.heading}</h2>
+          <h2 className="font-heading text-2xl font-semibold tracking-tight">{section.heading}</h2>
           {section.paragraphs?.map((p) => (
             <p key={p.slice(0, 48)} className="text-sm leading-relaxed text-muted-foreground">
               {p}
@@ -560,7 +560,7 @@ export default function GuidePage({ params }: Props) {
       ))}
 
       <section>
-        <h2 className="font-display text-2xl font-semibold tracking-tight">FAQ</h2>
+        <h2 className="font-heading text-2xl font-semibold tracking-tight">FAQ</h2>
         <div className="mt-4 space-y-5">
           {guide.faq.map((item) => (
             <div key={item.question}>
@@ -572,7 +572,7 @@ export default function GuidePage({ params }: Props) {
       </section>
 
       <section>
-        <h2 className="font-display text-2xl font-semibold tracking-tight">Related</h2>
+        <h2 className="font-heading text-2xl font-semibold tracking-tight">Related</h2>
         <ul className="mt-3 grid gap-2 sm:grid-cols-2">
           {guide.related.map(([label, href]) => (
             <li key={href}>
