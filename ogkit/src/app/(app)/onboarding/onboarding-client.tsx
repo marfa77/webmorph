@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { withBasePath } from '@/config/paths'
+import { getApiUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -35,7 +35,7 @@ export function OnboardingClient() {
     let cancelled = false
     void (async () => {
       try {
-        const res = await fetch(withBasePath('/api/keys/bootstrap'), { method: 'POST' })
+        const res = await fetch(getApiUrl('/api/keys/bootstrap'), { method: 'POST' })
         const data = (await res.json()) as {
           bootstrapped?: boolean
           key?: string

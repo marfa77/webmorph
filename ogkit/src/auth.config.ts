@@ -1,12 +1,12 @@
 import type { NextAuthConfig } from 'next-auth'
 import Resend from 'next-auth/providers/resend'
-import { withBasePath } from '@/config/paths'
+import { publicPath } from '@/config/paths'
 
 export const authConfig = {
   trustHost: true,
   session: { strategy: 'jwt', maxAge: 30 * 24 * 60 * 60 },
   pages: {
-    signIn: withBasePath('/login'),
+    signIn: publicPath('/login'),
   },
   providers: [
     Resend({

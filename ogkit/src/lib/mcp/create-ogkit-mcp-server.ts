@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
-import { absoluteSiteUrl, withBasePath } from '@/config/paths'
+import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { TEMPLATE_IDS, TEMPLATE_META } from '@/config/templates'
 import { buildNextJsGenerateMetadataSnippet } from '@/lib/mcp/nextjs-snippet'

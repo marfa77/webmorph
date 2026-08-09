@@ -1,5 +1,5 @@
 import { getToken } from 'next-auth/jwt'
-import { withBasePath } from '@/config/paths'
+import { publicPath } from '@/config/paths'
 import { NextResponse, type NextRequest } from 'next/server'
 
 const landingStaticPrefixes = ['/previews/', '/freelancer/', '/restaurant/', '/small-business/', '/startup/']
@@ -26,7 +26,7 @@ export async function middleware(request: NextRequest) {
       secureCookie: process.env.NODE_ENV === 'production',
     })
     if (!token) {
-      return NextResponse.redirect(new URL(withBasePath('/login'), request.url))
+      return NextResponse.redirect(new URL(publicPath('/login'), request.url))
     }
   }
 

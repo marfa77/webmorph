@@ -6,6 +6,11 @@ import { siteConfig } from '@/config/site'
  */
 export const publicBasePath = (process.env.NEXT_PUBLIC_BASE_PATH || '').replace(/\/$/, '')
 
+function normalizePath(href: string) {
+  if (!href) return '/'
+  return href.startsWith('/') ? href : `/${href}`
+}
+
 /** Absolute canonical URL for the primary host + optional `NEXT_PUBLIC_BASE_PATH` (sitemap, metadata, JSON-LD). */
 export function absoluteSiteUrl(pathname: string) {
   const base = siteConfig.url.replace(/\/$/, '')
@@ -14,9 +19,26 @@ export function absoluteSiteUrl(pathname: string) {
   return `${base}${publicBasePath}${normalized}`
 }
 
-/** e.g. "/ogkit/pricing" or "/pricing" if no base */
+/**
+ * App-relative path for Next.js `<Link>`, `router.push`, and `redirect()`.
+ * Next already prefixes `basePath` — do **not** add `/ogkit` again here
+ * (that produced `/ogkit/ogkit/pricing` in nav).
+ */
 export function withBasePath(href: string) {
-  const p = href.startsWith('/') ? href : `/${href}`
+  const p = normalizePath(href)
+  // Tolerate callers that already included the public base path.
+  if (publicBasePath && (p === publicBasePath || p.startsWith(`${publicBasePath}/`))) {
+    return p.slice(publicBasePath.length) || '/'
+  }
+  return p
+}
+
+/**
+ * Full public pathname including `NEXT_PUBLIC_BASE_PATH`.
+ * Use for raw `<a href>`, `fetch`, middleware/`new URL(...)` redirects, Auth page URLs.
+ */
+export function publicPath(href: string) {
+  const p = withBasePath(href)
   if (!publicBasePath) return p
   return `${publicBasePath}${p}`
 }
@@ -32,7 +54,5 @@ export function getAppBaseUrl() {
 }
 
 export function getApiUrl(path: string) {
-  const p = path.startsWith('/') ? path : `/${path}`
-  if (!publicBasePath) return p
-  return `${publicBasePath}${p}`
+  return publicPath(path)
 }

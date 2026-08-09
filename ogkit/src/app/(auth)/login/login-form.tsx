@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
-import { withBasePath } from '@/config/paths'
+import { publicPath, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
@@ -42,7 +42,7 @@ export function LoginForm() {
     setErr(null)
     const origin = window.location.origin.replace(/\/$/, '')
     const nextPath = next.startsWith('/') ? next : `/${next}`
-    const callbackUrl = `${origin}${withBasePath(nextPath)}`
+    const callbackUrl = `${origin}${publicPath(nextPath)}`
 
     const result = await signIn('resend', { email, callbackUrl, redirect: false })
     setLoading(false)

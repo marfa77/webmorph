@@ -9,7 +9,7 @@ import { createPaymentInvoice } from '@/lib/cryptomus'
 import { insertCryptoBillingOrder } from '@/lib/crypto-billing-orders'
 import { trackFunnelEventSoon } from '@/lib/analytics/funnel'
 import { PLANS } from '@/config/plans'
-import { publicBasePath, withBasePath } from '@/config/paths'
+import { publicBasePath, publicPath, withBasePath } from '@/config/paths'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -36,13 +36,13 @@ export async function GET(request: NextRequest) {
   const plan = planParam === 'pro' || planParam === 'scale' ? planParam : null
 
   if (!plan) {
-    return NextResponse.redirect(new URL(withBasePath('/pricing'), request.url), 302)
+    return NextResponse.redirect(new URL(publicPath('/pricing'), request.url), 302)
   }
 
   if (!session?.user?.id) {
     const returnPath = `/api/billing/checkout/crypto?plan=${encodeURIComponent(plan)}`
     return NextResponse.redirect(
-      new URL(`${withBasePath('/login')}?${new URLSearchParams({ next: returnPath }).toString()}`, request.url),
+      new URL(`${publicPath('/login')}?${new URLSearchParams({ next: returnPath }).toString()}`, request.url),
       302,
     )
   }
@@ -50,12 +50,13 @@ export async function GET(request: NextRequest) {
   const p = PLANS[plan]
   const price = p.priceMonthly
   if (price <= 0) {
-    return NextResponse.redirect(new URL(withBasePath('/pricing'), request.url), 302)
+    return NextResponse.redirect(new URL(publicPath('/pricing'), request.url), 302)
   }
 
   const base = appBasePath(request)
   const orderId = generateOrderId(plan)
 
+  // `base` already includes publicBasePath — append app-relative paths only.
   const result = await createPaymentInvoice({
     amount: price.toFixed(2),
     currency: 'USD',
@@ -68,7 +69,7 @@ export async function GET(request: NextRequest) {
 
   if (!result) {
     console.error('[conv] crypto_checkout_error', { reason: 'invoice_failed', userId: session.user.id, plan })
-    return NextResponse.redirect(new URL(withBasePath('/pricing'), request.url), 302)
+    return NextResponse.redirect(new URL(publicPath('/pricing'), request.url), 302)
   }
 
   const inserted = await insertCryptoBillingOrder(orderId, plan, session.user.id)

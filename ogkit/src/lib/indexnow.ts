@@ -1,4 +1,4 @@
-import { absoluteSiteUrl, withBasePath } from '@/config/paths'
+import { absoluteSiteUrl, publicPath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 
 const INDEXNOW_ENDPOINT = 'https://api.indexnow.org/indexnow'
@@ -126,5 +126,5 @@ export async function submitIndexNowUrls(urlList: string[]): Promise<{ ok: boole
 
 /** Legacy API key route path (still works if linked from docs). */
 export function getIndexNowApiKeyPath(): string {
-  return withBasePath('/api/indexnow/key')
+  return publicPath('/api/indexnow/key')
 }

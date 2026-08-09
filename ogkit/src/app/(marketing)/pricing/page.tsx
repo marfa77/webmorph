@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { isOpenAccess } from '@/config/access'
 import { PLANS } from '@/config/plans'
 import { getGumroadCheckoutUrl } from '@/config/gumroad'
-import { absoluteSiteUrl, withBasePath } from '@/config/paths'
+import { absoluteSiteUrl, publicPath, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { marketingMetadata } from '@/lib/marketing-metadata'
 import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
@@ -223,7 +223,7 @@ export default function PricingPage() {
                       </a>
                     </Button>
                     <Button asChild className="w-full" variant="outline">
-                      <a href={withBasePath('/api/billing/checkout/crypto?plan=pro')}>Pay with crypto</a>
+                      <a href={publicPath('/api/billing/checkout/crypto?plan=pro')}>Pay with crypto</a>
                     </Button>
                     <p className="text-center text-xs text-muted-foreground">
                       Already bought on Gumroad?{' '}
@@ -235,7 +235,7 @@ export default function PricingPage() {
                 ) : (
                   <>
                     <Button asChild className="w-full">
-                      <a href={withBasePath('/api/billing/checkout/crypto?plan=scale')}>Pay with crypto · Scale</a>
+                      <a href={publicPath('/api/billing/checkout/crypto?plan=scale')}>Pay with crypto · Scale</a>
                     </Button>
                     <p className="text-center text-xs text-muted-foreground">
                       Need card checkout?{' '}
