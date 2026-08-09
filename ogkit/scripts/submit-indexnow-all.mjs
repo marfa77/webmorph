@@ -30,7 +30,6 @@ const websitePaths = [
   '/channel/guides/telegram-channel-to-website.html',
   '/telegram-sait',
   '/sait-iz-telegram-kanala',
-  '/africa-dream',
   '/privacy.html',
   '/terms.html',
   '/llms.txt',

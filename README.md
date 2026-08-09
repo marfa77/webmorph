@@ -52,7 +52,7 @@ Telegram channel  →  Telethon parser  →  content database  →  static HTML 
 | **Barakhlo** (38+ Telegram channels in production; listings platform) | https://barakhlo.online/ |
 | **Channel → Site (EN)** | https://www.webmorp.art/channel/ |
 | **Сайт из Telegram (RU)** | https://www.webmorp.art/channel/ru/ |
-| **Live demo** (travel channel → structured site) | https://www.webmorp.art/africa-dream/ |
+| **Production pipeline proof** | https://barakhlo.online/ (38+ Telegram channels) |
 | **Guides** | https://www.webmorp.art/channel/guides/ |
 
 webmorp.art uses the **same Telethon + prefilter logic** as [Barakhlo](https://barakhlo.online/). Difference: Barakhlo serves Postgres + Next.js listings; Channel → Site publishes **static HTML** to the client’s domain.
@@ -60,19 +60,6 @@ webmorp.art uses the **same Telethon + prefilter logic** as [Barakhlo](https://b
 **$100 card sites do not include Telegram import or sync** — only Channel → Site (from $280) does.
 
 ---
-
-## Case: Africa Dream (travel channel → site)
-
-Live demo in this repo: **[africa-dream/](africa-dream/)** → https://www.webmorp.art/africa-dream/
-
-| | |
-|---|---|
-| **Source** | Telegram channel [@africa_dream](https://t.me/africa_dream) — group tours in South Africa, Namibia, Madagascar |
-| **Structure** | 4+ tour pages (prices, dates), 3+ SEO guides, sitemap, TravelAgency schema.org |
-| **Why it matters** | Posts in `t.me/s/` don’t rank; separate URLs on a domain do — same pattern for cooking, health, auto, shop channels |
-| **Order the same** | [Channel → Site (EN)](https://www.webmorp.art/channel/) · [Сайт из Telegram (RU)](https://www.webmorp.art/channel/ru/) |
-
-Organic traffic metrics will be published after the site moves to the client’s own domain (production ref in progress).
 
 ---
 
@@ -92,7 +79,7 @@ Niche landings: [/freelancer](https://www.webmorp.art/freelancer) · [/small-bus
 
 ```
 .
-├── index.html, channel/, africa-dream/   # Static marketing & demo sites (copied into ogkit/public at build)
+├── index.html, channel/                   # Static marketing sites (copied into ogkit/public at build)
 ├── shared/                               # Canonical PixID Organization JSON-LD (all properties)
 ├── llms.txt, robots.txt                  # LLM / crawler discovery
 ├── ogkit/                                # Next.js app — production deploy root (OGKit + site rewrites)

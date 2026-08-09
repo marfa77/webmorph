@@ -41,11 +41,13 @@
     { "source": "/platform/:path*", "destination": "/ogkit/platform/:path*", "permanent": true },
     { "source": "/use-case/:path*", "destination": "/ogkit/use-case/:path*", "permanent": true },
     { "source": "/api/:path*", "destination": "/ogkit/api/:path*", "permanent": true },
-    { "source": "/telegram-sait", "destination": "/channel/ru/", "permanent": true },
-    { "source": "/telegram-sait/", "destination": "/channel/ru/", "permanent": true },
-    { "source": "/sait-iz-telegram-kanala", "destination": "/channel/ru/", "permanent": true },
-    { "source": "/sait-iz-telegram-kanala/", "destination": "/channel/ru/", "permanent": true },
-    { "source": "/channel/ru", "destination": "/channel/ru/", "permanent": true }
+    { "source": "/telegram-sait", "destination": "/channel/ru", "permanent": true },
+    { "source": "/telegram-sait/", "destination": "/channel/ru", "permanent": true },
+    { "source": "/sait-iz-telegram-kanala", "destination": "/channel/ru", "permanent": true },
+    { "source": "/sait-iz-telegram-kanala/", "destination": "/channel/ru", "permanent": true },
+    { "source": "/africa-dream", "destination": "/channel/", "permanent": true },
+    { "source": "/africa-dream/", "destination": "/channel/", "permanent": true },
+    { "source": "/africa-dream/:path*", "destination": "/channel/", "permanent": true }
   ],
   "rewrites": [
     { "source": "/", "destination": "/ogkit/index.html" },
@@ -62,9 +64,6 @@
     { "source": "/channel/ru", "destination": "/ogkit/channel/ru/index.html" },
     { "source": "/channel/ru/", "destination": "/ogkit/channel/ru/index.html" },
     { "source": "/channel/:path*", "destination": "/ogkit/channel/:path*" },
-    { "source": "/africa-dream", "destination": "/ogkit/africa-dream/index.html" },
-    { "source": "/africa-dream/", "destination": "/ogkit/africa-dream/index.html" },
-    { "source": "/africa-dream/:path*", "destination": "/ogkit/africa-dream/:path*" },
     { "source": "/privacy.html", "destination": "/ogkit/privacy.html" },
     { "source": "/terms.html", "destination": "/ogkit/terms.html" },
     { "source": "/robots.txt", "destination": "/ogkit/website-robots.txt" },

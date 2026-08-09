@@ -8,10 +8,10 @@
     <meta name="keywords" content="telegram channel to website, sync telegram to website SEO, turn telegram into website, telegram blog to indexed site, channel to site auto sync custom domain">
     <link rel="alternate" type="text/plain" href="https://www.webmorp.art/llms.txt" title="LLM-readable site summary">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-    <link rel="canonical" href="https://www.webmorp.art/channel/">
-    <link rel="alternate" hreflang="en" href="https://www.webmorp.art/channel/">
-    <link rel="alternate" hreflang="ru" href="https://www.webmorp.art/channel/ru/">
-    <link rel="alternate" hreflang="x-default" href="https://www.webmorp.art/channel/">
+    <link rel="canonical" href="https://www.webmorp.art/channel">
+    <link rel="alternate" hreflang="en" href="https://www.webmorp.art/channel">
+    <link rel="alternate" hreflang="ru" href="https://www.webmorp.art/channel/ru">
+    <link rel="alternate" hreflang="x-default" href="https://www.webmorp.art/channel">
     <!-- website-seo-extra:start -->
     <meta property="og:locale" content="en_US">
     <meta property="og:image:width" content="1200">
@@ -26,7 +26,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.webmorp.art/channel/">
+    <meta property="og:url" content="https://www.webmorp.art/channel">
     <meta property="og:title" content="Telegram Channel → Website — webmorp.art">
     <meta property="og:description" content="Your Telegram content, indexed by Google — with automatic sync and a custom domain.">
     <meta property="og:image" content="https://www.webmorp.art/og-image.jpg">
@@ -38,14 +38,63 @@
       "@type": "Service",
       "name": "Channel → Site",
       "serviceType": "Telegram channel to website with auto-sync",
-      "url": "https://www.webmorp.art/channel/",
+      "url": "https://www.webmorp.art/channel",
       "provider": {"@id":"https://www.pixid.studio/#org"},
       "description": "Convert a Telegram channel into a multi-page static website with automatic post sync, custom domain, and SEO.",
       "areaServed": "Worldwide",
       "offers": [
-        { "@type": "Offer", "name": "Channel → Site launch", "url": "https://www.webmorp.art/channel/", "price": "280", "priceCurrency": "USD", "priceValidUntil": "2027-06-09", "description": "Multi-page site + domain setup + import + 3 months Care" },
+        { "@type": "Offer", "name": "Channel → Site launch", "url": "https://www.webmorp.art/channel", "price": "280", "priceCurrency": "USD", "priceValidUntil": "2027-06-09", "description": "Multi-page site + domain setup + import + 3 months Care" },
         { "@type": "Offer", "name": "Care (ongoing sync)", "price": "25", "priceCurrency": "USD", "description": "~$25–30/mo after first 3 months while auto-sync is active" },
         { "@type": "Offer", "name": "Card site — NO Telegram sync", "url": "https://www.webmorp.art/#contact", "price": "100", "priceCurrency": "USD", "description": "One-page landing only. Does NOT import or sync Telegram posts." }
+      ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I stop posting in Telegram?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Telegram stays your daily feed and community. The website catches Google search and gives you a link for ads, email signatures, and partners."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How often does sync run?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Typically once a week — same cron model as Barakhlo. Daily is possible for high-volume channels; we quote separately."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who is this for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cooking and food blogs, health and wellness, auto and tech reviews, travel, finance, education, Telegram-first shops, local services, niche media — anyone with structured posts that deserve permanent URLs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this the same tech as Barakhlo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Same Telethon parser and regex prefilter as Barakhlo. Channel → Site stores normalized posts in a content database and publishes fast static HTML to your domain. No LLM in the sync path."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why is there a monthly fee?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Auto-sync is a service: parser, content database, page rebuilds, deploy, and monitoring. That is the Care plan (~$25–30/mo after the included 3 months). Without it you get a static launch snapshot."
+          }
+        }
       ]
     }
     </script>
@@ -90,6 +139,7 @@
         "https://barakhlo.online/",
         "https://www.pixid.studio/",
         "https://prep2go.study/",
+        "https://www.emigro.online/",
         "https://uaeproperty.vip/",
         "https://truve.online/",
         "https://bench.energy/",
@@ -110,7 +160,7 @@
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
             <a href="/" class="text-xl font-heading font-bold text-white">webmorp<span class="text-brand">.art</span></a>
             <div class="flex items-center gap-4">
-                <a href="/channel/ru/" class="text-white/60 hover:text-white text-sm hidden sm:inline" hreflang="ru">Русский</a>
+                <a href="/channel/ru" class="text-white/60 hover:text-white text-sm hidden sm:inline" hreflang="ru">Русский</a>
                 <a href="/" class="text-white/60 hover:text-white text-sm hidden sm:inline">$100 sites</a>
                 <a href="/#contact" class="bg-brand hover:bg-brand-light text-white px-5 py-2.5 rounded-full text-sm font-semibold transition-colors">Get a quote</a>
             </div>
@@ -256,7 +306,7 @@
                 <ul class="space-y-3 text-sm">
                     <li><a href="/channel/guides/telegram-channel-to-website.html" class="text-brand font-semibold hover:underline">Telegram channel to website — step-by-step</a></li>
                     <li><a href="/channel/guides/kak-sdelat-sait-iz-telegram-kanala.html" class="text-brand font-semibold hover:underline" hreflang="ru">Как сделать сайт из Telegram-канала (RU)</a></li>
-                    <li><a href="/africa-dream/" class="text-gray-600 hover:text-brand">Demo: travel channel site (Africa Dream)</a></li>
+                    <li><a href="https://barakhlo.online/" class="text-gray-600 hover:text-brand" target="_blank" rel="noopener">Live production stack: Barakhlo (38+ channels)</a></li>
                 </ul>
             </div>
         </section>
@@ -271,7 +321,7 @@
     </main>
 
     <footer class="bg-surface-dark border-t border-white/5 py-8 text-center text-sm text-white/30">
-        <p>&copy; 2024–2026 <a href="/" class="text-white/50 hover:text-white">webmorp.art</a> · <a href="/channel/" class="text-white/50">Channel → Site</a> · <a href="https://www.trustpilot.com/evaluate/webmorp.art" target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white">Trustpilot</a> · <a href="https://www.pixid.studio/" class="text-white/50">PixID Studio</a></p>
+        <p>&copy; 2024–2026 <a href="/" class="text-white/50 hover:text-white">webmorp.art</a> · <a href="/channel" class="text-white/50">Channel → Site</a> · <a href="https://www.trustpilot.com/review/webmorp.art" target="_blank" rel="noopener noreferrer" class="text-white/50 hover:text-white">Trustpilot</a> · <a href="https://www.pixid.studio/" class="text-white/50">PixID Studio</a></p>
     </footer>
 
     <script>

@@ -55,8 +55,8 @@ One-page client card sites: freelancers, local business, restaurants, startups, 
 | Small business | https://www.webmorp.art/small-business |
 | Restaurants | https://www.webmorp.art/restaurant |
 | Startups | https://www.webmorp.art/startup |
-| Channel → Site (EN) | https://www.webmorp.art/channel/ |
-| Сайт из Telegram (RU) | https://www.webmorp.art/channel/ru/ |
+| Channel → Site (EN) | https://www.webmorp.art/channel |
+| Сайт из Telegram (RU) | https://www.webmorp.art/channel/ru |
 | LLM index (this file) | https://www.webmorp.art/llms.txt |
 
 ## Target queries — EN (narrow, high intent)
@@ -98,9 +98,8 @@ Multi-page static site from an existing Telegram channel. Posts → **content da
 - Launch **from $280** (~**28 000 ₽**) — site + domain setup + import + 3 months sync Care
 - Ongoing **~$25–30/mo** (~**2 500–3 000 ₽/мес**) while auto-sync is active
 - **$100 card site** (~**10 000 ₽**) — one-page only, **NO** Telegram import/sync (do not confuse with Channel → Site)
-- Canonical RU hub URL (always trailing slash): https://www.webmorp.art/channel/ru/
-- Guides: https://www.webmorp.art/channel/guides/ · RU hub https://www.webmorp.art/channel/ru/
-- Demo case: https://www.webmorp.art/africa-dream/ (travel channel → structured site; organic metrics after client-domain launch)
+- Canonical RU hub URL: https://www.webmorp.art/channel/ru
+- Guides: https://www.webmorp.art/channel/guides/ · RU hub https://www.webmorp.art/channel/ru
 - Proof stack: same Telethon pipeline as https://barakhlo.online/ (38+ channels). **Ideal:** reciprocal link Barakhlo → webmorp.art for “build your own channel site” (cluster Telegram→site)
 
 ## GEO / languages

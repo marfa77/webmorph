@@ -47,7 +47,7 @@ copyFile(path.join(root, 'yandex_d641785ff7934adc.html'), path.join(publicDir, '
 
 // $100 website service at site root (OGKit lives under /ogkit via NEXT_PUBLIC_BASE_PATH)
 copyFile(path.join(root, 'index.html'), path.join(publicDir, 'index.html'))
-for (const niche of ['freelancer', 'small-business', 'restaurant', 'startup', 'channel', 'africa-dream']) {
+for (const niche of ['freelancer', 'small-business', 'restaurant', 'startup', 'channel']) {
   copyDir(path.join(root, niche), path.join(publicDir, niche))
 }
 copyDir(path.join(root, 'previews'), path.join(publicDir, 'previews'))
@@ -63,8 +63,8 @@ function collectHtmlRoutes(dir, urlPrefix, priority, changefreq) {
     }
     if (!name.endsWith('.html')) continue
     const slug = name === 'index.html'
-      ? `${urlPrefix.replace(/\/$/, '')}/`
-      : `${urlPrefix}/${name.replace(/\.html$/, '')}`
+      ? urlPrefix.replace(/\/$/, '') || '/'
+      : `${urlPrefix}/${name}`
     routes.push({ loc: `${siteHost}${slug}`, priority, changefreq })
   }
   return routes
@@ -82,7 +82,6 @@ const websiteRoutes = [
   { loc: `${siteHost}/llms.txt`, priority: '0.5', changefreq: 'monthly' },
   { loc: `${siteHost}/llm.txt`, priority: '0.5', changefreq: 'monthly' },
   ...collectHtmlRoutes(path.join(root, 'channel'), '/channel', '0.85', 'monthly'),
-  ...collectHtmlRoutes(path.join(root, 'africa-dream'), '/africa-dream', '0.8', 'weekly'),
 ]
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
