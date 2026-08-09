@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
 import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
+import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
 import { clipMetaDescription } from '@/lib/seo-meta'
-
-const defaultOgImage = `${siteConfig.url}/og-image.jpg`
 
 export type MarketingArticleMeta = {
   publishedTime: string
@@ -19,8 +18,12 @@ export type MarketingMetadataInput = {
   keywords?: string[]
   /** When set, `openGraph.type` is `article` and times are emitted for Discover / rich results. */
   article?: MarketingArticleMeta
-  /** Override default marketing OG image (absolute URL). */
+  /** Override default dogfood OG image (absolute URL). */
   ogImageUrl?: string
+  /** Override og:image:alt (defaults to "OGKit — {title}"). */
+  ogImageAlt?: string
+  /** Subtitle baked into the dogfood OG card when ogImageUrl is omitted. */
+  ogSubtitle?: string
 }
 
 /** Consistent SEO metadata for public marketing pages (Google + social + LLM crawlers). */
@@ -28,10 +31,14 @@ export function marketingMetadata(opts: MarketingMetadataInput): Metadata {
   const path = opts.pathname.startsWith('/') ? opts.pathname : `/${opts.pathname}`
   const canonical = absoluteSiteUrl(path)
   const description = clipMetaDescription(opts.description)
-  const ogUrl = opts.ogImageUrl ?? defaultOgImage
-  const images: NonNullable<Metadata['openGraph']>['images'] = [
-    { url: ogUrl, width: 1200, height: 630, alt: `${siteConfig.name} — ${opts.title}` },
-  ]
+  const alt = opts.ogImageAlt ?? `${siteConfig.name} — ${opts.title}`
+  const ogUrl =
+    opts.ogImageUrl ??
+    dogfoodOgImageUrl({
+      title: opts.title,
+      subtitle: opts.ogSubtitle ?? 'Open Graph image API',
+    })
+  const images = ogImageWithAlt(ogUrl, alt)
 
   const openGraph: Metadata['openGraph'] = {
     title: opts.title,

@@ -116,7 +116,7 @@ function buildImageUrl(
   return `${baseOrigin}${getApiUrl(`/api/og/${template}`)}?${params.toString()}`
 }
 
-export function PlaygroundClient() {
+export function PlaygroundClient({ openAccess = false }: { openAccess?: boolean }) {
   const [template, setTemplate] = useState<TemplateId>('minimal')
   const [apiKey, setApiKey] = useState('')
   const [fields, setFields] = useState<Record<string, string>>({ title: DEFAULT_VALUES.title! })
@@ -305,7 +305,9 @@ export function PlaygroundClient() {
                   }}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Leave blank to generate a watermarked demo URL. Add a key when you want quota tracking and production use.
+                  {openAccess
+                    ? 'Leave blank for demo=1 (no watermark during open access). Add a key when you want rotatable production URLs.'
+                    : 'Leave blank to generate a watermarked demo URL. Add a key when you want quota tracking and production use.'}
                 </p>
               </div>
               {fieldKeys.map((key) => {
@@ -366,7 +368,9 @@ export function PlaygroundClient() {
             <CardContent className="space-y-3">
               {!apiKey.trim() && (
                 <p className="rounded-md border border-dashed bg-muted/30 p-3 text-sm text-muted-foreground">
-                  Demo mode is active. Generated images include a watermark and are meant for evaluation before checkout.
+                  {openAccess
+                    ? 'Demo mode (demo=1): no API key required. Open access means no watermark and no quota right now.'
+                    : 'Demo mode is active. Generated images include a watermark and are meant for evaluation before checkout.'}
                 </p>
               )}
               {!(fields.title ?? '').trim() && (

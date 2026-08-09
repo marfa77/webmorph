@@ -289,7 +289,7 @@ function MetadataFlowVisual() {
 
 function SeoExamplePanels() {
   const examples = [
-    ['Good URL', 'https://www.webmorp.art/api/og/article?title=Open+Graph+SEO&demo=1'],
+    ['Good URL', 'https://www.webmorp.art/ogkit/api/og/article?title=Open+Graph+SEO&demo=1'],
     ['Bad preview', 'One generic homepage banner reused on every article and changelog.'],
     ['Next.js hook', 'generateMetadata() returns openGraph.images + twitter.images on the server.'],
   ] as const

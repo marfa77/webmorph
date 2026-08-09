@@ -3,6 +3,7 @@ import { siteConfig } from '@/config/site'
 import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
+import { dogfoodOgImageUrl } from '@/lib/dogfood-og'
 import { clipMetaDescription } from '@/lib/seo-meta'
 
 const COPY: Record<string, string> = {
@@ -156,12 +157,11 @@ function buildUseCaseMetaDescription(type: string, label: string): string {
 function buildUseCasePreviewImageUrl(type: string) {
   const details = DETAILS[type]!
   const label = humanize(type)
-  const image = new URL(`${siteConfig.url}/api/og/minimal`)
-  image.searchParams.set('demo', '1')
-  image.searchParams.set('title', `${label} Open Graph images`)
-  image.searchParams.set('subtitle', `Template: ${details.template}`)
-  image.searchParams.set('accent', '#2563eb')
-  return image.toString()
+  return dogfoodOgImageUrl({
+    title: `${label} Open Graph images`,
+    subtitle: `Template: ${details.template}`,
+    template: 'minimal',
+  })
 }
 
 export function generateMetadata({ params }: Props) {

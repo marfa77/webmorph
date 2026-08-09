@@ -3,8 +3,17 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { AuthSessionProvider } from '@/components/auth-session-provider'
 import { PixidOrganizationSchema } from '@/components/PixidOrganizationSchema'
+import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
+import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
 import './globals.css'
+
+const rootOgImage = dogfoodOgImageUrl({
+  title: 'OGKit',
+  subtitle: 'Open Graph image API',
+  template: 'brand',
+})
+const rootOgAlt = 'OGKit dynamic Open Graph image API — 1200×630 social cards'
 
 /** Same stack as webmorp.art homepage: Space Grotesk headings + Inter body. */
 const spaceGrotesk = Space_Grotesk({
@@ -26,7 +35,7 @@ const cryptomusSiteVerify =
 export const metadata: Metadata = {
   title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(absoluteSiteUrl('')),
   applicationName: siteConfig.name,
   other: { cryptomus: cryptomusSiteVerify },
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim()
@@ -64,13 +73,13 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: 'OGKit - Open Graph image API',
     description: siteConfig.description,
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'OGKit dynamic Open Graph image API' }],
+    images: ogImageWithAlt(rootOgImage, rootOgAlt),
   },
   twitter: {
     card: 'summary_large_image',
     title: 'OGKit - Open Graph image API',
     description: siteConfig.description,
-    images: ['/og-image.jpg'],
+    images: [rootOgImage],
   },
 }
 

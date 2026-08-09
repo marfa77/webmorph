@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
+import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 import { marketingMetadata } from '@/lib/marketing-metadata'
 import { ContactForm } from './contact-form'
 
@@ -9,11 +10,15 @@ export const metadata = marketingMetadata({
   description:
     'Billing, Cryptomus checkout, API keys, or template issues: use the secure form. Include the first 8 characters of your key and URLs — never paste the full secret.',
   pathname: '/contact',
+  ogSubtitle: 'Support & billing',
 })
 
 export default function ContactPage() {
+  const breadcrumbLd = breadcrumbListJsonLd([{ name: 'Contact', path: '/contact' }])
+
   return (
     <div className="container max-w-2xl py-16">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       <h1 className="text-3xl font-bold">Contact us</h1>
       <p className="mt-2 text-muted-foreground">
         Have a question about {siteConfig.name}, billing, or a product issue? Use the form below.

@@ -3,6 +3,7 @@ import { siteConfig } from '@/config/site'
 import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
+import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
 import { clipMetaDescription } from '@/lib/seo-meta'
 
 const HINT: Record<string, string> = {
@@ -444,12 +445,7 @@ const ALLOWED = new Set(Object.keys(HINT))
 type Props = { params: { framework: string } }
 
 function pageOgImage(title: string, subtitle = 'Framework guide') {
-  const url = new URL(`${siteConfig.url}/api/og/minimal`)
-  url.searchParams.set('demo', '1')
-  url.searchParams.set('title', title)
-  url.searchParams.set('subtitle', subtitle)
-  url.searchParams.set('accent', '#2563eb')
-  return url.toString()
+  return dogfoodOgImageUrl({ title, subtitle, template: 'minimal' })
 }
 
 export function generateMetadata({ params }: Props) {
@@ -464,21 +460,13 @@ export function generateMetadata({ params }: Props) {
       : `${details.label}: dynamic 1200×630 Open Graph and Twitter/X cards via OGKit HTTPS URLs — server or SSG metadata patterns, pitfalls, and checklist. Framework-agnostic hosted API; pair with /docs and /llms.txt for AI-assisted setup.`,
   )
   const image = pageOgImage(ogTitle, 'Open Graph image API guide')
+  const images = ogImageWithAlt(image, title)
   const canonical = absoluteSiteUrl(`/for/${params.framework}`)
-  if (params.framework === 'nextjs') {
-    return {
-      title: { absolute: title },
-      description,
-      alternates: { canonical },
-      openGraph: { title, description, url: canonical, images: [image] },
-      twitter: { card: 'summary_large_image', title, description, images: [image] },
-    }
-  }
   return {
     title: { absolute: title },
     description,
     alternates: { canonical },
-    openGraph: { title, description, url: canonical, images: [image] },
+    openGraph: { title, description, url: canonical, images },
     twitter: { card: 'summary_large_image', title, description, images: [image] },
   }
 }

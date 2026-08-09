@@ -5,6 +5,7 @@ import { isOpenAccess } from '@/config/access'
 import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
+import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
 import { clipMetaDescription } from '@/lib/seo-meta'
 import { Button } from '@/components/ui/button'
 import { HeroLiveDemo } from '@/components/marketing/hero-live-demo'
@@ -17,6 +18,12 @@ const homeDescription = clipMetaDescription(
     ? 'Free Open Graph image API: 1200×630 PNG social cards from one HTTPS URL. Templates, Playground, Next.js metadata — no watermark during open access.'
     : siteConfig.description,
 )
+const homeOgImage = dogfoodOgImageUrl({
+  title: 'OGKit',
+  subtitle: 'Open Graph image API',
+  template: 'brand',
+})
+const homeOgAlt = 'OGKit dynamic Open Graph image API — 1200×630 social cards'
 
 export const metadata: Metadata = {
   title: { absolute: homeTitle },
@@ -28,13 +35,13 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: homeTitle,
     description: homeDescription,
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'OGKit dynamic Open Graph image API' }],
+    images: ogImageWithAlt(homeOgImage, homeOgAlt),
   },
   twitter: {
     card: 'summary_large_image',
     title: homeTitle,
     description: homeDescription,
-    images: ['/og-image.jpg'],
+    images: [homeOgImage],
   },
 }
 

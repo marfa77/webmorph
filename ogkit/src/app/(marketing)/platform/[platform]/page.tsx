@@ -3,6 +3,7 @@ import { absoluteSiteUrl, withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
+import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
 import { clipMetaDescription } from '@/lib/seo-meta'
 
 const COPY: Record<string, string> = {
@@ -109,17 +110,17 @@ export function generateMetadata({ params }: Props) {
   const description = clipMetaDescription(
     `Deploy the OGKit Open Graph image API on ${label}: canonical HTTPS URLs, env vars, CDN caching for GET /api/og/…, signed URLs, and Google-friendly sitemap/robots patterns. Works as a hosted alternative to custom Next.js image routes.`,
   )
-  const image = new URL(`${siteConfig.url}/api/og/minimal`)
-  image.searchParams.set('demo', '1')
-  image.searchParams.set('title', `OG image API on ${label}`)
-  image.searchParams.set('subtitle', 'Deployment guide')
+  const image = dogfoodOgImageUrl({
+    title: `OG image API on ${label}`,
+    subtitle: 'Deployment guide',
+  })
   const canonical = absoluteSiteUrl(`/platform/${params.platform}`)
   return {
     title: { absolute: title },
     description,
     alternates: { canonical },
-    openGraph: { title, description, url: canonical, images: [image.toString()] },
-    twitter: { card: 'summary_large_image', title, description, images: [image.toString()] },
+    openGraph: { title, description, url: canonical, images: ogImageWithAlt(image, title) },
+    twitter: { card: 'summary_large_image', title, description, images: [image] },
   }
 }
 

@@ -9,6 +9,7 @@ export type NextJsSnippetOptions = OgUrlOptions & {
 export function buildNextJsGenerateMetadataSnippet(options: NextJsSnippetOptions): string {
   const apiKeyEnv = options.apiKeyEnv?.trim() || 'OGKIT_API_KEY'
   const usesDemoOnly = options.previewWithDemo ?? !options.apiKey
+  const alt = JSON.stringify(options.title)
 
   if (usesDemoOnly) {
     const imageUrl = buildOgImageUrl({ ...options, demo: true, apiKey: undefined })
@@ -20,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     openGraph: {
       title: ${JSON.stringify(options.title)},
-      images: [{ url: imageUrl, width: 1200, height: 630 }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: ${alt} }],
     },
     twitter: {
       card: 'summary_large_image',
@@ -55,7 +56,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     openGraph: {
       title: ${JSON.stringify(options.title)},
-      images: [{ url: imageUrl, width: 1200, height: 630 }],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: ${alt} }],
     },
     twitter: {
       card: 'summary_large_image',

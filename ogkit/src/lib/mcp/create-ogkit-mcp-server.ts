@@ -1,5 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { z } from 'zod'
+import { isOpenAccess } from '@/config/access'
 import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { TEMPLATE_IDS, TEMPLATE_META } from '@/config/templates'
@@ -62,8 +63,9 @@ export function createOgkitMcpServer(meta?: McpRequestMeta): McpServer {
     'og_build_url',
     {
       title: 'Build OGKit image URL',
-      description:
-        'Build a canonical OGKit HTTPS image URL for a template and fields. Defaults to demo=1 (watermarked, no key).',
+      description: isOpenAccess()
+        ? 'Build a canonical OGKit HTTPS image URL for a template and fields. Defaults to demo=1 (no key; no watermark during open access).'
+        : 'Build a canonical OGKit HTTPS image URL for a template and fields. Defaults to demo=1 (watermarked, no key).',
       inputSchema: z.object({
         template: z.string().describe('Template id, e.g. article, minimal, product'),
         title: z.string().min(1).max(300),
@@ -73,7 +75,14 @@ export function createOgkitMcpServer(meta?: McpRequestMeta): McpServer {
         logo: z.string().url().optional(),
         price: z.string().max(40).optional(),
         accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
-        demo: z.boolean().optional().describe('Use demo=1 watermark preview (default true)'),
+        demo: z
+          .boolean()
+          .optional()
+          .describe(
+            isOpenAccess()
+              ? 'Use demo=1 without a key (default true; no watermark during open access)'
+              : 'Use demo=1 watermark preview (default true)',
+          ),
         apiKey: z.string().optional().describe('Production API key — omit for demo'),
       }),
     },

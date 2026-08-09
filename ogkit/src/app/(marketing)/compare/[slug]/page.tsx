@@ -4,7 +4,9 @@ import { siteConfig } from '@/config/site'
 import { notFound } from 'next/navigation'
 import { FinishCta } from '@/components/marketing/finish-cta'
 import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
+import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
 import { clipMetaDescription } from '@/lib/seo-meta'
+import { isOpenAccess } from '@/config/access'
 
 type ComparePage = {
   h1: string
@@ -721,19 +723,23 @@ type Props = { params: { slug: string } }
 export function generateMetadata({ params }: Props) {
   if (!ALLOWED.has(params.slug)) return {}
   const c = COPY[params.slug]!
-  const image = new URL(`${siteConfig.url}/api/og/minimal`)
-  image.searchParams.set('demo', '1')
-  image.searchParams.set('title', c.h1)
-  image.searchParams.set('subtitle', 'Open Graph image API comparison')
-  image.searchParams.set('accent', '#2563eb')
+  const image = dogfoodOgImageUrl({
+    title: c.h1,
+    subtitle: 'Open Graph image API comparison',
+  })
   const canonical = absoluteSiteUrl(`/compare/${params.slug}`)
   const description = clipMetaDescription(c.description)
   return {
     title: { absolute: c.title },
     description,
     alternates: { canonical },
-    openGraph: { title: c.title, description, url: canonical, images: [image.toString()] },
-    twitter: { card: 'summary_large_image', title: c.title, description, images: [image.toString()] },
+    openGraph: {
+      title: c.title,
+      description,
+      url: canonical,
+      images: ogImageWithAlt(image, c.title),
+    },
+    twitter: { card: 'summary_large_image', title: c.title, description, images: [image] },
   }
 }
 
@@ -754,7 +760,9 @@ export default function ComparePage({ params }: Props) {
       },
       {
         question: 'Can I try OGKit without an API key?',
-        answer: 'Yes. Use demo=1 in the Playground or API URL to generate watermarked evaluation images before creating a production key.',
+        answer: isOpenAccess()
+          ? 'Yes. Use demo=1 in the Playground or API URL — during open access there is no watermark and no quota. Sign in later for rotatable API keys.'
+          : 'Yes. Use demo=1 in the Playground or API URL to generate watermarked evaluation images before creating a production key.',
       },
     ] satisfies { question: string; answer: string }[])
   const jsonLd = {
