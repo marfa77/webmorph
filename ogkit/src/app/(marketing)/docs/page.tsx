@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { isOpenAccess } from '@/config/access'
 import { absoluteSiteUrl, getApiUrl, withBasePath } from '@/config/paths'
 import { TEMPLATE_IDS, TEMPLATE_META } from '@/config/templates'
 import { siteConfig } from '@/config/site'
@@ -7,16 +8,25 @@ import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
+const openAccess = isOpenAccess()
+
 export const metadata = marketingMetadata({
   title: 'OGKit API — Open Graph URLs, templates, keys & signed URLs',
-  description:
-    'GET /api/og/{template} and /api/og/auto: query params, API keys, demo=1 watermarks, signed URLs, errors, Next.js snippets. Machine-readable /llms.txt for Cursor, ChatGPT & Claude.',
+  description: openAccess
+    ? 'GET /api/og/{template} and /api/og/auto: query params, API keys, demo=1 (free, no watermark during open access), signed URLs, errors, Next.js snippets. Machine-readable /llms.txt for Cursor, ChatGPT & Claude.'
+    : 'GET /api/og/{template} and /api/og/auto: query params, API keys, demo=1 watermarks, signed URLs, errors, Next.js snippets. Machine-readable /llms.txt for Cursor, ChatGPT & Claude.',
   pathname: '/docs',
 })
 
 const PARAM_ROWS: { name: string; required: string; desc: string }[] = [
   { name: 'key', required: 'Production', desc: 'API key (`ogk_live_…`); also accepted as `Authorization: Bearer`.' },
-  { name: 'demo', required: 'Demo only', desc: 'Use `demo=1` without a key for watermarked evaluation images.' },
+  {
+    name: 'demo',
+    required: 'Demo only',
+    desc: openAccess
+      ? 'Use `demo=1` without a key. During open access images have no watermark and no quota.'
+      : 'Use `demo=1` without a key for watermarked evaluation images.',
+  },
   { name: 'title', required: 'Yes', desc: 'Title text (1–300 chars). Required for the image to render.' },
   { name: 'subtitle', required: 'No', desc: 'Subheading (article, minimal, gradient).' },
   { name: 'author', required: 'No', desc: 'Author (article, quote).' },
@@ -66,7 +76,9 @@ export default function ApiDocsPage() {
     },
     {
       question: 'Can I try OGKit without an API key?',
-      answer: `Yes. Add demo=1 for a watermarked evaluation image, for example ${base}${getApiUrl('/api/og/minimal')}?demo=1&title=Hello.`,
+      answer: openAccess
+        ? `Yes. Add demo=1 (no watermark during open access), for example ${base}${getApiUrl('/api/og/minimal')}?demo=1&title=Hello.`
+        : `Yes. Add demo=1 for a watermarked evaluation image, for example ${base}${getApiUrl('/api/og/minimal')}?demo=1&title=Hello.`,
     },
     {
       question: 'Can OGKit generate from an existing page URL?',
@@ -154,7 +166,10 @@ export default function ApiDocsPage() {
         </ul>
         <p className="mt-2 text-sm text-muted-foreground">
           Create keys from the <Link className="underline" href={withBasePath('/dashboard/keys')}>dashboard</Link> after you sign in.
-          For evaluation, add <code className="font-mono">demo=1</code> and omit the key. Demo images are watermarked.
+          For evaluation, add <code className="font-mono">demo=1</code> and omit the key.
+          {openAccess
+            ? ' During open access, demo images have no watermark and no quota.'
+            : ' Demo images are watermarked.'}
         </p>
       </section>
 
@@ -179,7 +194,11 @@ export default function ApiDocsPage() {
         <h2 className="text-xl font-semibold">Auto-generate from a URL</h2>
         <p className="mt-2 text-sm text-muted-foreground">
           Use <code className="font-mono">/api/og/auto</code> when you want OGKit to fetch a page, extract metadata, and
-          choose an article or minimal card. You can still override fields with query parameters.
+          choose an article or minimal card. You can still override fields with query parameters. Deep dive:{' '}
+          <Link className="underline" href={withBasePath('/guides/auto-og')}>
+            Auto OG guide
+          </Link>
+          .
         </p>
         <CodeBlock>{`${base}${getApiUrl('/api/og/auto')}?key=KEY&url=https%3A%2F%2Fexample.com&template=article`}</CodeBlock>
       </section>
@@ -266,8 +285,13 @@ export default function ApiDocsPage() {
       <section>
         <h2 className="text-xl font-semibold">Signed URLs and domain allowlists</h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          Paid keys can require signed URLs and domain claims from the dashboard. Sign the canonical path and sorted query
+          Keys can require signed URLs and domain claims from the dashboard. Sign the canonical path and sorted query
           string, excluding <code className="font-mono">sig</code>, with HMAC-SHA256 using the full API key as the secret.
+          Full Node/Python walkthrough:{' '}
+          <Link className="underline" href={withBasePath('/guides/signed-urls')}>
+            Signed URLs guide
+          </Link>
+          .
         </p>
         <CodeBlock>{`// pseudo-code
 const url = new URL("${base}${getApiUrl('/api/og/minimal')}?key=KEY&title=Hello&domain=example.com");
@@ -280,6 +304,12 @@ url.searchParams.set("sig", sig);`}</CodeBlock>
         <h2 className="text-xl font-semibold">Guides and comparisons</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
+            ['Guides index', '/guides'],
+            ['Signed URLs', '/guides/signed-urls'],
+            ['Auto OG (/api/og/auto)', '/guides/auto-og'],
+            ['Caching & rescrape', '/guides/caching-and-rescrape'],
+            ['Appearance params', '/guides/appearance'],
+            ['MCP for Cursor', '/guides/mcp'],
             ['Next.js OG image generator guide', '/for/nextjs'],
             ['Dynamic social preview images', '/use-case/dynamic-social-preview-images'],
             ['OGKit vs @vercel/og', '/compare/ogkit-vs-vercel-og'],

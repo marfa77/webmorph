@@ -1,6 +1,7 @@
 import { and, eq, isNull } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { apiKeys, users } from '@/lib/db/schema'
+import { isOpenAccess } from '@/config/access'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
 import { extractPrefix, verifyKey } from './keys'
 
@@ -48,7 +49,7 @@ export async function authenticateKey(key: string | null): Promise<AuthResult> {
     userEmail: userRow.email,
     apiKeyId: keyRow.id,
     plan,
-    watermark: plan === 'free',
+    watermark: isOpenAccess() ? false : plan === 'free',
     allowedDomains,
     requireSignedUrls: keyRow.requireSignedUrls ?? false,
     rawKey: key,

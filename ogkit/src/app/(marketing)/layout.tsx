@@ -9,34 +9,28 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-screen flex-col">
       <Ga4 />
-      <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
-        <div className="container flex h-14 max-w-6xl items-center justify-between">
-          <Link href={withBasePath('/')} className="font-semibold">
+      <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/80 backdrop-blur-md">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
+          <Link href={withBasePath('/')} className="font-display text-lg font-bold tracking-tight">
             {siteConfig.name}
           </Link>
-          <nav className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link href="/" className="font-medium text-slate-800 hover:text-foreground">
-              Websites — $100
-            </Link>
-            <Link href={withBasePath('/pricing')} className="hover:text-foreground">
-              Pricing
+          <nav className="flex items-center gap-3 text-sm text-muted-foreground sm:gap-5">
+            <Link href={withBasePath('/playground')} className="hidden hover:text-foreground sm:inline">
+              Playground
             </Link>
             <Link href={withBasePath('/docs')} className="hover:text-foreground">
               API
             </Link>
-            <Link href={withBasePath('/tools')} className="hover:text-foreground">
-              Resources
+            <Link href={withBasePath('/guides')} className="hidden hover:text-foreground md:inline">
+              Guides
             </Link>
-            <Link href={withBasePath('/blog')} className="hover:text-foreground">
+            <Link href={withBasePath('/pricing')} className="hover:text-foreground">
+              Pricing
+            </Link>
+            <Link href={withBasePath('/blog')} className="hidden hover:text-foreground md:inline">
               Blog
             </Link>
-            <Link href={withBasePath('/llms.txt')} className="hover:text-foreground">
-              llms.txt
-            </Link>
-            <Link href={withBasePath('/playground')} className="hover:text-foreground">
-              Playground
-            </Link>
-            <Button asChild size="sm">
+            <Button asChild size="sm" className="font-semibold">
               <Link href={withBasePath('/login')}>Sign in</Link>
             </Button>
           </nav>

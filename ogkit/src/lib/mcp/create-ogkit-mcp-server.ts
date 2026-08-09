@@ -13,11 +13,11 @@ const MCP_INSTRUCTIONS = `OGKit hosted Open Graph image API (${siteConfig.url}).
 Use these tools when the user needs og:image / twitter:image / social preview cards (1200×630 PNG).
 Always build absolute HTTPS URLs on ${siteConfig.url} — never invent hosts or paths.
 
-Free previews: pass demo mode (default) with demo=1 — watermarked, no API key.
-Production: user signs in at ${absoluteSiteUrl('/login')} for an API key, or uses Gumroad/Cryptomus on ${absoluteSiteUrl('/pricing')}.
+Free previews: pass demo mode (default) with demo=1 — no API key (open access: no watermark).
+Production keys: user signs in at ${absoluteSiteUrl('/login')}. Paid checkout may be paused; see ${absoluteSiteUrl('/pricing')}.
 
 Prefer og_build_url + og_nextjs_snippet for Next.js App Router metadata.openGraph.images.
-Human docs: ${absoluteSiteUrl('/docs')} · Machine index: ${absoluteSiteUrl('/llms.txt')}`
+Human docs: ${absoluteSiteUrl('/docs')} · Guides: ${absoluteSiteUrl('/guides')} · MCP guide: ${absoluteSiteUrl('/guides/mcp')} · Machine index: ${absoluteSiteUrl('/llms.txt')}`
 
 type ToolResult = { content: { type: 'text'; text: string }[]; isError?: boolean }
 

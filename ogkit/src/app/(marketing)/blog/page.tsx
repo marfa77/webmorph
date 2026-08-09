@@ -113,7 +113,11 @@ export default function BlogIndexPage() {
           <Link className="text-primary underline" href={withBasePath('/playground')}>
             Playground
           </Link>{' '}
-          so product, growth, and engineering teams share the same vocabulary.
+          and operational{' '}
+          <Link className="text-primary underline" href={withBasePath('/guides')}>
+            guides
+          </Link>{' '}
+          (signed URLs, auto OG, caching, MCP) so product, growth, and engineering teams share the same vocabulary.
         </p>
       </section>
 

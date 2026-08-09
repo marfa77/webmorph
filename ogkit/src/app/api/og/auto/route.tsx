@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
+import { isOpenAccess } from '@/config/access'
 import { authenticateKey } from '@/lib/api/authenticate'
 import { checkQuota, recordUsage } from '@/lib/api/quota'
 import { verifySignedRequest } from '@/lib/api/signatures'
@@ -44,7 +45,8 @@ export async function GET(req: Request) {
   const parsed = OgParamsSchema.safeParse(rawParams)
   if (!parsed.success) return NextResponse.json({ error: 'invalid_params', details: parsed.error.format() }, { status: 400 })
 
-  const element = renderOgTemplate(template, parsed.data, isDemo || (auth?.ok ? auth.watermark : true))
+  const watermark = isOpenAccess() ? false : isDemo || (auth?.ok ? auth.watermark : true)
+  const element = renderOgTemplate(template, parsed.data, watermark)
   const imageResponse = new ImageResponse(element, {
     width: 1200,
     height: 630,

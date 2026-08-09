@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { isOpenAccess } from '@/config/access'
 import { PLANS } from '@/config/plans'
 import { getGumroadCheckoutUrl } from '@/config/gumroad'
 import { absoluteSiteUrl, withBasePath } from '@/config/paths'
@@ -9,43 +10,67 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
+const openAccess = isOpenAccess()
+
 export const metadata = marketingMetadata({
-  title: 'Open Graph image API pricing — OGKit Free, Pro $19, Scale $99',
-  description:
-    'OGKit Open Graph image API pricing: free watermarked tier, Pro $19/mo (100k images), Scale $99/mo (1M). Pay by card (Gumroad) or crypto (Cryptomus). Signed URLs on paid plans, monthly quota with no auto-renew.',
+  title: openAccess
+    ? 'Open Graph image API — free for everyone right now | OGKit'
+    : 'Open Graph image API pricing — OGKit Free, Pro $19, Scale $99',
+  description: openAccess
+    ? 'OGKit is free for everyone right now: no watermark, no quota. Use demo=1 or an API key for production 1200×630 Open Graph images. Paid plans stay listed for later.'
+    : 'OGKit Open Graph image API pricing: free watermarked tier, Pro $19/mo (100k images), Scale $99/mo (1M). Pay by card (Gumroad) or crypto (Cryptomus). Signed URLs on paid plans, monthly quota with no auto-renew.',
   pathname: '/pricing',
 })
 
-const faq = [
-  {
-    q: 'Can I pay with a credit card?',
-    a: 'Yes. OGKit Pro is available on Gumroad with card checkout. After purchase, sign in and redeem your license key on the account page. Scale is available via crypto checkout.',
-  },
-  {
-    q: 'Do you support crypto?',
-    a: 'Yes. Pro and Scale can be purchased with cryptocurrency via Cryptomus — useful if you prefer on-chain payment or cannot use card checkout in your region.',
-  },
-  {
-    q: 'What is the free tier?',
-    a: 'The free tier gives you 1,000 watermarked images per month and full access to demo=1 previews without an account. Watermarks are removed on Pro and Scale.',
-  },
-  {
-    q: 'Is the subscription auto-renewing?',
-    a: 'No. Each payment is a one-time monthly quota grant. You pay again at the start of the next month if you need more quota — there is no automatic renewal.',
-  },
-  {
-    q: 'Can I use OGKit for multiple projects?',
-    a: 'Yes. You can create multiple API keys per account and restrict each key to a specific domain or require signed URLs for extra security.',
-  },
-  {
-    q: 'What happens when my quota runs out?',
-    a: 'The API returns HTTP 429 once your monthly cap is reached. You can upgrade to a higher plan at any time to continue generating images.',
-  },
-  {
-    q: 'Are payments refundable?',
-    a: 'Payments are non-refundable once the monthly quota has been activated. If you experience a technical failure before quota is granted, contact us within 7 days.',
-  },
-]
+const faq = openAccess
+  ? [
+      {
+        q: 'Is OGKit free right now?',
+        a: 'Yes. During open access every request is free: no watermark and no monthly quota. Use demo=1 without an account, or create an API key for production URLs.',
+      },
+      {
+        q: 'Do I still need an API key?',
+        a: 'Not for evaluation — demo=1 works without a key. For production, sign in and create a key so you can rotate credentials, set domain allowlists, and track usage later.',
+      },
+      {
+        q: 'Will paid plans come back?',
+        a: 'Yes. Pro and Scale pricing stays listed for when we re-enable billing. Nothing to buy today.',
+      },
+      {
+        q: 'Can I use OGKit for multiple projects?',
+        a: 'Yes. You can create multiple API keys per account and restrict each key to a specific domain or require signed URLs for extra security.',
+      },
+    ]
+  : [
+      {
+        q: 'Can I pay with a credit card?',
+        a: 'Yes. OGKit Pro is available on Gumroad with card checkout. After purchase, sign in and redeem your license key on the account page. Scale is available via crypto checkout.',
+      },
+      {
+        q: 'Do you support crypto?',
+        a: 'Yes. Pro and Scale can be purchased with cryptocurrency via Cryptomus — useful if you prefer on-chain payment or cannot use card checkout in your region.',
+      },
+      {
+        q: 'What is the free tier?',
+        a: 'The free tier gives you 1,000 watermarked images per month and full access to demo=1 previews without an account. Watermarks are removed on Pro and Scale.',
+      },
+      {
+        q: 'Is the subscription auto-renewing?',
+        a: 'No. Each payment is a one-time monthly quota grant. You pay again at the start of the next month if you need more quota — there is no automatic renewal.',
+      },
+      {
+        q: 'Can I use OGKit for multiple projects?',
+        a: 'Yes. You can create multiple API keys per account and restrict each key to a specific domain or require signed URLs for extra security.',
+      },
+      {
+        q: 'What happens when my quota runs out?',
+        a: 'The API returns HTTP 429 once your monthly cap is reached. You can upgrade to a higher plan at any time to continue generating images.',
+      },
+      {
+        q: 'Are payments refundable?',
+        a: 'Payments are non-refundable once the monthly quota has been activated. If you experience a technical failure before quota is granted, contact us within 7 days.',
+      },
+    ]
 
 export default function PricingPage() {
   const pricingRoot = absoluteSiteUrl('/pricing')
@@ -56,35 +81,47 @@ export default function PricingPage() {
     name: `${siteConfig.name} Open Graph image API`,
     description: siteConfig.description,
     url: pricingRoot,
-    offers: [
-      {
-        '@type': 'Offer',
-        name: 'Free',
-        price: '0',
-        priceCurrency: 'USD',
-        availability: 'https://schema.org/InStock',
-        url: pricingRoot,
-        description: '1,000 watermarked images per month.',
-      },
-      {
-        '@type': 'Offer',
-        name: 'Pro',
-        price: '19',
-        priceCurrency: 'USD',
-        availability: 'https://schema.org/InStock',
-        url: pricingRoot,
-        description: '100,000 images per month, no watermark, signed URLs, Google Fonts.',
-      },
-      {
-        '@type': 'Offer',
-        name: 'Scale',
-        price: '99',
-        priceCurrency: 'USD',
-        availability: 'https://schema.org/InStock',
-        url: pricingRoot,
-        description: '1,000,000 images per month, priority CDN, no watermark.',
-      },
-    ],
+    offers: openAccess
+      ? [
+          {
+            '@type': 'Offer',
+            name: 'Open access',
+            price: '0',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: pricingRoot,
+            description: 'Free for everyone right now: no watermark, no quota.',
+          },
+        ]
+      : [
+          {
+            '@type': 'Offer',
+            name: 'Free',
+            price: '0',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: pricingRoot,
+            description: '1,000 watermarked images per month.',
+          },
+          {
+            '@type': 'Offer',
+            name: 'Pro',
+            price: '19',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: pricingRoot,
+            description: '100,000 images per month, no watermark, signed URLs, Google Fonts.',
+          },
+          {
+            '@type': 'Offer',
+            name: 'Scale',
+            price: '99',
+            priceCurrency: 'USD',
+            availability: 'https://schema.org/InStock',
+            url: pricingRoot,
+            description: '1,000,000 images per month, priority CDN, no watermark.',
+          },
+        ],
   }
   const faqJsonLd = {
     '@context': 'https://schema.org',
@@ -104,37 +141,77 @@ export default function PricingPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
 
       <h1 className="text-center text-3xl font-bold">Pricing</h1>
-      <p className="mt-2 text-center text-muted-foreground">
-        Start with demo previews, then upgrade when you need production quota.
-      </p>
-      <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
-        <span className="font-medium text-foreground">Pay your way.</span> Pro on Gumroad (card) or crypto. Scale via
-        crypto. One-time monthly quota — no auto-renewal.
-      </p>
+      {openAccess ? (
+        <>
+          <p className="mt-2 text-center text-muted-foreground">
+            <span className="font-medium text-foreground">Free for everyone right now.</span> No watermark, no quota —
+            use <code className="rounded bg-muted px-1 font-mono text-xs">demo=1</code> or an API key.
+          </p>
+          <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
+            Paid tiers below are future pricing. Nothing to buy today — sign in, create a key, ship OG images.
+          </p>
+        </>
+      ) : (
+        <>
+          <p className="mt-2 text-center text-muted-foreground">
+            Start with demo previews, then upgrade when you need production quota.
+          </p>
+          <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">Pay your way.</span> Pro on Gumroad (card) or crypto. Scale via
+            crypto. One-time monthly quota — no auto-renewal.
+          </p>
+        </>
+      )}
 
       <div className="mt-10 grid gap-6 md:grid-cols-3">
         {(['free', 'pro', 'scale'] as const).map((id) => {
           const p = PLANS[id]
           return (
-            <Card key={id} className={id === 'pro' ? 'border-primary' : ''}>
+            <Card key={id} className={id === 'free' && openAccess ? 'border-primary' : id === 'pro' && !openAccess ? 'border-primary' : ''}>
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle>{p.name}</CardTitle>
-                  {id === 'pro' && <Badge>Popular</Badge>}
+                  {openAccess && id === 'free' && <Badge>Open now</Badge>}
+                  {!openAccess && id === 'pro' && <Badge>Popular</Badge>}
                 </div>
                 <CardDescription>
-                  {p.priceMonthly === 0 ? 'For side projects' : `$${p.priceMonthly}/month`}
+                  {openAccess
+                    ? id === 'free'
+                      ? 'Available now — full access'
+                      : `Coming later · $${p.priceMonthly}/month`
+                    : p.priceMonthly === 0
+                      ? 'For side projects'
+                      : `$${p.priceMonthly}/month`}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 text-sm text-muted-foreground">
-                  {p.features.map((f) => (
+                  {(openAccess && id === 'free'
+                    ? [
+                        'Unlimited images (open access)',
+                        'No watermark',
+                        'All templates',
+                        'demo=1 without login',
+                        'API keys & docs',
+                      ]
+                    : p.features
+                  ).map((f) => (
                     <li key={f}>• {f}</li>
                   ))}
                 </ul>
               </CardContent>
               <CardFooter className="flex flex-col gap-2">
-                {id === 'free' ? (
+                {openAccess ? (
+                  id === 'free' ? (
+                    <Button asChild className="w-full">
+                      <Link href={withBasePath('/login')}>Get started free</Link>
+                    </Button>
+                  ) : (
+                    <Button className="w-full" variant="outline" disabled>
+                      Not for sale yet
+                    </Button>
+                  )
+                ) : id === 'free' ? (
                   <Button asChild className="w-full" variant="outline">
                     <Link href={withBasePath('/login')}>Get started free</Link>
                   </Button>
@@ -174,6 +251,7 @@ export default function PricingPage() {
         })}
       </div>
 
+      {!openAccess && (
       <section className="mt-12 rounded-lg border bg-muted/30 p-6 text-sm text-muted-foreground space-y-3">
         <p className="font-medium text-foreground">How checkout works</p>
         <ul className="list-inside list-disc space-y-1">
@@ -191,13 +269,19 @@ export default function PricingPage() {
           </li>
         </ul>
       </section>
+      )}
 
       <section className="mt-14 space-y-4">
         <h2 className="text-xl font-bold">What you get on every plan</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             ['10+ templates', 'Article, product, minimal, gradient, brand, dark-code, quote, podcast, event, job — all accessible on free and paid plans.'],
-            ['demo=1 previews', 'Generate watermarked previews without an account for design validation, Cursor prompts, and CI checks.'],
+            [
+              'demo=1 previews',
+              openAccess
+                ? 'Generate production-quality previews without an account (no watermark during open access) for design validation, Cursor prompts, and CI checks.'
+                : 'Generate watermarked previews without an account for design validation, Cursor prompts, and CI checks.',
+            ],
             ['Stable HTTPS URLs', 'Deterministic image URLs work in any framework: Next.js, Astro, Remix, Rails, Django, Hugo, and static HTML.'],
           ].map(([t, c]) => (
             <div key={t} className="rounded-lg border p-5">
@@ -208,32 +292,34 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <div className="mt-12 rounded-lg border bg-muted/30 p-6 text-sm text-muted-foreground space-y-2">
-        <p className="font-medium text-foreground">Payment & refund policy</p>
-        <p>
-          Gumroad and Cryptomus payments are <strong>non-refundable</strong> once the monthly quota has been activated.
-          If you experience a technical failure on our end before quota is granted, use our{' '}
-          <Link href={withBasePath('/contact')} className="underline hover:text-foreground">
-            contact form
-          </Link>{' '}
-          within 7 days and we will investigate.
-        </p>
-        <p>
-          Subscriptions are one-time monthly payments — there is no automatic renewal. You pay again when you need quota
-          for the next month.
-        </p>
-        <p>
-          Questions? Read the{' '}
-          <Link href={withBasePath('/terms')} className="underline hover:text-foreground">
-            Terms of Service
-          </Link>{' '}
-          or{' '}
-          <Link href={withBasePath('/contact')} className="underline hover:text-foreground">
-            use the contact form
-          </Link>
-          .
-        </p>
-      </div>
+      {!openAccess && (
+        <div className="mt-12 rounded-lg border bg-muted/30 p-6 text-sm text-muted-foreground space-y-2">
+          <p className="font-medium text-foreground">Payment & refund policy</p>
+          <p>
+            Gumroad and Cryptomus payments are <strong>non-refundable</strong> once the monthly quota has been activated.
+            If you experience a technical failure on our end before quota is granted, use our{' '}
+            <Link href={withBasePath('/contact')} className="underline hover:text-foreground">
+              contact form
+            </Link>{' '}
+            within 7 days and we will investigate.
+          </p>
+          <p>
+            Subscriptions are one-time monthly payments — there is no automatic renewal. You pay again when you need quota
+            for the next month.
+          </p>
+          <p>
+            Questions? Read the{' '}
+            <Link href={withBasePath('/terms')} className="underline hover:text-foreground">
+              Terms of Service
+            </Link>{' '}
+            or{' '}
+            <Link href={withBasePath('/contact')} className="underline hover:text-foreground">
+              use the contact form
+            </Link>
+            .
+          </p>
+        </div>
+      )}
 
       <section className="mt-14 space-y-6">
         <h2 className="text-xl font-bold">Frequently asked questions</h2>

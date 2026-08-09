@@ -27,9 +27,19 @@ const items = [
     desc: 'All templates, query parameters, authentication, and error codes in one place.',
   },
   {
+    href: '/guides',
+    title: 'Deep guides',
+    desc: 'Signed URLs, /api/og/auto, caching & rescrape, appearance params, and Cursor MCP setup.',
+  },
+  {
     href: '/blog/open-graph-images-seo-guide',
     title: 'Open Graph images guide',
     desc: 'Long-form SEO walkthrough: metadata, Next.js patterns, caching, mistakes, and internal links to the rest of the site.',
+  },
+  {
+    href: '/guides/mcp',
+    title: 'MCP for Cursor',
+    desc: 'Connect the remote OGKit MCP server, list tools, and ship generateMetadata snippets from an agent.',
   },
 ] as const
 

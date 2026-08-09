@@ -1,12 +1,15 @@
 import { and, count, eq, gte } from 'drizzle-orm'
 import { db } from '@/lib/db'
 import { usageEvents } from '@/lib/db/schema'
+import { isOpenAccess } from '@/config/access'
 import { PLANS, type Plan } from '@/config/plans'
 
 export async function checkQuota(
   userId: string,
   plan: Plan,
 ): Promise<{ ok: true } | { ok: false; cap: number; period: 'month' | 'day' }> {
+  if (isOpenAccess()) return { ok: true }
+
   const limits = PLANS[plan]
 
   const startMonth = new Date()

@@ -16,26 +16,86 @@ const COPY: Record<string, string> = {
     'Run the app behind your own reverse proxy. Expose one public HTTPS host for the API, store `API_KEY_SALT` and Supabase keys in env, and use the same `/api/og/{template}` pattern as in the docs.',
 }
 
-const DETAILS: Record<string, { env: string[]; checklist: string[]; cache: string }> = {
+const DETAILS: Record<string, { env: string[]; checklist: string[]; cache: string; deep: { heading: string; body: string }[] }> = {
   vercel: {
-    env: [`NEXT_PUBLIC_APP_URL=${siteConfig.url}`, 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...'],
-    checklist: ['Use the final production domain in public URL env vars.', 'Keep API keys server-side.', 'Let Vercel cache generated PNG responses.'],
+    env: [`NEXT_PUBLIC_APP_URL=${siteConfig.url}`, 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...', 'NEXT_PUBLIC_BASE_PATH=/ogkit'],
+    checklist: [
+      'Use the final production domain in public URL env vars.',
+      'Keep API keys server-side (Vercel project env, not NEXT_PUBLIC_).',
+      'Let Vercel CDN honor OGKit cache headers on /api/og/*.',
+      'Point MCP clients at https://your.host/ogkit/api/mcp when using basePath.',
+    ],
     cache: 'OGKit image responses include cache headers for CDN reuse. Keep image URLs deterministic so repeated shares hit cache instead of re-rendering.',
+    deep: [
+      {
+        heading: 'Project wiring',
+        body: 'Deploy the OGKit Next app (or consume hosted OGKit URLs from your own Next app). If you only need cards, you do not need to self-host — point metadata at www.webmorp.art OGKit URLs with your key.',
+      },
+      {
+        heading: 'Preview deployments',
+        body: 'Do not put Vercel preview URLs into production og:image. Generate cards against the production OGKit origin so Slack caches a stable host.',
+      },
+    ],
   },
   netlify: {
     env: ['NEXT_PUBLIC_APP_URL=https://example.com', 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...'],
-    checklist: ['Set the deployed HTTPS origin explicitly.', 'Generate image URLs in server functions or build steps.', 'Avoid exposing API keys in static HTML.'],
+    checklist: [
+      'Set the deployed HTTPS origin explicitly.',
+      'Generate image URLs in server functions or build steps.',
+      'Avoid exposing API keys in static HTML.',
+      'Preserve query strings on image routes through redirects.',
+    ],
     cache: 'Use Netlify edge/CDN behavior for static pages and keep OGKit image URLs stable. Changing query parameters should be the cache-busting mechanism.',
+    deep: [
+      {
+        heading: 'Static site consumers',
+        body: 'Astro/Hugo on Netlify should bake OGKit URLs at build time. Store OGKIT_KEY in Netlify build env, not in the published repo.',
+      },
+      {
+        heading: 'Functions',
+        body: 'If you sign URLs, do it in a Netlify Function so the raw key never reaches the browser. See /guides/signed-urls.',
+      },
+    ],
   },
   cloudflare: {
     env: ['NEXT_PUBLIC_APP_URL=https://example.com', 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...'],
-    checklist: ['Cache public OG image GET requests at the edge.', 'Bypass cache for dashboard and account pages.', 'Use signed URLs for public generation controls.'],
+    checklist: [
+      'Cache public OG image GET requests at the edge.',
+      'Bypass cache for dashboard and account pages.',
+      'Use signed URLs for public generation controls.',
+      'Do not challenge Slackbot/LinkedInBot on og:image URLs.',
+    ],
     cache: 'Cloudflare can cache generated images aggressively because the query string defines the image. Do not cache authenticated dashboard routes.',
+    deep: [
+      {
+        heading: 'Bot accessibility',
+        body: 'WAF rules that block unknown user-agents will break unfurls. Allowlist common social crawlers on HTML and image paths, or keep challenges off public marketing routes.',
+      },
+      {
+        heading: 'Cache keys',
+        body: 'Ensure the cache key includes the full query string. Stripping query params collapses every card into one PNG.',
+      },
+    ],
   },
   'self-hosted': {
-    env: ['NEXT_PUBLIC_APP_URL=https://example.com', 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...'],
-    checklist: ['Serve one canonical HTTPS host.', 'Redirect http and www variants in one hop.', 'Put a CDN in front of generated image routes if traffic grows.'],
+    env: ['NEXT_PUBLIC_APP_URL=https://example.com', 'OGKIT_KEY=ogk_live_...', 'API_KEY_SALT=...', 'DATABASE_URL=...', 'AUTH_SECRET=...'],
+    checklist: [
+      'Serve one canonical HTTPS host.',
+      'Redirect http and www variants in one hop.',
+      'Put a CDN in front of generated image routes if traffic grows.',
+      'Run DB migrations before enabling signup/keys.',
+    ],
     cache: 'Self-hosted deployments should preserve OGKit cache headers and avoid proxy rules that strip query strings from image requests.',
+    deep: [
+      {
+        heading: 'Reverse proxy',
+        body: 'Terminate TLS at nginx/Caddy, forward to the Node server, and do not rewrite /api/og paths. Preserve Authorization headers if you use Bearer keys.',
+      },
+      {
+        heading: 'Ops',
+        body: 'Monitor 429 quota responses and render errors. Keep CRON_SECRET for IndexNow/GSC jobs if you enable those routes.',
+      },
+    ],
   },
 }
 
@@ -153,8 +213,22 @@ export default function PlatformPage({ params }: Props) {
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
           For SEO crawlers, avoid bot challenges on public pages, <code className="font-mono">robots.txt</code>, and{' '}
           <code className="font-mono">sitemap.xml</code>. If a crawler sees a challenge page or a redirect chain, it may mark
-          otherwise valid pages as non-indexable.
+          otherwise valid pages as non-indexable. See also the{' '}
+          <Link className="text-primary underline" href={withBasePath('/guides/caching-and-rescrape')}>
+            caching &amp; rescrape guide
+          </Link>
+          .
         </p>
+      </section>
+
+      <section className="space-y-6">
+        <h2 className="text-2xl font-semibold">Platform-specific notes</h2>
+        {details.deep.map((section) => (
+          <div key={section.heading}>
+            <h3 className="text-lg font-semibold">{section.heading}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{section.body}</p>
+          </div>
+        ))}
       </section>
 
       <section>
@@ -189,6 +263,12 @@ export default function PlatformPage({ params }: Props) {
               Next.js framework guide
             </Link>{' '}
             — App Router snippets.
+          </li>
+          <li>
+            <Link className="text-primary underline" href={withBasePath('/guides')}>
+              Guides
+            </Link>{' '}
+            — signed URLs, auto OG, MCP, appearance.
           </li>
         </ul>
       </section>

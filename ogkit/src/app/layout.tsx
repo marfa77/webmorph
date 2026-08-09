@@ -1,9 +1,23 @@
 import type { Metadata } from 'next'
+import { IBM_Plex_Mono, Syne } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { AuthSessionProvider } from '@/components/auth-session-provider'
 import { PixidOrganizationSchema } from '@/components/PixidOrganizationSchema'
 import { siteConfig } from '@/config/site'
 import './globals.css'
+
+const syne = Syne({
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 
 /** Cryptomus domain verification — https://app.cryptomus.com/ (meta name="cryptomus"). Override via env if the wizard value changes. */
 const cryptomusSiteVerify =
@@ -71,7 +85,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           async
         />
       </head>
-      <body>
+      <body className={`${syne.variable} ${plexMono.variable} font-sans antialiased`}>
         <PixidOrganizationSchema />
         <AuthSessionProvider>{children}</AuthSessionProvider>
         <Toaster position="top-center" />

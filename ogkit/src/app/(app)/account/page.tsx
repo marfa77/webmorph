@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
+import { isOpenAccess } from '@/config/access'
 import { withBasePath } from '@/config/paths'
 import { signOut } from '@/lib/auth/signout'
 import { PLANS } from '@/config/plans'
@@ -12,9 +13,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { privateAppMetadata } from '@/lib/app-route-metadata'
 
 export const metadata = privateAppMetadata({
-  title: 'OGKit account — plan, billing, Cryptomus & API keys',
+  title: 'OGKit account — plan & API keys',
   description:
-    'Your OGKit account: current plan, crypto billing through Cryptomus, monthly image quota, and shortcuts to API keys and dashboard usage. Sign in required.',
+    'Your OGKit account: current plan, open-access status, and shortcuts to API keys and dashboard usage. Sign in required.',
   pathname: '/account',
 })
 
@@ -24,6 +25,7 @@ export default async function AccountPage() {
 
   const plan = await getResolvedUserPlanForUserId(session.user.id)
   const planLabel = PLANS[plan].name
+  const openAccess = isOpenAccess()
 
   return (
     <div className="container max-w-2xl space-y-6 py-8">
@@ -36,15 +38,17 @@ export default async function AccountPage() {
         <CardHeader>
           <CardTitle>Plan</CardTitle>
           <CardDescription>
-            {isCryptoBillingLive()
-              ? 'Pro and Scale are available through crypto checkout on the pricing page.'
-              : 'Crypto checkout is not configured in this environment. Until then, everyone uses the free tier with waitlist access for Pro and Scale.'}
+            {openAccess
+              ? 'Open access is on: no watermark and no quota for everyone. Paid checkout is paused.'
+              : isCryptoBillingLive()
+                ? 'Pro and Scale are available through crypto checkout on the pricing page.'
+                : 'Crypto checkout is not configured in this environment. Until then, everyone uses the free tier with waitlist access for Pro and Scale.'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2 text-sm">
           <p>
             <span className="text-muted-foreground">Current: </span>
-            <span className="font-medium">{planLabel}</span>
+            <span className="font-medium">{openAccess ? 'Open access (free)' : planLabel}</span>
           </p>
           <p>
             <Link href={withBasePath('/pricing')} className="text-primary underline">
@@ -54,7 +58,7 @@ export default async function AccountPage() {
         </CardContent>
       </Card>
 
-      <GumroadRedeemCard />
+      {!openAccess && <GumroadRedeemCard />}
 
       <Card>
         <CardHeader>

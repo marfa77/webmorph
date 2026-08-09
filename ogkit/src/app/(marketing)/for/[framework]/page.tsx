@@ -18,7 +18,16 @@ const HINT: Record<string, string> = {
   hugo: 'Set `images` in front-matter, or a partial that builds a query string to your external OG service URL, including your API key in server-side only builds.',
 }
 
-const DETAILS: Record<string, { label: string; example: string; checklist: string[]; pitfalls: string[] }> = {
+type FrameworkDetails = {
+  label: string
+  example: string
+  checklist: string[]
+  pitfalls: string[]
+  deepSections?: { heading: string; body: string }[]
+  workedSteps?: string[]
+}
+
+const DETAILS: Record<string, FrameworkDetails> = {
   nextjs: {
     label: 'Next.js App Router',
     example: `export async function generateMetadata() {
@@ -32,20 +41,78 @@ const DETAILS: Record<string, { label: string; example: string; checklist: strin
   },
   react: {
     label: 'React',
-    example: `<meta property="og:image" content="${siteConfig.url}/api/og/minimal?key=KEY&title=React+Launch" />`,
-    checklist: ['Set metadata from your hosting framework, CMS, or SSR layer.', 'Generate the URL before HTML is served.', 'Use one image per important route.'],
-    pitfalls: ['Trying to update OG tags after hydration', 'Expecting crawlers to run client-side React', 'Using one generic image for every route'],
+    example: `// Prefer your host's SSR/SSG metadata — not a client effect
+const og = new URL("${siteConfig.url}/api/og/minimal");
+og.searchParams.set("key", process.env.OGKIT_KEY);
+og.searchParams.set("title", pageTitle);
+// Emit in the document head from Remix/Next/Astro/etc:
+// <meta property="og:image" content={og.toString()} />`,
+    checklist: [
+      'Set metadata from your hosting framework, CMS, or SSR layer — not useEffect.',
+      'Generate the URL before HTML is served to crawlers.',
+      'Use one image per important route; mirror twitter:image.',
+      'Keep OGKIT_KEY in server env only.',
+    ],
+    pitfalls: [
+      'Trying to update OG tags after hydration',
+      'Expecting crawlers to run client-side React',
+      'Using one generic image for every route',
+      'Shipping the API key in Create React App / Vite public env',
+    ],
+    deepSections: [
+      {
+        heading: 'React alone does not own <head>',
+        body: 'A client-only React SPA cannot reliably set Open Graph tags for Slack or LinkedIn. Pair React with Next.js, Remix, Astro islands, or a server that renders meta tags into the first HTML response. OGKit then becomes a plain HTTPS URL you inject from that server.',
+      },
+      {
+        heading: 'Vite / CRA production pattern',
+        body: 'If you must stay on a static host, generate OGKit URLs at build time for each content entry (CMS export or markdown) and write them into prerendered HTML or a meta plugin. Do not call the OG API from the browser with a production key.',
+      },
+    ],
+    workedSteps: [
+      'Choose the server or SSG layer that emits HTML.',
+      'Build an OGKit URL with title/subtitle for that route.',
+      'Set og:image and twitter:image to the same absolute URL.',
+      'Validate with /tools debuggers after deploy.',
+    ],
   },
   remix: {
     label: 'Remix',
-    example: `export const meta = () => {
+    example: `export const meta: MetaFunction = ({ data }) => {
   const image = new URL("${siteConfig.url}/api/og/article");
   image.searchParams.set("key", process.env.OGKIT_KEY!);
-  image.searchParams.set("title", "Remix guide");
-  return [{ property: "og:image", content: image.toString() }];
+  image.searchParams.set("title", data.post.title);
+  image.searchParams.set("subtitle", data.post.summary);
+  const url = image.toString();
+  return [
+    { property: "og:image", content: url },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:image", content: url },
+  ];
 };`,
-    checklist: ['Build the image in loader/meta code.', 'Share the same URL in Twitter metadata.', 'Avoid client-only metadata updates.'],
-    pitfalls: ['Missing twitter:image', 'Leaking keys to browser code', 'Not URL-encoding dynamic route data'],
+    checklist: [
+      'Build the image in loader/meta code from route data.',
+      'Share the same URL in Twitter metadata.',
+      'Avoid client-only metadata updates.',
+      'URL-encode dynamic titles from loaders.',
+    ],
+    pitfalls: ['Missing twitter:image', 'Leaking keys to browser code', 'Not URL-encoding dynamic route data', 'Using relative image URLs in nested routes'],
+    deepSections: [
+      {
+        heading: 'Loaders own the truth',
+        body: 'Derive card fields from the same loader data you render on the page so Slack titles match the H1. If a nested route overrides meta, ensure parent layouts do not clobber og:image with a homepage default.',
+      },
+      {
+        heading: 'Edge vs Node',
+        body: 'Remix can run on many adapters. OGKit does not need Edge ImageResponse — only a place to build a string URL. That keeps adapters interchangeable.',
+      },
+    ],
+    workedSteps: [
+      'Read title/summary in the route loader.',
+      'Build OGKit URL in meta() with process.env.OGKIT_KEY.',
+      'Return og:image + twitter:image.',
+      'Rescrape after content edits (see caching guide).',
+    ],
   },
   astro: {
     label: 'Astro',
@@ -53,55 +120,304 @@ const DETAILS: Record<string, { label: string; example: string; checklist: strin
 const image = new URL("${siteConfig.url}/api/og/minimal");
 image.searchParams.set("key", import.meta.env.OGKIT_KEY);
 image.searchParams.set("title", Astro.props.title);
+image.searchParams.set("subtitle", Astro.props.description);
+const og = image.toString();
 ---
-<meta property="og:image" content={image.toString()} />`,
-    checklist: ['Build URLs in layouts or content collections.', 'Use environment variables during SSR/build.', 'Set image width and height metadata.'],
-    pitfalls: ['Hardcoding one preview for all markdown pages', 'Forgetting collection-specific titles', 'Using local-only URLs in production'],
+<meta property="og:image" content={og} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content={og} />`,
+    checklist: [
+      'Build URLs in layouts or content collections.',
+      'Use environment variables during SSR/build.',
+      'Set image width and height metadata.',
+      'Per-entry titles for markdown collections.',
+    ],
+    pitfalls: [
+      'Hardcoding one preview for all markdown pages',
+      'Forgetting collection-specific titles',
+      'Using local-only URLs in production',
+      'Exposing OGKIT_KEY via PUBLIC_ prefix',
+    ],
+    deepSections: [
+      {
+        heading: 'Content collections',
+        body: 'Map each collection entry to an OGKit URL using entry.data.title. Generate at build time for static sites so every article ships with a unique card without runtime cost.',
+      },
+      {
+        heading: 'MDX layouts',
+        body: 'Put the meta tags in the layout that wraps MDX so docs and blog share one pattern. Pass frontmatter into the layout props used for the query string.',
+      },
+    ],
+    workedSteps: [
+      'Add OGKIT_KEY to Astro env (non-PUBLIC).',
+      'Build the URL in the page/layout frontmatter.',
+      'Emit og:image + twitter:image.',
+      'Preview a built page HTML before deploy.',
+    ],
   },
   nuxt: {
     label: 'Nuxt',
-    example: `const image = new URL("${siteConfig.url}/api/og/minimal")
-image.searchParams.set("key", useRuntimeConfig().ogkitKey)
-image.searchParams.set("title", page.title)
-useSeoMeta({ ogImage: image.toString(), twitterImage: image.toString() })`,
-    checklist: ['Use runtime config for secrets.', 'Set ogImage and twitterImage together.', 'Build URLs before crawler HTML is returned.'],
-    pitfalls: ['Using public runtime config for secret keys', 'Relying on client-only composables', 'Skipping per-page titles'],
+    example: `const config = useRuntimeConfig()
+const image = new URL("${siteConfig.url}/api/og/minimal")
+image.searchParams.set("key", config.ogkitKey)
+image.searchParams.set("title", page.value.title)
+useSeoMeta({
+  ogImage: image.toString(),
+  twitterCard: "summary_large_image",
+  twitterImage: image.toString(),
+})`,
+    checklist: [
+      'Store the key in private runtimeConfig, not public.',
+      'Set ogImage and twitterImage together.',
+      'Build URLs before crawler HTML is returned.',
+      'Use route-specific titles from page data.',
+    ],
+    pitfalls: [
+      'Using public runtime config for secret keys',
+      'Relying on client-only composables',
+      'Skipping per-page titles',
+      'Forgetting SSR on routes that need previews',
+    ],
+    deepSections: [
+      {
+        heading: 'runtimeConfig split',
+        body: 'Put ogkitKey under runtimeConfig (server-only). Never runtimeConfig.public. Agents reading your nuxt.config should see the key only in server context.',
+      },
+      {
+        heading: 'useSeoMeta timing',
+        body: 'Call useSeoMeta in setup on pages that are server-rendered. For hybrid apps, mark share-critical routes with SSR so the first byte includes tags.',
+      },
+    ],
+    workedSteps: [
+      'Add ogkitKey to runtimeConfig.',
+      'Build OGKit URL from page title.',
+      'useSeoMeta for og + twitter.',
+      'Validate with Facebook Sharing Debugger.',
+    ],
   },
   svelte: {
     label: 'SvelteKit',
-    example: `<svelte:head>
-  <meta property="og:image" content={ogImageUrl} />
-  <meta name="twitter:image" content={ogImageUrl} />
+    example: `// +page.server.ts
+import type { PageServerLoad } from './$types';
+export const load: PageServerLoad = async ({ params }) => {
+  const title = "Ship notes"; // from CMS/db
+  const image = new URL("${siteConfig.url}/api/og/article");
+  image.searchParams.set("key", process.env.OGKIT_KEY!);
+  image.searchParams.set("title", title);
+  return { title, ogImageUrl: image.toString() };
+};
+
+// +page.svelte
+<svelte:head>
+  <meta property="og:image" content={data.ogImageUrl} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content={data.ogImageUrl} />
 </svelte:head>`,
-    checklist: ['Create ogImageUrl in load or server code.', 'Pass final URLs into head tags.', 'Use absolute production origins.'],
-    pitfalls: ['Computing metadata only in the browser', 'Missing canonical titles', 'Sharing one card across all routes'],
+    checklist: [
+      'Create ogImageUrl in +page.server.ts / +layout.server.ts.',
+      'Pass final URLs into <svelte:head>.',
+      'Use absolute production origins.',
+      'Keep OGKIT_KEY in private env ($env/static/private).',
+    ],
+    pitfalls: [
+      'Computing metadata only in the browser',
+      'Missing canonical titles',
+      'Sharing one card across all routes',
+      'Importing secrets into client modules',
+    ],
+    deepSections: [
+      {
+        heading: 'Server load is mandatory',
+        body: 'SvelteKit crawlers see prerendered or SSR HTML. Build the OGKit URL in server load functions and pass a string into the page. Client-only stores will not fix Slack previews.',
+      },
+      {
+        heading: 'Prerendered blogs',
+        body: 'For prerender: true routes, the URL is baked at build time — perfect for changelogs and docs. Re-build when titles change, or switch those routes to SSR.',
+      },
+    ],
+    workedSteps: [
+      'Load title in +page.server.ts.',
+      'Build OGKit URL with private env key.',
+      'Emit tags in svelte:head.',
+      'curl the HTML and confirm absolute og:image.',
+    ],
   },
   rails: {
     label: 'Rails',
-    example: `<meta property="og:image" content="<%= ogkit_image_url(title: @post.title) %>">`,
-    checklist: ['Build a helper for OGKit URLs.', 'Keep keys in Rails credentials or ENV.', 'Escape and encode dynamic values.'],
-    pitfalls: ['Rendering unencoded query strings', 'Putting keys into frontend packs', 'Forgetting background jobs are unnecessary for simple cards'],
+    example: `# app/helpers/ogkit_helper.rb
+module OgkitHelper
+  def ogkit_image_url(title:, subtitle: nil, template: "article")
+    uri = URI("${siteConfig.url}/api/og/#{template}")
+    params = { key: ENV.fetch("OGKIT_KEY"), title: title }
+    params[:subtitle] = subtitle if subtitle.present?
+    uri.query = URI.encode_www_form(params)
+    uri.to_s
+  end
+end
+
+# app/views/layouts/application.html.erb
+<meta property="og:image" content="<%= ogkit_image_url(title: @post.title, subtitle: @post.excerpt) %>">
+<meta name="twitter:image" content="<%= ogkit_image_url(title: @post.title, subtitle: @post.excerpt) %>">`,
+    checklist: [
+      'Build a helper for OGKit URLs.',
+      'Keep keys in Rails credentials or ENV.',
+      'Escape and encode dynamic values via URI.encode_www_form.',
+      'Set both og:image and twitter:image.',
+    ],
+    pitfalls: [
+      'Rendering unencoded query strings',
+      'Putting keys into frontend packs',
+      'Forgetting background jobs are unnecessary for simple cards',
+      'Using relative asset paths as og:image',
+    ],
+    deepSections: [
+      {
+        heading: 'Helpers over string concat',
+        body: 'Centralize URL building in a helper or presenter so every mailer preview and blog layout stays consistent. Add optional template: "product" for commerce pages.',
+      },
+      {
+        heading: 'Credentials',
+        body: 'Store OGKIT_KEY in Rails credentials or the host ENV. Never commit it to config/credentials.yml.enc plaintext in git discussions — rotate if leaked.',
+      },
+    ],
+    workedSteps: [
+      'Add OGKIT_KEY to ENV/credentials.',
+      'Ship OgkitHelper.',
+      'Call it from the layout with @post fields.',
+      'Test with opengraph.xyz after deploy.',
+    ],
   },
   django: {
     label: 'Django',
-    example: `<meta property="og:image" content="{{ og_image_url }}">
+    example: `# views.py / context processor
+from urllib.parse import urlencode
+from django.conf import settings
+
+def ogkit_image(title: str, subtitle: str | None = None) -> str:
+    q = {"key": settings.OGKIT_KEY, "title": title}
+    if subtitle:
+        q["subtitle"] = subtitle
+    return f"${siteConfig.url}/api/og/article?{urlencode(q)}"
+
+# template
+<meta property="og:image" content="{{ og_image_url }}">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="{{ og_image_url }}">`,
-    checklist: ['Build og_image_url in the view/context.', 'Store keys in environment variables.', 'Use urllib.parse for query strings.'],
-    pitfalls: ['Concatenating URLs by hand', 'Not passing page-specific descriptions', 'Using private media URLs as card images'],
+    checklist: [
+      'Build og_image_url in the view/context with urllib.parse.urlencode.',
+      'Store keys in environment variables / settings.',
+      'Pass page-specific titles and descriptions.',
+      'Mirror twitter:image.',
+    ],
+    pitfalls: [
+      'Concatenating URLs by hand',
+      'Not passing page-specific descriptions',
+      'Using private media URLs as card images',
+      'Exposing settings.OGKIT_KEY to the template context unnecessarily',
+    ],
+    deepSections: [
+      {
+        heading: 'Context processors',
+        body: 'For site-wide defaults, a context processor can expose a homepage card — but override per view for blog detail templates so each slug gets a unique title.',
+      },
+      {
+        heading: 'Wagtail / CMS',
+        body: 'Map CMS title and search_description fields into OGKit query params in the page serve method so editors do not touch raw URLs.',
+      },
+    ],
+    workedSteps: [
+      'Add OGKIT_KEY to Django settings from env.',
+      'Helper with urlencode.',
+      'Pass og_image_url into templates.',
+      'Verify with LinkedIn Post Inspector.',
+    ],
   },
   laravel: {
     label: 'Laravel',
-    example: `<meta property="og:image" content="{{ $ogImage }}">
+    example: `// app/Support/Ogkit.php
+namespace App\\Support;
+class Ogkit {
+  public static function image(string $title, ?string $subtitle = null, string $template = 'article'): string {
+    $query = http_build_query(array_filter([
+      'key' => config('services.ogkit.key'),
+      'title' => $title,
+      'subtitle' => $subtitle,
+    ]));
+    return '${siteConfig.url}/api/og/' . $template . '?' . $query;
+  }
+}
+
+{{-- layout --}}
+<meta property="og:image" content="{{ $ogImage }}">
 <meta name="twitter:image" content="{{ $ogImage }}">`,
-    checklist: ['Build URLs in controllers or view models.', 'Store keys in env/config.', 'Use signed URLs for public pages when needed.'],
-    pitfalls: ['Leaking env values into compiled assets', 'Skipping URL encoding', 'Using one preview for all Blade templates'],
+    checklist: [
+      'Build URLs in controllers, view models, or a small support class.',
+      'Store keys in config/services.php from env.',
+      'Use http_build_query for encoding.',
+      'Use signed URLs for public pages when keys are embedded in HTML.',
+    ],
+    pitfalls: [
+      'Leaking env values into compiled assets',
+      'Skipping URL encoding',
+      'Using one preview for all Blade templates',
+      'Putting the key in MIX_/VITE_ public env',
+    ],
+    deepSections: [
+      {
+        heading: 'Blade + Inertia',
+        body: 'For Blade, set $ogImage in the controller. For Inertia, put ogImage in the shared SSR head payload — never only in client-side Vue/React props.',
+      },
+      {
+        heading: 'Signed URLs',
+        body: 'When pages are fully public, enable require-signed-urls on the key and sign in PHP before rendering. See the Signed URLs guide for the HMAC canonical string.',
+      },
+    ],
+    workedSteps: [
+      'config/services.php ← OGKIT_KEY',
+      'App\\Support\\Ogkit::image()',
+      'Pass into Blade/Inertia head.',
+      'Follow /guides/signed-urls if the URL is public.',
+    ],
   },
   hugo: {
     label: 'Hugo',
-    example: `<meta property="og:image" content="{{ .Params.og_image }}">
-<meta name="twitter:image" content="{{ .Params.og_image }}">`,
-    checklist: ['Generate OGKit URLs during static builds.', 'Use front matter titles and descriptions.', 'Avoid exposing keys in public source repos.'],
-    pitfalls: ['Committing production keys to config files', 'Forgetting taxonomy pages', 'Using relative URLs in generated HTML'],
+    example: `{{/* layouts/partials/ogkit.html */}}
+{{ $title := .Title }}
+{{ $q := querify "key" (getenv "OGKIT_KEY") "title" $title "subtitle" .Params.description }}
+{{ $og := printf "${siteConfig.url}/api/og/minimal?%s" $q }}
+<meta property="og:image" content="{{ $og }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ $og }}">`,
+    checklist: [
+      'Generate OGKit URLs during static builds.',
+      'Use front matter titles and descriptions.',
+      'Inject OGKIT_KEY at build time (CI secret), not in the public repo.',
+      'Cover section and taxonomy pages, not only posts.',
+    ],
+    pitfalls: [
+      'Committing production keys to config files',
+      'Forgetting taxonomy pages',
+      'Using relative URLs in generated HTML',
+      'One homepage image for every post',
+    ],
+    deepSections: [
+      {
+        heading: 'Build-time secrets',
+        body: 'Hugo runs at build time. Pass OGKIT_KEY as a CI env var and read it with getenv in the partial. Rotate the key if a public theme ever echoed it into HTML comments.',
+      },
+      {
+        heading: 'Section pages',
+        body: 'List and taxonomy pages still unfurl in Slack. Give them distinct titles (e.g. “Docs — Authentication”) so cards are not identical.',
+      },
+    ],
+    workedSteps: [
+      'Create layouts/partials/ogkit.html.',
+      'Include it from baseof head.',
+      'Set OGKIT_KEY in CI build env.',
+      'Build and inspect public/**/*.html for absolute og:image.',
+    ],
   },
 }
 
@@ -403,6 +719,10 @@ export default function ForFrameworkPage({ params }: Props) {
           <Link className="text-primary underline" href={withBasePath('/docs')}>
             API reference
           </Link>
+          , deep{' '}
+          <Link className="text-primary underline" href={withBasePath('/guides')}>
+            guides
+          </Link>
           , test the URL in the{' '}
           <Link className="text-primary underline" href={withBasePath('/playground')}>
             Playground
@@ -417,6 +737,29 @@ export default function ForFrameworkPage({ params }: Props) {
           <CodeBlock>{details.example}</CodeBlock>
         </div>
       </section>
+
+      {details.deepSections && details.deepSections.length > 0 && (
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold">Deeper {details.label} notes</h2>
+          {details.deepSections.map((section) => (
+            <div key={section.heading}>
+              <h3 className="text-lg font-semibold">{section.heading}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{section.body}</p>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {details.workedSteps && details.workedSteps.length > 0 && (
+        <section>
+          <h2 className="text-2xl font-semibold">Worked steps</h2>
+          <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-muted-foreground">
+            {details.workedSteps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </section>
+      )}
 
       <section className="grid gap-4 md:grid-cols-2">
         <div className="rounded-lg border p-5">
@@ -442,7 +785,15 @@ export default function ForFrameworkPage({ params }: Props) {
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           A hosted Open Graph image API is useful when you need consistent cards across many pages but do not want to maintain
           a custom renderer in every app. It is especially useful for docs, changelogs, launch pages, public customer pages,
-          and content collections where the title and summary change often.
+          and content collections where the title and summary change often. For HMAC signing and rescrape workflows, see{' '}
+          <Link className="text-primary underline" href={withBasePath('/guides/signed-urls')}>
+            signed URLs
+          </Link>{' '}
+          and{' '}
+          <Link className="text-primary underline" href={withBasePath('/guides/caching-and-rescrape')}>
+            caching &amp; rescrape
+          </Link>
+          .
         </p>
       </section>
 

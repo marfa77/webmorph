@@ -1,3 +1,4 @@
+import { isOpenAccess } from '@/config/access'
 import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 
@@ -8,12 +9,15 @@ import { siteConfig } from '@/config/site'
 export function buildLlmsTxtBody(): string {
   const base = absoluteSiteUrl('')
   const abs = (path: string) => absoluteSiteUrl(path.startsWith('/') ? path : `/${path}`)
+  const openAccess = isOpenAccess()
 
   const lines = [
     `# ${siteConfig.name}`,
     '',
     `> ${siteConfig.tagline}. Generate 1200×630 PNG Open Graph and Twitter/X card images from one HTTPS URL (template slug + query parameters). Built for Next.js, docs sites, SaaS, blogs, changelogs, and AI-assisted workflows.`,
-    `> Billing: crypto checkout (Cryptomus) for Pro and Scale. Free tier: watermarked or quota-limited previews; see /pricing.`,
+    openAccess
+      ? `> Billing: OPEN ACCESS — free for everyone right now (no watermark, no quota). Paid Pro/Scale pricing is listed for later; see /pricing.`
+      : `> Billing: crypto checkout (Cryptomus) for Pro and Scale. Free tier: watermarked or quota-limited previews; see /pricing.`,
     '',
     '## Canonical site',
     '',
@@ -34,8 +38,16 @@ export function buildLlmsTxtBody(): string {
     '',
     `- GET ${abs('/api/og/{template}')} — render a template (article, product, quote, podcast, event, job, minimal, brand, gradient, dark-code)`,
     `- GET ${abs('/api/og/auto')}?url=… — fetch a page and pick a template from metadata`,
-    `- Auth: \`?key=\` or \`Authorization: Bearer\`. Demo: \`demo=1\` without key → watermarked image`,
+    openAccess
+      ? `- Auth: \`?key=\` or \`Authorization: Bearer\`. Demo: \`demo=1\` without key → full image (no watermark during open access)`
+      : `- Auth: \`?key=\` or \`Authorization: Bearer\`. Demo: \`demo=1\` without key → watermarked image`,
     `- Docs: ${abs('/docs')}`,
+    `- Guides index: ${abs('/guides')}`,
+    `- Signed URLs & domain allowlists: ${abs('/guides/signed-urls')}`,
+    `- Auto OG from page URL (/api/og/auto): ${abs('/guides/auto-og')}`,
+    `- Caching & rescrape: ${abs('/guides/caching-and-rescrape')}`,
+    `- Appearance (theme/accent/pattern/font): ${abs('/guides/appearance')}`,
+    `- MCP how-to (Cursor / agents): ${abs('/guides/mcp')}`,
     `- Long-form SEO guide (Open Graph images): ${abs('/blog/open-graph-images-seo-guide')} — answers “open graph image size”, “og:image absolute URL”, “Next.js generateMetadata”, “Facebook/LinkedIn cache”, Google thumbnails + JSON-LD + /llms.txt for LLMs`,
     `- Dynamic social previews use-case: ${abs('/use-case/dynamic-social-preview-images')} — “dynamic link preview”, programmatic og:image, Slack unfurl, Next.js metadata`,
     `- Playground: ${abs('/playground')}`,
@@ -43,6 +55,7 @@ export function buildLlmsTxtBody(): string {
     '## MCP (AI agents / Cursor)',
     '',
     `- Streamable HTTP endpoint: ${abs('/api/mcp')} (GET/POST/DELETE — stateless, no auth required for tools)`,
+    `- Human guide: ${abs('/guides/mcp')}`,
     '- Tools: og_list_templates, og_build_url, og_preview, og_nextjs_snippet, og_validate_page, ogkit_get_started',
     `- Cursor plugin bundle: ${siteConfig.github}/tree/main/ogkit/cursor-plugin (mcp.json + skill + rules)`,
     `- Manual MCP config: { "mcpServers": { "ogkit": { "url": "${abs('/api/mcp')}" } } }`,
@@ -50,9 +63,17 @@ export function buildLlmsTxtBody(): string {
     '',
     '## Plans (summary)',
     '',
-    '- Free: monthly quota with watermark on free tier',
-    '- Pro: $19/month, 100,000 images/month, no watermark, signed URLs, Google Fonts on supported templates',
-    '- Scale: $99/month, 1,000,000 images/month, higher quota',
+    ...(openAccess
+      ? [
+          '- OPEN ACCESS (now): free for everyone — no watermark, no quota',
+          '- Future Pro: $19/month, 100,000 images/month, signed URLs, Google Fonts',
+          '- Future Scale: $99/month, 1,000,000 images/month',
+        ]
+      : [
+          '- Free: monthly quota with watermark on free tier',
+          '- Pro: $19/month, 100,000 images/month, no watermark, signed URLs, Google Fonts on supported templates',
+          '- Scale: $99/month, 1,000,000 images/month, higher quota',
+        ]),
     `- Pricing & policy: ${abs('/pricing')}`,
     '',
     '## Comparisons (SEO / positioning)',

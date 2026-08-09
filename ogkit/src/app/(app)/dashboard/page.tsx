@@ -4,6 +4,7 @@ import { auth } from '@/auth'
 import { withBasePath } from '@/config/paths'
 import { db } from '@/lib/db'
 import { usageEvents } from '@/lib/db/schema'
+import { isOpenAccess } from '@/config/access'
 import { PLANS, type Plan } from '@/config/plans'
 import { isCryptoBillingLive } from '@/config/billing'
 import { getResolvedUserPlanForUserId } from '@/lib/billing/effective-plan'
@@ -74,7 +75,11 @@ export default async function DashboardPage() {
         {planLabel && (
           <p className="mt-0.5 text-sm text-muted-foreground">
             Plan: <span className="text-foreground">{planLabel}</span>
-            {isCryptoBillingLive() ? ' · Crypto checkout enabled' : ' · Pro / Scale: join waitlist on the pricing page'}
+            {isOpenAccess()
+              ? ' · Open access: free for everyone (no watermark / no quota)'
+              : isCryptoBillingLive()
+                ? ' · Crypto checkout enabled'
+                : ' · Pro / Scale: join waitlist on the pricing page'}
             {' · '}
             <Link className="underline" href={withBasePath('/account')}>
               Account

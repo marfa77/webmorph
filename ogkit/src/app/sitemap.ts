@@ -16,6 +16,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/playground',
     '/pricing',
     '/tools',
+    '/guides',
+    '/guides/signed-urls',
+    '/guides/auto-og',
+    '/guides/caching-and-rescrape',
+    '/guides/appearance',
+    '/guides/mcp',
     '/contact',
     '/privacy',
     '/terms',
@@ -59,6 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     if (route === '') return 1
     if (route === '/docs' || route === '/playground') return 0.95
     if (route.startsWith('/blog/')) return 0.9
+    if (route.startsWith('/guides')) return 0.9
     if (route.startsWith('/compare/') || route.startsWith('/for/')) return 0.85
     if (route.startsWith('/use-case/')) return 0.82
     if (route.startsWith('/platform/')) return 0.8
