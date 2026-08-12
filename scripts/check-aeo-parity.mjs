@@ -80,6 +80,19 @@ for (const rel of MONEY_PAGES) {
   else ok(`${rel} llms alternate`)
   if (!html.includes('data-llm="facts"')) fail(rel, 'missing data-llm=facts')
   else ok(`${rel} data-llm facts`)
+  // Guard: JS String.replace($1) must never eat "$100" into a nested <body> capture.
+  const layer = html.match(/llm-aeo-layer:start([\s\S]*?)llm-aeo-layer:end/)
+  if (layer && /<body[\s>]/i.test(layer[1])) {
+    fail(rel, 'nested <body> inside llm-aeo-layer (likely $100 → $1 replace bug)')
+  } else if (layer) {
+    ok(`${rel} llm layer has no nested body`)
+  }
+  if (layer && !/\$100\b/.test(layer[1]) && rel !== 'channel/index.html') {
+    // money pages except channel should mention $100 card price in layer
+    fail(rel, 'llm layer missing $100 (possible price corruption)')
+  } else if (layer && /\$100\b/.test(layer[1])) {
+    ok(`${rel} llm layer keeps $100`)
+  }
 }
 
 if (failures.length) {
