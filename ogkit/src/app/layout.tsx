@@ -6,6 +6,11 @@ import { PixidOrganizationSchema } from '@/components/PixidOrganizationSchema'
 import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
+import {
+  OGKIT_AI_CATEGORY,
+  OGKIT_AI_DESCRIPTION,
+  withAiMetadata,
+} from '@/lib/llm-meta'
 import './globals.css'
 
 const rootOgImage = dogfoodOgImageUrl({
@@ -32,56 +37,68 @@ const inter = Inter({
 const cryptomusSiteVerify =
   process.env.NEXT_PUBLIC_CRYPTOMUS_SITE_VERIFICATION?.trim() ?? 'e78d84f1'
 
-export const metadata: Metadata = {
-  title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
-  description: siteConfig.description,
-  metadataBase: new URL(absoluteSiteUrl('')),
-  applicationName: siteConfig.name,
-  other: { cryptomus: cryptomusSiteVerify },
-  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim()
-    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION.trim() }
-    : undefined,
-  icons: {
-    icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
-    shortcut: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1, 'max-video-preview': -1 },
-  },
-  keywords: [
-    'Open Graph image API',
-    'Twitter card image generator',
-    'dynamic OG images',
-    'og:image API',
-    'social preview image API',
-    'Next.js Open Graph images',
-    'Next.js metadata openGraph images',
-    'Vercel OG alternative',
-    '@vercel/og alternative',
-    'OG image generator',
-    '1200x630 PNG',
-    'Satori alternative hosted',
-    'Bannerbear alternative',
-    'Placid alternative',
-    'crypto SaaS API',
-    'LLM-friendly API documentation',
-  ],
-  openGraph: {
-    type: 'website',
-    siteName: siteConfig.name,
-    title: 'OGKit - Open Graph image API',
+export const metadata: Metadata = withAiMetadata(
+  {
+    title: { default: siteConfig.name, template: `%s | ${siteConfig.name}` },
     description: siteConfig.description,
-    images: ogImageWithAlt(rootOgImage, rootOgAlt),
+    metadataBase: new URL(absoluteSiteUrl('')),
+    applicationName: siteConfig.name,
+    other: { cryptomus: cryptomusSiteVerify },
+    verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim()
+      ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION.trim() }
+      : undefined,
+    icons: {
+      icon: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+      shortcut: [{ url: '/favicon.svg', type: 'image/svg+xml' }],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+    },
+    keywords: [
+      'Open Graph image API',
+      'Twitter card image generator',
+      'dynamic OG images',
+      'og:image API',
+      'social preview image API',
+      'Next.js Open Graph images',
+      'Next.js metadata openGraph images',
+      'Vercel OG alternative',
+      '@vercel/og alternative',
+      'OG image generator',
+      '1200x630 PNG',
+      'Satori alternative hosted',
+      'Bannerbear alternative',
+      'Placid alternative',
+      'crypto SaaS API',
+      'LLM-friendly API documentation',
+    ],
+    openGraph: {
+      type: 'website',
+      siteName: siteConfig.name,
+      title: 'OGKit - Open Graph image API',
+      description: siteConfig.description,
+      images: ogImageWithAlt(rootOgImage, rootOgAlt),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'OGKit - Open Graph image API',
+      description: siteConfig.description,
+      images: [rootOgImage],
+    },
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'OGKit - Open Graph image API',
-    description: siteConfig.description,
-    images: [rootOgImage],
+  {
+    aiDescription: OGKIT_AI_DESCRIPTION,
+    aiCategory: OGKIT_AI_CATEGORY,
   },
-}
+)
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

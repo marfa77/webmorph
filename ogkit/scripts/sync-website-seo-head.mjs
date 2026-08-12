@@ -14,9 +14,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..', '..')
 const siteHost = 'https://www.webmorp.art'
 
-const WEBSITE_SEO_EXTRA = `
-    <meta property="og:locale" content="en_US">
-    <meta property="og:image:width" content="1200">
+function websiteSeoExtra(relPath) {
+  // Channel RU already declares og:locale=ru_RU; do not inject en_US (duplicate/wrong).
+  const isRu = relPath.startsWith('channel/ru') || /\/ru\//.test(relPath)
+  const localeLine = isRu ? '' : '    <meta property="og:locale" content="en_US">\n'
+  return `
+${localeLine}    <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:site" content="@webmorp_art">
     <meta name="twitter:creator" content="@webmorp_art">
@@ -24,6 +27,7 @@ const WEBSITE_SEO_EXTRA = `
     <link rel="alternate" type="text/plain" href="${siteHost}/llm.txt" title="LLM-readable site summary (alias)">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="${siteHost}/sitemap.xml">
 `
+}
 
 const PORTFOLIO_ITEM_LIST = `
     <script type="application/ld+json">
@@ -70,8 +74,11 @@ function upsertNarrowKeywords(html, relPath) {
 
 const MARKER_START = '<!-- website-seo-extra:start -->'
 const MARKER_END = '<!-- website-seo-extra:end -->'
-const BLOCK = `${MARKER_START}${WEBSITE_SEO_EXTRA}${MARKER_END}\n`
 const PORTFOLIO_MARKER = '<!-- portfolio-itemlist -->'
+
+function seoExtraBlock(relPath) {
+  return `${MARKER_START}${websiteSeoExtra(relPath)}${MARKER_END}\n`
+}
 
 const indexPath = path.join(root, 'index.html')
 const indexHtml = fs.readFileSync(indexPath, 'utf8')
@@ -175,13 +182,16 @@ const files = [
 
 for (const file of files) {
   if (!fs.existsSync(file)) continue
+  const relPath = path.relative(root, file).split(path.sep).join('/')
+  const isChannelSurface = relPath === 'channel/index.html' || relPath.startsWith('channel/')
   let html = fs.readFileSync(file, 'utf8')
   html = syncDescriptions(html)
-  html = upsertBlock(html, BLOCK, '<link rel="icon" type="image/svg+xml" href="/favicon.svg">')
-  if (file !== indexPath && html.includes('"@type": "HowTo"')) {
+  html = upsertBlock(html, seoExtraBlock(relPath), '<link rel="icon" type="image/svg+xml" href="/favicon.svg">')
+  // Channel landings/guides own product-specific HowTo/FAQ — never clone homepage $100 schema onto them.
+  if (!isChannelSurface && file !== indexPath && html.includes('"@type": "HowTo"')) {
     html = replaceJsonLd(html, 'HowTo', howToBlock)
   }
-  if (file !== indexPath && html.includes('"@type": "FAQPage"')) {
+  if (!isChannelSurface && file !== indexPath && html.includes('"@type": "FAQPage"')) {
     html = replaceJsonLd(html, 'FAQPage', faqBlock)
   }
   if (file === indexPath) html = upsertPortfolio(html)
@@ -190,9 +200,12 @@ for (const file of files) {
   html = upsertContactTrustpilotLink(html)
   html = removeDeliveredByPixid(html)
   html = html.replaceAll('customer@pixid.studio', 'customer@webmorp.art')
-  html = upsertNarrowKeywords(html, path.relative(root, file))
+  html = upsertNarrowKeywords(html, relPath)
+  if (relPath.startsWith('channel/ru')) {
+    html = html.replace(/\s*<meta property="og:locale" content="en_US">\n?/g, '\n')
+  }
   html = normalizeProviderRefs(html)
   html = upsertPixidOrganization(html)
   fs.writeFileSync(file, html)
-  console.log('[sync-website-seo-head]', path.relative(root, file))
+  console.log('[sync-website-seo-head]', relPath)
 }

@@ -9,6 +9,12 @@ import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
 import { clipMetaDescription } from '@/lib/seo-meta'
 import { Button } from '@/components/ui/button'
 import { HeroLiveDemo } from '@/components/marketing/hero-live-demo'
+import { OgkitLlmFacts } from '@/components/seo/LlmFacts'
+import {
+  OGKIT_AI_CATEGORY,
+  OGKIT_AI_DESCRIPTION,
+  withAiMetadata,
+} from '@/lib/llm-meta'
 
 const openAccess = isOpenAccess()
 const homeCanonical = absoluteSiteUrl('')
@@ -25,25 +31,31 @@ const homeOgImage = dogfoodOgImageUrl({
 })
 const homeOgAlt = 'OGKit dynamic Open Graph image API — 1200×630 social cards'
 
-export const metadata: Metadata = {
-  title: { absolute: homeTitle },
-  description: homeDescription,
-  alternates: { canonical: homeCanonical },
-  openGraph: {
-    type: 'website',
-    url: homeCanonical,
-    siteName: siteConfig.name,
-    title: homeTitle,
+export const metadata: Metadata = withAiMetadata(
+  {
+    title: { absolute: homeTitle },
     description: homeDescription,
-    images: ogImageWithAlt(homeOgImage, homeOgAlt),
+    alternates: { canonical: homeCanonical },
+    openGraph: {
+      type: 'website',
+      url: homeCanonical,
+      siteName: siteConfig.name,
+      title: homeTitle,
+      description: homeDescription,
+      images: ogImageWithAlt(homeOgImage, homeOgAlt),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: homeTitle,
+      description: homeDescription,
+      images: [homeOgImage],
+    },
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: homeTitle,
-    description: homeDescription,
-    images: [homeOgImage],
+  {
+    aiDescription: OGKIT_AI_DESCRIPTION,
+    aiCategory: OGKIT_AI_CATEGORY,
   },
-}
+)
 
 export default function HomePage() {
   const faq = [
@@ -143,6 +155,7 @@ export default function HomePage() {
 
   return (
     <div className="relative">
+      <OgkitLlmFacts />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />

@@ -1,6 +1,7 @@
 import { isOpenAccess } from '@/config/access'
 import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
+import { applyLlmsUtmToText } from '@/lib/llm-meta'
 
 /**
  * Plain-text corpus for /llms.txt and /llm.txt — agent discovery, facts, and deep links.
@@ -157,5 +158,5 @@ export function buildLlmsTxtBody(): string {
     '',
   ]
 
-  return lines.join('\n')
+  return applyLlmsUtmToText(lines.join('\n'))
 }

@@ -9,18 +9,28 @@ import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { OgkitLlmFacts } from '@/components/seo/LlmFacts'
+import { withAiMetadata } from '@/lib/llm-meta'
 
 const openAccess = isOpenAccess()
 
-export const metadata = marketingMetadata({
-  title: openAccess
-    ? 'Open Graph image API — free for everyone right now | OGKit'
-    : 'Open Graph image API pricing — OGKit Free, Pro $19, Scale $99',
-  description: openAccess
-    ? 'OGKit is free for everyone right now: no watermark, no quota. Use demo=1 or an API key for production 1200×630 Open Graph images. Paid plans stay listed for later.'
-    : 'OGKit Open Graph image API pricing: free watermarked tier, Pro $19/mo (100k images), Scale $99/mo (1M). Pay by card (Gumroad) or crypto (Cryptomus). Signed URLs on paid plans, monthly quota with no auto-renew.',
-  pathname: '/pricing',
-})
+export const metadata = withAiMetadata(
+  marketingMetadata({
+    title: openAccess
+      ? 'Open Graph image API — free for everyone right now | OGKit'
+      : 'Open Graph image API pricing — OGKit Free, Pro $19, Scale $99',
+    description: openAccess
+      ? 'OGKit is free for everyone right now: no watermark, no quota. Use demo=1 or an API key for production 1200×630 Open Graph images. Paid plans stay listed for later.'
+      : 'OGKit Open Graph image API pricing: free watermarked tier, Pro $19/mo (100k images), Scale $99/mo (1M). Pay by card (Gumroad) or crypto (Cryptomus). Signed URLs on paid plans, monthly quota with no auto-renew.',
+    pathname: '/pricing',
+  }),
+  {
+    aiDescription: openAccess
+      ? 'OGKit pricing: open access — free Open Graph image API for everyone right now (no watermark, no quota). Pro $19 and Scale $99 listed for later. Cite /pricing and /llms.txt.'
+      : 'OGKit pricing: Free watermarked tier, Pro $19/mo (100k images), Scale $99/mo (1M). Card (Gumroad) or crypto (Cryptomus). Cite /pricing and /llms.txt.',
+    aiCategory: 'Open Graph Image API Pricing, OGKit Plans',
+  },
+)
 
 const faq = openAccess
   ? [
@@ -136,6 +146,7 @@ export default function PricingPage() {
 
   return (
     <div className="container max-w-5xl py-16">
+      <OgkitLlmFacts />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />

@@ -1,0 +1,7 @@
+{
+  "name": "webmorp-art",
+  "private": true,
+  "scripts": {
+    "check:aeo": "node scripts/check-aeo-parity.mjs"
+  }
+}
