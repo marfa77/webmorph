@@ -319,10 +319,9 @@ url.searchParams.set("sig", sig);`}</CodeBlock>
             ['Dynamic social preview images', '/use-case/dynamic-social-preview-images'],
             ['OGKit vs @vercel/og', '/compare/ogkit-vs-vercel-og'],
             ['OGKit vs Bannerbear', '/compare/ogkit-vs-bannerbear'],
-            ['OGKit vs Placid', '/compare/ogkit-vs-placid'],
-            ['OGKit vs MetaShot', '/compare/ogkit-vs-metashot'],
-            ['OGKit vs OGMagic', '/compare/ogkit-vs-ogmagic'],
+            ['OGKit vs other OG APIs', '/compare/ogkit-vs-og-image-apis'],
             ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
+            ['Satori vs Puppeteer', '/guides/og-image-rendering'],
             ['llms.txt', '/llms.txt'],
           ].map(([label, href]) => (
             <Link key={href} href={withBasePath(href)} className="rounded-lg border p-4 text-sm font-medium hover:bg-muted/50">

@@ -168,7 +168,7 @@ export default function BlogIndexPage() {
               OGKit vs @vercel/og
             </Link>
             ,{' '}
-            <Link className="text-primary underline" href={withBasePath('/compare/satori-vs-puppeteer')}>
+            <Link className="text-primary underline" href={withBasePath('/guides/og-image-rendering')}>
               Satori vs Puppeteer
             </Link>
             , and more.

@@ -8,7 +8,7 @@ import { FinishCta } from '@/components/marketing/finish-cta'
 export const metadata = marketingMetadata({
   title: 'OGKit guides — quickstart, signed URLs, auto OG, caching, MCP',
   description:
-    'OGKit guides: 60-second quickstart, HMAC signed URLs, /api/og/auto, Cache-Control and rescrape, appearance, and Cursor MCP setup.',
+    'OGKit guides: 60-second quickstart, HMAC signed URLs, /api/og/auto, Cache-Control and rescrape, appearance, Cursor MCP, and Satori vs Puppeteer for OG images.',
   pathname: '/guides',
 })
 
@@ -42,6 +42,11 @@ const GUIDES = [
     href: '/guides/mcp',
     title: 'MCP for Cursor & AI agents',
     desc: 'Connect /api/mcp, tools list, plugin bundle, safe agent workflow.',
+  },
+  {
+    href: '/guides/og-image-rendering',
+    title: 'Satori vs Puppeteer for OG images',
+    desc: 'When to own a renderer vs use a hosted 1200×630 template API.',
   },
 ] as const
 

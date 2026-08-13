@@ -286,338 +286,121 @@ export const metadata: Metadata = {
       ['Dynamic social preview', '/use-case/dynamic-social-preview-images'],
     ],
   },
-  'ogkit-vs-metashot': {
-    h1: 'OGKit vs MetaShot',
-    title: `OGKit vs MetaShot — crypto-native Open Graph image API`,
+  'ogkit-vs-og-image-apis': {
+    h1: 'OGKit vs other Open Graph image APIs',
+    title: 'OGKit vs MetaShot, OGMagic, Cloudinary, Placid & free OG APIs',
     description:
-      'Compare OGKit and MetaShot for developer-focused Open Graph images, AI-assisted setup, crypto checkout, templates, signed URLs, and dynamic social previews.',
+      'One comparison of OGKit against MetaShot, OGMagic, Cloudinary overlays, Placid, and free OG generators (OGForge/OGPix): when a focused URL-based Open Graph API beats broad creative or free utilities.',
     intro:
-      'MetaShot is a strong developer-first OG image API. OGKit takes a sharper angle for teams that want crypto-native checkout, AI-friendly docs, MCP for Cursor, and a compact Open Graph image workflow.',
+      'Most “OGKit vs X” pages for niche or broad platforms say the same thing with different names. This guide collapses those comparisons into one decision page: when you want a hosted 1200×630 card from a URL versus a creative suite, a media CDN, or a free experiment API.',
     statement:
-      'Use MetaShot when custom SVG templates and live JSON data are your priority. Use OGKit when you want crypto-paid production quota, signed OG URLs, MCP tools, and an API contract optimized for AI-assisted developers.',
+      'Keep deep dives for high-intent rivals (@vercel/og, Bannerbear) and screenshot APIs. For MetaShot, OGMagic, Cloudinary, Placid, and free OG utilities, use this page — then pick OGKit when you need URL-first cards, keys, signed URLs, MCP, and crypto/open-access billing.',
     rows: [
-      ['Payment model', 'Crypto-native checkout for global developers (open access free today).', 'Traditional SaaS pricing with free and paid tiers.'],
-      ['Workflow', 'Template URL, Playground, llms.txt, MCP, and docs for Cursor/Claude.', 'Template URL with edge cache, custom SVG templates, and data_url support.'],
-      ['Security', 'API keys, quota, signed URLs, domain allowlists, and revocation controls.', 'API keys, signed URLs, and domain restrictions on paid plans.'],
-      ['Agent tooling', 'Remote MCP (/api/mcp) + llms.txt.', 'Docs-first; SVG/data workflows for custom layouts.'],
-      ['Best fit', 'AI-built SaaS, docs, launches, and indie products.', 'Teams that need uploaded SVG templates or live JSON-fed OG cards.'],
+      ['Primary job', 'Production og:image / Twitter cards from template URLs.', 'Varies: SVG templates, creative editor, media CDN, or free utilities.'],
+      ['Setup', 'Pick slug → query params → put URL in metadata.', 'Editor session, SVG upload, transformation chains, or license-key utilities.'],
+      ['Production controls', 'API keys, quota, signed URLs, domain allowlists, MCP.', 'Often thinner (free tools) or bundled into a larger suite (Placid/Cloudinary).'],
+      ['Best next read if…', 'You already know you need a focused OG API.', '@vercel/og lock-in → /compare/ogkit-vs-vercel-og; creative automation → /compare/ogkit-vs-bannerbear; page rasters → /compare/ogkit-vs-screenshot-apis.'],
     ],
+    sectionsAfterTable: true,
     sections: [
       {
-        heading: 'Where MetaShot pulls ahead',
+        heading: 'OGKit vs MetaShot',
         paragraphs: [
-          'If your product needs designer-uploaded SVG templates or cards driven by a live JSON URL, MetaShot’s flexibility is hard to match with a fixed template catalog.',
+          'MetaShot is a strong developer OG API with custom SVG templates and live JSON-style data bindings. Choose MetaShot when uploaded SVG or live data_url pipelines are mandatory.',
+          'Choose OGKit when you want crypto/open-access billing, MCP for Cursor, signed URLs, and a compact URL-parameter workflow without an SVG authoring model.',
         ],
         bullets: [
-          'Custom SVG as the primary authoring model',
-          'Live data_url-style bindings for dynamic fields',
-          'Teams already invested in that template pipeline',
+          'MetaShot wins: custom SVG + live JSON-fed cards',
+          'OGKit wins: MCP + llms.txt + key/signature governance + simpler URL contract',
         ],
       },
       {
-        heading: 'Where OGKit is simpler',
+        heading: 'OGKit vs OGMagic',
         paragraphs: [
-          'OGKit stays URL-first: pick a slug, pass fields, ship metadata. Cursor agents can call MCP tools to build URLs and Next.js snippets without learning an SVG editor.',
+          'OGMagic competes on template variety and a fast no-signup trial. That is great for visual exploration.',
+          'OGKit competes on operational depth: rotatable keys, domain allowlists, HMAC signed URLs, dashboard usage, and agent tooling. Prefer OGMagic for style shopping; prefer OGKit when cards are a long-lived product surface.',
+        ],
+      },
+      {
+        heading: 'OGKit vs Cloudinary',
+        paragraphs: [
+          'Cloudinary is a media platform (storage, transforms, delivery). It can overlay text, but you own fonts, layout, and escaping for every card.',
+          'OGKit does not replace Cloudinary. Use Cloudinary for assets; use OGKit for 1200×630 share cards — or pass a Cloudinary HTTPS image into OGKit’s image= field on article/product templates.',
+        ],
+      },
+      {
+        heading: 'OGKit vs Placid',
+        paragraphs: [
+          'Placid is a creative automation suite (editor, REST/URL APIs, video/PDF, Zapier/Make, MCP for templates). Starter pricing typically starts around $39/mo with card checkout.',
+          'OGKit is narrower: synchronous PNG URLs for metadata, signed URLs on paid tiers, and OG-focused MCP. Choose Placid for multi-format creative pipelines; choose OGKit when og:image is the only output and you want minutes-to-ship URL paste.',
+        ],
+      },
+      {
+        heading: 'OGKit vs free OG APIs (OGForge, OGPix, similar)',
+        paragraphs: [
+          'Free generators are perfect for weekend prototypes. Once cards appear in customer docs, ads, and emails, you usually want key rotation, usage visibility, signatures, and a supportable product surface — that is OGKit’s lane.',
+        ],
+        bullets: [
+          'Prototype → free utility is fine',
+          'Customer-facing share cards → prefer keys, quota, signed URLs, MCP',
+        ],
+      },
+      {
+        heading: 'Still want a dedicated comparison?',
+        paragraphs: [
+          'High-volume queries stay as standalone pages: OGKit vs @vercel/og, OGKit vs Bannerbear, and OGKit vs screenshot APIs. Rendering engines (Satori vs Puppeteer) live under Guides as an educational explainer.',
         ],
       },
     ],
     ogkitFit: [
-      'You want crypto checkout or current open access without card friction.',
-      'Your implementation happens in Cursor, Claude, or another coding agent.',
-      'You need reliable OG cards more than a broader template design system.',
+      'You need production Open Graph / Twitter cards from a stable HTTPS URL.',
+      'You want API keys, signed URLs, domain allowlists, and optional MCP — not a DAM or video suite.',
+      'You prefer crypto checkout or current open access over card-only creative platforms.',
+      'You implement in Cursor/Claude and want llms.txt + MCP tools.',
     ],
     otherFit: [
-      'You need custom SVG upload as the main template workflow.',
-      'You need live JSON endpoint binding today.',
-      'You prefer conventional card-based SaaS billing.',
+      'You need custom SVG upload or live JSON template bindings (MetaShot-class).',
+      'You need dozens of visual styles more than operational controls (OGMagic-class).',
+      'You need image/video storage and transforms (Cloudinary-class).',
+      'You need editor + Zapier + PDF/video automation (Placid/Bannerbear-class).',
+      'You only need a forever-free experiment with no account or keys.',
     ],
     faq: [
       {
-        question: 'Is OGKit a MetaShot alternative?',
+        question: 'Why merge MetaShot / OGMagic / Cloudinary / Placid comparisons?',
         answer:
-          'Yes for hosted 1200×630 social cards from URL parameters. Choose MetaShot if custom SVG templates or live JSON bindings are mandatory.',
+          'Those pages shared one template with thin differentiation and cannibalized each other. This hub keeps the decision criteria; Vercel OG and Bannerbear remain standalone because search intent and depth justify it.',
       },
       {
-        question: 'Does OGKit support AI agents?',
-        answer: 'Yes — connect MCP at /api/mcp and read /llms.txt. See the MCP guide for Cursor setup.',
-      },
-    ],
-    code: `${siteConfig.url}/api/og/minimal?demo=1&title=Hello+from+OGKit&theme=dark&accent=%233dffa8`,
-    links: [
-      ['AI-friendly docs', '/llms.txt'],
-      ['MCP guide', '/guides/mcp'],
-      ['Try demo previews', '/playground'],
-      ['Pricing', '/pricing'],
-    ],
-  },
-  'ogkit-vs-ogmagic': {
-    h1: 'OGKit vs OGMagic',
-    title: `OGKit vs OGMagic — production Open Graph image API`,
-    description:
-      'Compare OGKit and OGMagic for no-code previews, template count, API keys, crypto checkout, signed URLs, and production Open Graph image generation.',
-    intro:
-      'OGMagic is excellent when you want many inexpensive templates and a no-signup trial. OGKit is built for production teams that want API keys, quota visibility, crypto checkout, MCP, and controlled public URLs.',
-    statement:
-      'Use OGMagic when template variety and low one-time pricing matter most. Use OGKit when operational controls, agent tooling, and global crypto-paid production usage matter more.',
-    rows: [
-      ['Template strategy', 'Focused templates for SaaS, docs, launch pages, products, and developer content.', 'Large template library with many visual styles.'],
-      ['Trial experience', 'demo=1 from the Playground without a key (open access: no watermark).', 'No-signup free API calls and visual editor.'],
-      ['Production controls', 'API keys, quota, signed URLs, domain allowlists, revocation, dashboard usage.', 'Simple license-key style access for higher usage.'],
-      ['Agents', 'MCP + llms.txt + Next.js snippets.', 'Editor-first indie workflow.'],
-      ['Positioning', 'Crypto-native, AI-friendly OG infrastructure.', 'Fast, template-heavy OG generator for indie developers.'],
-    ],
-    sections: [
-      {
-        heading: 'Template count vs operational depth',
-        paragraphs: [
-          'OGMagic wins on sheer visual variety. OGKit wins when the card is part of a product surface: keys you can revoke, signatures for public HTML, and docs an agent can follow without a design tool.',
-        ],
-      },
-      {
-        heading: 'Production URL governance',
-        paragraphs: [
-          'If og:image URLs will live on customer-facing pages for months, prefer keys with domain allowlists and optional HMAC signatures. See the Signed URLs guide.',
-        ],
-      },
-    ],
-    ogkitFit: [
-      'You need production controls around public image URLs.',
-      'Your team wants a crypto-native billing path (or free open access now).',
-      'You want docs and MCP that AI coding agents can consume safely.',
-    ],
-    otherFit: [
-      'You mainly want dozens of visual styles.',
-      'You are optimizing for the cheapest possible entry price.',
-      'You do not need signed URLs or domain-level controls.',
-    ],
-    faq: [
-      {
-        question: 'Is OGKit cheaper than OGMagic?',
+        question: 'Is OGKit a Cloudinary alternative?',
         answer:
-          'During open access OGKit is free. Longer term, compare Pro quota vs OGMagic’s license pricing for your monthly volume — not template count alone.',
+          'No for general media. Yes as the og:image generator next to Cloudinary (or any CDN).',
       },
       {
-        question: 'Can I try OGKit without signup?',
-        answer: 'Yes. Use demo=1 or the Playground. Sign in when you want rotatable API keys.',
-      },
-    ],
-    code: `${siteConfig.url}/api/og/gradient?demo=1&title=Launch+notes&subtitle=Built+with+OGKit&pattern=dots`,
-    links: [
-      ['Open Playground', '/playground'],
-      ['API reference', '/docs'],
-      ['Signed URLs', '/guides/signed-urls'],
-      ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
-    ],
-  },
-  'ogkit-vs-placid': {
-    h1: 'OGKit vs Placid',
-    title: `OGKit vs Placid — Open Graph image API alternative`,
-    description:
-      'OGKit vs Placid: URL-first Open Graph images for Next.js vs creative automation, drag-and-drop editor, MCP, nocode workflows, and Placid Starter pricing from $39/month.',
-    intro:
-      'OGKit is a Placid alternative for developers who need Open Graph images from a URL — not a full creative automation suite with a drag-and-drop editor, video pipelines, MCP integrations, and nocode workflows. Placid is a mature platform used by marketing teams and agencies to generate images, PDFs, and videos at scale from dynamic templates. OGKit does one thing: turn a URL with parameters into a production-ready 1200×630 social preview card. If your use case is `og:image` for a Next.js app, SaaS product, blog, or docs site, OGKit gets you there in minutes without a template editor session.',
-    statement:
-      'Placid gives you REST and URL APIs, an editor, and MCP for AI-driven creative pipelines. OGKit is narrower: synchronous PNG URLs for metadata, signed URLs, and OG-focused MCP tools for Cursor — no embedded creative editor when you only need share cards.',
-    rows: [
-      ['Primary use case', 'Open Graph and Twitter card images.', 'Images, video, PDF, creative automation.'],
-      ['Setup time', 'Paste URL into `og:image` — done.', 'Design templates in the editor first.'],
-      ['API style', 'URL-based, synchronous response, no SDK required.', 'REST API plus URL API.'],
-      ['MCP support', 'Yes — OG-focused tools at /api/mcp.', 'Yes — creative template automation MCP.'],
-      ['Editor SDK', 'No.', 'Yes — embed the editor into your app.'],
-      ['No-login preview', 'Yes — watermarked demo without account (`demo=1`).', 'No — requires signup.'],
-      ['Payment method', 'Crypto (global, no card processor).', 'Credit card only.'],
-      ['Template editor', 'No — curated templates via API.', 'Yes — full drag-and-drop editor.'],
-      ['Video generation', 'No.', 'Yes.'],
-      ['PDF generation', 'No.', 'Yes.'],
-      ['Zapier / Make / n8n', 'No.', 'Yes.'],
-      ['Airtable integration', 'No.', 'Yes.'],
-      ['Ghost integration', 'No.', 'Yes.'],
-      ['Webflow integration', 'No.', 'Yes.'],
-      ['Signed URLs', 'Yes — on Pro and Scale.', 'Yes — URL API (after template setup).'],
-      ['Free trial', 'Watermarked demo images, no signup.', 'Free trial; signup required.'],
-      ['Entry price', 'Free tier; Pro from $19/mo (crypto).', '$39/month (Starter).'],
-    ],
-    ogkitFit: [
-      'You need Open Graph images for a Next.js, Astro, Rails, or Django app and want a hosted solution instead of maintaining `@vercel/og` routes yourself.',
-      'Your team is global and credit card checkout is a blocker.',
-      'You want to try before you buy — watermarked demos without signup or payment details.',
-      'You want a simple, focused API with no editor overhead or nocode workflow configuration.',
-      'You are building an AI-assisted app in Cursor or Claude and want docs you can paste directly into context.',
-    ],
-    otherFit: [
-      'You need image and video and PDF generation from one platform.',
-      'Your marketing team uses Zapier, Make, n8n, or Airtable to trigger asset generation without writing code.',
-      'You need a drag-and-drop template editor for designers and non-developers.',
-      'You are building AI agent workflows and want MCP integration with your creative templates.',
-      'You need to embed a template editor directly into your own application via the Editor SDK.',
-    ],
-    sections: [
-      {
-        heading: 'Pricing comparison',
-        paragraphs: [
-          'Placid starts at $39/month for their Starter plan. Like most creative automation platforms, the full feature set — including higher volume, PDF generation, and team collaboration — typically means moving up tiers.',
-          'Payment is credit card only, which can block developers in regions where Stripe or card processors create billing friction.',
-          `OGKit uses crypto checkout (Cryptomus) for Pro ($19/month, 100,000 images) and Scale ($99/month, 1,000,000 images). Paid plans are monthly quota blocks with no automatic renewal lock-in. You can generate watermarked demo images for free without creating an account. For a developer shipping a Next.js SaaS or blog, that means a lower monthly floor than Placid Starter when you only need production Open Graph cards.`,
-          'Crypto checkout also reduces card-processor friction for developers in the UAE, India, Nigeria, Pakistan, Brazil, and other regions where Stripe-dependent tools are harder to adopt.',
-        ],
+        question: 'Is OGKit a Placid or Bannerbear alternative?',
+        answer:
+          'Yes when you only need Open Graph cards from a URL. No when you need a visual editor, video/PDF, or nocode creative automation — see /compare/ogkit-vs-bannerbear for the deep creative-suite comparison.',
       },
       {
-        heading: 'How the developer workflow differs',
-        paragraphs: [
-          'Placid gives you two paths. The REST API is template-first: you design in the editor, grab a template ID, POST a request with your dynamic values, and receive a rendered image URL. The URL API lets you pass parameters directly in a URL — closer to OGKit’s model — but you still need to create and configure templates in the editor before you can use either path.',
-          'Placid has also launched an MCP integration so AI agents can connect directly to your templates. That is powerful for AI-assisted content workflows, but it is extra setup when you only need `og:image` to resolve to a real PNG.',
-          'OGKit skips the editor entirely. You pick a template slug, build a URL server-side with your parameters, and drop it into your metadata. Synchronous response, cache-friendly, no polling, no webhook. Paste the docs into Cursor or Claude and ship in one session.',
-        ],
+        question: 'Where did OGKit vs MetaShot / OGMagic go?',
+        answer:
+          'They redirect here. The substance is in the sections above plus links to Playground, Docs, and Signed URLs.',
       },
     ],
-    code: `// Next.js App Router — metadata
-import type { Metadata } from "next";
-
+    code: `// URL-first card — same pattern whether you evaluated MetaShot, OGMagic, or a free OG API
 const url = new URL("${siteConfig.url}/api/og/article");
-url.searchParams.set("key", process.env.OGKIT_KEY!);
-url.searchParams.set("title", "How we cut infrastructure costs by 60%");
-url.searchParams.set("author", "Alex Kim");
-url.searchParams.set("subtitle", "Engineering");
-
-export const metadata: Metadata = {
-  openGraph: { images: [url.toString()] },
-  twitter: { images: [url.toString()] },
-};`,
-    faq: [
-      {
-        question: 'Is OGKit a Placid alternative for Next.js?',
-        answer:
-          'Yes. OGKit targets developer use cases like Next.js App Router metadata, Astro frontmatter, and any stack where you build an image URL server-side. Point `openGraph.images` at an OGKit URL — no template editor and no REST polling for a simple card. Optional OG-focused MCP is available at /api/mcp.',
-      },
-      {
-        question: 'Does OGKit have a URL API like Placid?',
-        answer:
-          'Yes. OGKit is URL-first: every template is a parameterized HTTPS URL that returns a 1200×630 PNG synchronously. You do not need a template editor session before the URL works.',
-      },
-      {
-        question: 'Can I try OGKit without a credit card?',
-        answer:
-          'Yes. Use `demo=1` in any OGKit API URL or the Playground for watermarked previews without payment details. Placid requires signup before you generate your first image.',
-      },
-      {
-        question: 'Why does OGKit use crypto checkout instead of cards?',
-        answer:
-          'Crypto checkout avoids card processor and regional billing blocks outside the US and EU. Placid and many SaaS tools rely on card rails like Stripe; OGKit is built so global developers who ship code can pay without that friction.',
-      },
-      {
-        question: 'Is OGKit cheaper than Placid?',
-        answer:
-          'For Open Graph images specifically, usually yes: Placid Starter starts at $39/month. OGKit has a free watermarked tier and Pro at $19/month (crypto) with production quota and signed URLs — a better fit when share cards are the only output you need.',
-      },
-      {
-        question: 'Does OGKit support AI agent workflows like Placid MCP?',
-        answer:
-          'Yes for Open Graph URLs: OGKit MCP builds image URLs, Next.js snippets, and validates pages. Placid MCP targets broader creative template automation (images/video/PDF). See /guides/mcp.',
-      },
-    ],
+url.searchParams.set("demo", "1");
+url.searchParams.set("title", "Ship notes");
+url.searchParams.set("subtitle", "OGKit vs other OG APIs");
+// → metadata.openGraph.images = [url.toString()]`,
     closing:
-      'OGKit turns one HTTPS URL into a 1200×630 Open Graph image. Read the API docs, try the Playground, or view pricing.',
+      'If your rival is @vercel/og or Bannerbear, use those dedicated pages. For everyone else in the “hosted OG API / creative suite / free utility” cluster, this page is the canonical comparison.',
     links: [
-      ['API docs', '/docs'],
-      ['MCP guide', '/guides/mcp'],
+      ['OGKit vs @vercel/og', '/compare/ogkit-vs-vercel-og'],
+      ['OGKit vs Bannerbear', '/compare/ogkit-vs-bannerbear'],
+      ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
+      ['How OG rendering works', '/guides/og-image-rendering'],
       ['Playground', '/playground'],
-      ['Pricing', '/pricing'],
-      ['Next.js guide', '/for/nextjs'],
-    ],
-  },
-  'ogkit-vs-cloudinary': {
-    h1: 'OGKit vs Cloudinary',
-    title: `OGKit vs Cloudinary — focused Open Graph image API`,
-    description:
-      'Compare OGKit and Cloudinary for dynamic Open Graph images, media transformations, developer setup, and social preview card generation.',
-    intro:
-      'Cloudinary is a powerful media platform. OGKit is intentionally narrower: a hosted Open Graph image API for teams that want predictable social cards from simple URL parameters.',
-    statement:
-      'Use Cloudinary when you need a full media pipeline. Use OGKit when you need production-ready `og:image` URLs without designing transformation chains.',
-    rows: [
-      ['Scope', 'Open Graph and Twitter-card image generation only.', 'Broad media storage, transformations, delivery, and optimization.'],
-      ['Setup', 'Pick a template, pass fields, use the returned PNG URL in metadata.', 'Design transformation URLs, overlays, asset rules, and delivery settings.'],
-      ['Best fit', 'Developer docs, SaaS launches, changelogs, blogs, and public share pages.', 'Applications with complex media libraries and many asset transformations.'],
-      ['Billing fit', 'Crypto-native paid quota / open access.', 'Conventional cloud media billing.'],
-      ['Learning curve', 'Minutes — one HTTPS URL.', 'Hours — transformations, presets, delivery config.'],
-    ],
-    sections: [
-      {
-        heading: 'Do not rebuild OG cards as Cloudinary overlays unless you must',
-        paragraphs: [
-          'Cloudinary can overlay text on images, but you own font files, positioning, and escaping. OGKit templates already target 1200×630 social safe areas.',
-        ],
-      },
-      {
-        heading: 'When Cloudinary still wins',
-        bullets: [
-          'You already store all product photography in Cloudinary',
-          'You need on-the-fly crop/format for many device sizes beyond OG',
-          'Video/image DAM is the core product requirement',
-        ],
-      },
-    ],
-    ogkitFit: ['You only need OG/social preview images.', 'You want simpler URLs.', 'You prefer crypto-native checkout or free open access.'],
-    otherFit: ['You need image/video storage and delivery.', 'You already use Cloudinary as your media pipeline.', 'You need advanced transformations beyond social cards.'],
-    faq: [
-      {
-        question: 'Can OGKit replace Cloudinary?',
-        answer: 'No for general media. Yes as the og:image generator sitting beside Cloudinary (or any CDN) for share cards.',
-      },
-      {
-        question: 'Can I pass a Cloudinary image into OGKit?',
-        answer: 'Yes — use the image= HTTPS URL parameter on article/product templates.',
-      },
-    ],
-    code: `${siteConfig.url}/api/og/product?demo=1&title=Pro+Plan&price=%2419%2Fmo`,
-    links: [
-      ['Product launch images', '/use-case/product-launch'],
-      ['Appearance guide', '/guides/appearance'],
-      ['API reference', '/docs'],
-      ['Pricing', '/pricing'],
-    ],
-  },
-  'ogkit-vs-ogforge': {
-    h1: 'OGKit vs OGForge and OGPix',
-    title: `OGKit vs OGForge and OGPix — production OG image API`,
-    description:
-      'Compare OGKit with free and low-cost Open Graph image APIs such as OGForge and OGPix for production social previews.',
-    intro:
-      'Free OG image APIs are great for experiments. OGKit is built for teams that want demo previews plus production controls when public image URLs become part of a real product.',
-    statement:
-      'Use free OG APIs for quick prototypes. Use OGKit when you need API keys, quota, crypto checkout, signed URLs, MCP, and a product surface your team can operate.',
-    rows: [
-      ['Entry point', 'No-key demo previews, then API-key production usage.', 'Often no signup or very low-cost API access.'],
-      ['Controls', 'Quota, revocation, signed URLs, and domain allowlists.', 'Usually fewer production governance controls.'],
-      ['Agents', 'MCP + llms.txt + dashboard.', 'Usually docs-only utilities.'],
-      ['Positioning', 'Focused developer SaaS for OG image infrastructure.', 'Lightweight generators for fast experiments.'],
-      ['Best fit', 'Public share images attached to products, docs, and SaaS pages.', 'Side projects, tests, and low-risk pages.'],
-    ],
-    sections: [
-      {
-        heading: 'Prototype vs product surface',
-        paragraphs: [
-          'A free generator is enough for a weekend demo. Once og:image URLs are in customer emails, docs, and ads, you want key rotation, usage visibility, and signatures — that is the OGKit lane.',
-        ],
-      },
-    ],
-    ogkitFit: ['You need operational controls.', 'You want crypto-paid production usage or open access with keys.', 'You need stable docs, MCP, and dashboard workflows.'],
-    otherFit: ['You need a completely free utility forever.', 'You do not need accounts, keys, or quota.', 'You are generating low-risk prototype images.'],
-    faq: [
-      {
-        question: 'Is OGKit free?',
-        answer: 'Open access is free for everyone right now. Future Pro/Scale pricing remains listed on /pricing.',
-      },
-      {
-        question: 'Why not stay on a free OG API?',
-        answer: 'Reliability, support surface, signed URLs, and agent tooling matter once previews are customer-facing.',
-      },
-    ],
-    code: `${siteConfig.url}/api/og/auto?demo=1&url=https%3A%2F%2Fexample.com`,
-    links: [
-      ['Try demo previews', '/playground'],
-      ['Auto OG guide', '/guides/auto-og'],
-      ['API reference', '/docs'],
       ['Pricing', '/pricing'],
     ],
   },
@@ -681,40 +464,8 @@ export const metadata: Metadata = {
       ['SaaS social cards', '/use-case/saas'],
       ['Try templates', '/playground'],
     ],
-  },
-  'satori-vs-puppeteer': {
-    h1: 'Satori vs Puppeteer for 1200×630 Open Graph images',
-    title: `Satori vs Puppeteer for 1200×630 OG images — ${siteConfig.name}`,
-    description:
-      'Compare Satori, Puppeteer, and OGKit for generating Open Graph images, social preview cards, and dynamic 1200x630 PNG assets.',
-    intro:
-      'Satori and Puppeteer are both ways to render images, but they solve different problems. OGKit uses a fixed template approach so teams can generate Open Graph cards without owning either rendering pipeline directly.',
-    statement:
-      'Use Satori when you want React-to-image control. Use Puppeteer when you need real browser screenshots. Use OGKit when you want a hosted Open Graph image API with templates and predictable URLs.',
-    rows: [
-      ['Rendering model', 'Hosted templates backed by a controlled image pipeline.', 'Satori renders JSX-like layouts; Puppeteer renders full browser pages.'],
-      ['Best for', 'Production social cards for metadata and sharing.', 'Custom image routes, browser screenshots, and advanced rendering needs.'],
-      ['Operational burden', 'API keys, preview UI, quota, and templates are included.', 'You own fonts, layout limits, runtime cost, failures, and template QA.'],
-      ['Output contract', '1200x630 PNG Open Graph images.', 'Whatever your route or browser capture pipeline produces.'],
-    ],
-    ogkitFit: [
-      'You want Open Graph images, not a custom rendering engine.',
-      'You need share cards from structured content fields.',
-      'You prefer a stable API URL over rendering infrastructure.',
-    ],
-    otherFit: [
-      'You need arbitrary custom layouts or full page screenshots.',
-      'You already have a rendering team and debugging workflow.',
-      'You need capabilities outside social preview images.',
-    ],
-    code: `// OGKit: one URL for metadata instead of a custom renderer
-${siteConfig.url}/api/og/article?key=KEY&title=Satori+vs+Puppeteer&author=OGKit`,
-    links: [
-      ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
-      ['OGKit vs Vercel OG', '/compare/ogkit-vs-vercel-og'],
-      ['API reference', '/docs'],
-    ],
-  },
+  }
+
 }
 
 const ALLOWED = new Set(Object.keys(COPY))

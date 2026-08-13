@@ -561,6 +561,63 @@ ${api('/api/og/gradient')}?demo=1&title=Changelog+v2&subtitle=Signed+URLs&accent
       ['Signed URLs', '/guides/signed-urls'],
     ],
   },
+  'og-image-rendering': {
+    title: 'Satori vs Puppeteer for 1200×630 Open Graph images',
+    description:
+      'Compare Satori, Puppeteer, and OGKit for generating Open Graph images, social preview cards, and dynamic 1200×630 PNG assets — without owning a custom renderer.',
+    h1: 'Satori vs Puppeteer for Open Graph images',
+    intro:
+      'Satori and Puppeteer both produce images, but they solve different problems. OGKit uses hosted templates so teams can ship Open Graph cards without owning either rendering pipeline.',
+    sections: [
+      {
+        heading: 'Quick comparison',
+        bullets: [
+          'Satori: JSX-like layouts → PNG (what @vercel/og uses under the hood)',
+          'Puppeteer: full browser screenshots of HTML/CSS pages',
+          'OGKit: hosted 1200×630 templates via HTTPS URL — you pass fields, not a renderer',
+        ],
+      },
+      {
+        heading: 'When Satori wins',
+        paragraphs: [
+          'Use Satori (or @vercel/og) when you want React-to-image control inside your own app and you are comfortable owning fonts, layout limits, Edge/Node budgets, and redeploys for every template change.',
+        ],
+      },
+      {
+        heading: 'When Puppeteer wins',
+        paragraphs: [
+          'Use Puppeteer when you need a real browser capture — full page fidelity, complex CSS, or screenshots for QA/thumbnails. That path is usually slower and more fragile for og:image unfurls.',
+        ],
+      },
+      {
+        heading: 'When OGKit wins',
+        paragraphs: [
+          'Use OGKit when the job is production social cards from structured fields (title, subtitle, logo, product). You get API keys, signed URLs, Playground, MCP, and a stable metadata URL without running Satori or Chromium yourself.',
+        ],
+        code: `// One URL for metadata instead of a custom renderer
+${base}/api/og/article?demo=1&title=Satori+vs+Puppeteer&author=OGKit`,
+      },
+    ],
+    faq: [
+      {
+        question: 'Is OGKit built on Satori or Puppeteer?',
+        answer:
+          'OGKit exposes a fixed template API. You do not configure Satori or Puppeteer — you pick a template slug and query params. For a product comparison with @vercel/og (Satori-based), see /compare/ogkit-vs-vercel-og.',
+      },
+      {
+        question: 'Should og:image be a screenshot?',
+        answer:
+          'Usually no. Screenshots include nav, cookies, and responsive quirks. Prefer designed 1200×630 cards — see /compare/ogkit-vs-screenshot-apis.',
+      },
+    ],
+    related: [
+      ['OGKit vs @vercel/og', '/compare/ogkit-vs-vercel-og'],
+      ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
+      ['OGKit vs other OG APIs', '/compare/ogkit-vs-og-image-apis'],
+      ['API reference', '/docs'],
+    ],
+  },
+
 }
 
 type Props = { params: { slug: string } }

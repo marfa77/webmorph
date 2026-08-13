@@ -351,7 +351,7 @@ const meta = {
           {[
             ['OGKit vs screenshot APIs', '/compare/ogkit-vs-screenshot-apis'],
             ['OGKit vs Bannerbear', '/compare/ogkit-vs-bannerbear'],
-            ['OGKit vs Placid', '/compare/ogkit-vs-placid'],
+            ['OGKit vs other OG APIs', '/compare/ogkit-vs-og-image-apis'],
             ['Next.js OG generator', '/for/nextjs'],
             ['llms.txt for agents', '/llms.txt'],
           ].map(([label, href]) => (

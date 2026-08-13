@@ -55,7 +55,19 @@
     { "source": "/ogkit/guides/seo", "destination": "/ogkit/blog/open-graph-images-seo-guide", "permanent": true },
     { "source": "/ogkit/guides/seo/", "destination": "/ogkit/blog/open-graph-images-seo-guide", "permanent": true },
     { "source": "/ogkit/guides/nextjs", "destination": "/ogkit/for/nextjs", "permanent": true },
-    { "source": "/ogkit/guides/nextjs/", "destination": "/ogkit/for/nextjs", "permanent": true }
+    { "source": "/ogkit/guides/nextjs/", "destination": "/ogkit/for/nextjs", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-metashot", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-metashot/", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-ogmagic", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-ogmagic/", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-placid", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-placid/", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-cloudinary", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-cloudinary/", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-ogforge", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/ogkit-vs-ogforge/", "destination": "/ogkit/compare/ogkit-vs-og-image-apis", "permanent": true },
+    { "source": "/ogkit/compare/satori-vs-puppeteer", "destination": "/ogkit/guides/og-image-rendering", "permanent": true },
+    { "source": "/ogkit/compare/satori-vs-puppeteer/", "destination": "/ogkit/guides/og-image-rendering", "permanent": true }
   ],
   "rewrites": [
     { "source": "/", "destination": "/ogkit/index.html" },
