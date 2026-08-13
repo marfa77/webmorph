@@ -47,7 +47,15 @@
     { "source": "/sait-iz-telegram-kanala/", "destination": "/channel/ru", "permanent": true },
     { "source": "/africa-dream", "destination": "/channel/", "permanent": true },
     { "source": "/africa-dream/", "destination": "/channel/", "permanent": true },
-    { "source": "/africa-dream/:path*", "destination": "/channel/", "permanent": true }
+    { "source": "/africa-dream/:path*", "destination": "/channel/", "permanent": true },
+    { "source": "/ogkit/guides/caching", "destination": "/ogkit/guides/caching-and-rescrape", "permanent": true },
+    { "source": "/ogkit/guides/caching/", "destination": "/ogkit/guides/caching-and-rescrape", "permanent": true },
+    { "source": "/ogkit/guides/open-graph-seo", "destination": "/ogkit/blog/open-graph-images-seo-guide", "permanent": true },
+    { "source": "/ogkit/guides/open-graph-seo/", "destination": "/ogkit/blog/open-graph-images-seo-guide", "permanent": true },
+    { "source": "/ogkit/guides/seo", "destination": "/ogkit/blog/open-graph-images-seo-guide", "permanent": true },
+    { "source": "/ogkit/guides/seo/", "destination": "/ogkit/blog/open-graph-images-seo-guide", "permanent": true },
+    { "source": "/ogkit/guides/nextjs", "destination": "/ogkit/for/nextjs", "permanent": true },
+    { "source": "/ogkit/guides/nextjs/", "destination": "/ogkit/for/nextjs", "permanent": true }
   ],
   "rewrites": [
     { "source": "/", "destination": "/ogkit/index.html" },
