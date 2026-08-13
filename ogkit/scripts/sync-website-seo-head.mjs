@@ -14,6 +14,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.resolve(__dirname, '..', '..')
 const siteHost = 'https://www.webmorp.art'
 
+/**
+ * String.prototype.replace(regex, replacement) treats $1/$100 in the replacement as
+ * capture refs — so "$100" becomes "00". Always inject literal HTML via a function.
+ */
+function replaceLiteral(html, pattern, replacement) {
+  if (typeof pattern === 'string') return html.replace(pattern, replacement)
+  return html.replace(pattern, () => replacement)
+}
+
 function websiteSeoExtra(relPath) {
   // Channel RU already declares og:locale=ru_RU; do not inject en_US (duplicate/wrong).
   const isRu = relPath.startsWith('channel/ru') || /\/ru\//.test(relPath)
@@ -65,7 +74,8 @@ function upsertNarrowKeywords(html, relPath) {
   const kw = NARROW_KEYWORDS[relPath]
   if (!kw) return html
   if (html.includes(`content="${kw}"`)) return html
-  html = html.replace(
+  html = replaceLiteral(
+    html,
     new RegExp(`<meta name="keywords" content="${GENERIC_KEYWORDS.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}">`),
     `<meta name="keywords" content="${kw}">`
   )
@@ -98,8 +108,8 @@ const faqBlock = extractJsonLdBlock(indexHtml, 'FAQPage')
 
 function upsertBlock(html, block, anchor) {
   const re = new RegExp(`${MARKER_START}[\\s\\S]*?${MARKER_END}\\n?`, 'm')
-  if (re.test(html)) return html.replace(re, block)
-  return html.replace(anchor, `${block}\n${anchor}`)
+  if (re.test(html)) return replaceLiteral(html, re, block)
+  return replaceLiteral(html, anchor, `${block}\n${anchor}`)
 }
 
 function replaceJsonLd(html, type, replacement) {
@@ -107,7 +117,7 @@ function replaceJsonLd(html, type, replacement) {
     `<script type="application/ld\\+json">\\s*\\{\\s*"@context": "https://schema.org",\\s*"@type": "${type}"[\\s\\S]*?</script>`,
     'm'
   )
-  return html.replace(re, replacement)
+  return replaceLiteral(html, re, replacement)
 }
 
 function upsertPortfolio(html) {

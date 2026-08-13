@@ -56,14 +56,16 @@ ${MARKER_END}`
 /** Replace marked block, legacy Organization script, or inject before </head>. */
 export function upsertPixidOrganization(html) {
   const block = pixidOrganizationScriptBlock()
+  // Function replacer: avoid String.replace $1/$100 eating prices in injected HTML.
+  const insert = () => `${block}\n`
   const marked = new RegExp(`${MARKER_START}[\\s\\S]*?${MARKER_END}\\n?`, 'm')
-  if (marked.test(html)) return html.replace(marked, `${block}\n`)
+  if (marked.test(html)) return html.replace(marked, insert)
 
   const legacyOrg = new RegExp(
     `<script type="application/ld\\+json">\\s*\\{\\s*"@context": "https://schema.org",\\s*"@type": "Organization"[\\s\\S]*?</script>\\n?`,
     'm'
   )
-  if (legacyOrg.test(html)) return html.replace(legacyOrg, `${block}\n`)
+  if (legacyOrg.test(html)) return html.replace(legacyOrg, insert)
 
   return html.replace('</head>', `${block}\n</head>`)
 }
