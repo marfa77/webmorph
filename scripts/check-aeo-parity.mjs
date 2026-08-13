@@ -46,6 +46,7 @@ const MONEY_PAGES = [
   'freelancer/index.html',
   'small-business/index.html',
   'restaurant/index.html',
+  'startup/index.html',
 ]
 
 const llms = read('llms.txt')
@@ -80,6 +81,31 @@ for (const rel of MONEY_PAGES) {
   else ok(`${rel} llms alternate`)
   if (!html.includes('data-llm="facts"')) fail(rel, 'missing data-llm=facts')
   else ok(`${rel} data-llm facts`)
+
+  // Guard: broken ai:* meta from String.replace("$100" → …$1…) corrupting attributes.
+  const aiDesc = html.match(/name="ai:description"\s+content="([^"]*)"/)
+  const aiCat = html.match(/name="ai:category"\s+content="([^"]*)"/)
+  if (aiDesc && /<meta\b/i.test(aiDesc[1])) {
+    fail(rel, 'ai:description embeds nested <meta (broken HTML — visible junk in browser)')
+  } else if (aiDesc) {
+    ok(`${rel} ai:description is a clean attribute`)
+  }
+  if (aiCat && /<meta\b/i.test(aiCat[1])) {
+    fail(rel, 'ai:category embeds nested <meta')
+  } else if (aiCat) {
+    ok(`${rel} ai:category is a clean attribute`)
+  }
+  if (/^00\b/m.test(html) || /\b00\/year\b/.test(html) || /\b00 one-page\b/.test(html)) {
+    fail(rel, 'orphaned "00…" text ($100 eaten by replace $1) — shows at top of page')
+  } else {
+    ok(`${rel} no $100→00 corruption`)
+  }
+  if (/\.hero-gradient\s*\{[^}]*\bbackground:\s*radial-gradient/.test(html)) {
+    fail(rel, 'hero-gradient uses background: shorthand (wipes bg-surface-dark → white-on-white)')
+  } else if (html.includes('hero-gradient')) {
+    ok(`${rel} hero-gradient preserves background-color`)
+  }
+
   // Guard: JS String.replace($1) must never eat "$100" into a nested <body> capture.
   const layer = html.match(/llm-aeo-layer:start([\s\S]*?)llm-aeo-layer:end/)
   if (layer && /<body[\s>]/i.test(layer[1])) {
