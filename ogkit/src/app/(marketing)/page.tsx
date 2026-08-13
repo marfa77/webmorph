@@ -94,6 +94,7 @@ export default function HomePage() {
   ] as const
 
   const useCases = [
+    ['Quickstart (60 seconds)', '/guides/quickstart'],
     ['Next.js OG images', '/for/nextjs'],
     ['Dynamic social preview images', '/use-case/dynamic-social-preview-images'],
     ['Signed URLs guide', '/guides/signed-urls'],

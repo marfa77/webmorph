@@ -159,7 +159,7 @@ export default function PricingPage() {
             use <code className="rounded bg-muted px-1 font-mono text-xs">demo=1</code> or an API key.
           </p>
           <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
-            Paid tiers below are future pricing. Nothing to buy today — sign in, create a key, ship OG images.
+            Paid tiers below are future pricing. Nothing to buy today — try the Playground, then ship.
           </p>
         </>
       ) : (
@@ -173,6 +173,18 @@ export default function PricingPage() {
           </p>
         </>
       )}
+
+      <div className="mx-auto mt-6 flex max-w-xl flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+        <Button asChild className="w-full sm:w-auto">
+          <Link href={withBasePath('/playground')}>Try Playground (no signup)</Link>
+        </Button>
+        <Button asChild variant="outline" className="w-full sm:w-auto">
+          <Link href={withBasePath('/guides/quickstart')}>5-minute Quickstart</Link>
+        </Button>
+        <Button asChild variant="ghost" className="w-full sm:w-auto">
+          <Link href={withBasePath('/docs')}>API docs</Link>
+        </Button>
+      </div>
 
       <div className="mt-10 grid gap-6 md:grid-cols-3">
         {(['free', 'pro', 'scale'] as const).map((id) => {

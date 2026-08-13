@@ -29,6 +29,86 @@ const base = siteConfig.url
 const api = (path: string) => `${base}${getApiUrl(path)}`
 
 const GUIDES: Record<string, Guide> = {
+  quickstart: {
+    title: 'OGKit quickstart — first Open Graph image in 60 seconds',
+    description:
+      'Ship your first 1200×630 og:image with OGKit: Playground → copy URL → paste into HTML or Next.js metadata → verify with Facebook Debugger. No signup required (demo=1).',
+    h1: 'Your first OG image in 60 seconds',
+    intro:
+      'You do not need an account to evaluate OGKit. This path gets a real 1200×630 PNG into your page meta tags, then optionally swaps demo mode for an API key.',
+    sections: [
+      {
+        heading: 'Step 1 — Pick a template in the Playground',
+        paragraphs: [
+          'Open the Playground, choose a template (article or minimal for most sites), and fill title + optional subtitle.',
+          openAccess
+            ? 'Leave demo=1 on — during open access there is no watermark and no quota.'
+            : 'Leave demo=1 on for a watermarked evaluation image with no API key.',
+        ],
+        bullets: [
+          'Playground: live PNG preview at 1200×630',
+          'Copy the HTTPS image URL from the preview panel',
+          'Prefer short titles (~60–80 chars) so Slack/LinkedIn do not clip the meaning',
+        ],
+      },
+      {
+        heading: 'Step 2 — Paste into HTML',
+        paragraphs: ['Put the absolute URL in both Open Graph and Twitter tags:'],
+        code: `<meta property="og:image" content="${api('/api/og/article')}?demo=1&title=Hello%20OGKit" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="${api('/api/og/article')}?demo=1&title=Hello%20OGKit" />`,
+      },
+      {
+        heading: 'Step 3 — Next.js App Router (optional)',
+        paragraphs: ['If you use Next.js metadata API:'],
+        code: `import type { Metadata } from "next";
+
+const og = new URL("${api('/api/og/article')}");
+og.searchParams.set("demo", "1");
+og.searchParams.set("title", "Hello OGKit");
+
+export const metadata: Metadata = {
+  openGraph: { images: [{ url: og.toString(), width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", images: [og.toString()] },
+};`,
+      },
+      {
+        heading: 'Step 4 — Verify with debuggers',
+        bullets: [
+          'Facebook Sharing Debugger — scrape and confirm the image',
+          'LinkedIn Post Inspector — refresh if an old card is cached',
+          'Twitter/X Card Validator — summary_large_image',
+          'See Tools for links, and Caching & rescrape when platforms keep old images',
+        ],
+      },
+      {
+        heading: 'Step 5 — Production key (when ready)',
+        paragraphs: [
+          'Sign in, create an API key, replace demo=1 with key=… (or Authorization: Bearer). Keep keys server-side — never commit them to the client bundle.',
+          'For public HTML, prefer signed URLs (see the Signed URLs guide).',
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Do I need to sign up first?',
+        answer: openAccess
+          ? 'No. demo=1 works without an account. Create a key when you want rotation, allowlists, or usage tracking.'
+          : 'No for evaluation (demo=1). Production URLs need a free or paid API key.',
+      },
+      {
+        question: 'Why is my social preview still the old image?',
+        answer:
+          'Most networks cache aggressively. Change the image URL (or query) and re-scrape with Facebook/LinkedIn tools. See Caching & rescrape.',
+      },
+    ],
+    related: [
+      ['Playground', '/playground'],
+      ['API reference', '/docs'],
+      ['Caching & rescrape', '/guides/caching-and-rescrape'],
+      ['Next.js guide', '/for/nextjs'],
+    ],
+  },
   'signed-urls': {
     title: 'Signed URLs & domain allowlists — OGKit',
     description:
@@ -384,6 +464,18 @@ ${api('/api/og/gradient')}?demo=1&title=Changelog+v2&subtitle=Signed+URLs&accent
     intro:
       'OGKit exposes a remote MCP server so coding agents can list templates, build image URLs, preview cards, emit Next.js generateMetadata snippets, and validate a page’s Open Graph tags — without inventing hosts or hand-rolling query strings.',
     sections: [
+      {
+        heading: 'What is MCP?',
+        paragraphs: [
+          'MCP (Model Context Protocol) is a standard way for AI coding tools — Cursor, Claude Desktop, and similar agents — to call external tools over HTTP. Instead of pasting docs into chat, the agent can invoke real operations (list templates, build a URL, validate a page).',
+          'Why care: ask Cursor “generate og:image metadata for every blog post in this folder” and it can use OGKit tools instead of inventing fake image hosts or hand-writing query strings.',
+        ],
+        bullets: [
+          'You: “Add Open Graph images for these posts”',
+          'Agent: og_list_templates → og_build_url → og_nextjs_snippet',
+          'You: paste or accept the PR — then verify with og_validate_page',
+        ],
+      },
       {
         heading: 'Endpoint',
         paragraphs: [

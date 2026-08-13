@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/pricing',
     '/tools',
     '/guides',
+    '/guides/quickstart',
     '/guides/signed-urls',
     '/guides/auto-og',
     '/guides/caching-and-rescrape',

@@ -6,13 +6,18 @@ import { breadcrumbListJsonLd } from '@/lib/breadcrumbs'
 import { FinishCta } from '@/components/marketing/finish-cta'
 
 export const metadata = marketingMetadata({
-  title: 'OGKit guides — signed URLs, auto OG, caching, appearance, MCP',
+  title: 'OGKit guides — quickstart, signed URLs, auto OG, caching, MCP',
   description:
-    'Deep OGKit guides: HMAC signed URLs, /api/og/auto metadata, Cache-Control and rescrape, theme/accent/pattern/fonts, and Cursor MCP setup.',
+    'OGKit guides: 60-second quickstart, HMAC signed URLs, /api/og/auto, Cache-Control and rescrape, appearance, and Cursor MCP setup.',
   pathname: '/guides',
 })
 
 const GUIDES = [
+  {
+    href: '/guides/quickstart',
+    title: 'Quickstart — first OG image in 60 seconds',
+    desc: 'Playground → copy URL → HTML/Next.js meta → Facebook Debugger. No signup required.',
+  },
   {
     href: '/guides/signed-urls',
     title: 'Signed URLs & domain allowlists',
