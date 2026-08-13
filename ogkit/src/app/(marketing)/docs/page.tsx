@@ -313,6 +313,7 @@ url.searchParams.set("sig", sig);`}</CodeBlock>
             ['Signed URLs', '/guides/signed-urls'],
             ['Auto OG (/api/og/auto)', '/guides/auto-og'],
             ['Caching & rescrape', '/guides/caching-and-rescrape'],
+            ['Troubleshooting', '/guides/troubleshooting'],
             ['Appearance params', '/guides/appearance'],
             ['MCP for Cursor', '/guides/mcp'],
             ['Next.js OG image generator guide', '/for/nextjs'],

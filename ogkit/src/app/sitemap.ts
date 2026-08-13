@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/guides/caching-and-rescrape',
     '/guides/appearance',
     '/guides/mcp',
+    '/guides/troubleshooting',
     '/guides/og-image-rendering',
     '/contact',
     '/privacy',

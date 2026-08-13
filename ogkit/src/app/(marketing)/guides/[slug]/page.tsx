@@ -377,6 +377,7 @@ ${api('/api/og/auto')}?key=KEY&url=${encodeURIComponent('https://example.com/blo
       },
     ],
     related: [
+      ['Troubleshooting', '/guides/troubleshooting'],
       ['Tools & debuggers', '/tools'],
       ['Open Graph SEO guide', '/blog/open-graph-images-seo-guide'],
       ['Signed URLs', '/guides/signed-urls'],
@@ -559,6 +560,126 @@ ${api('/api/og/gradient')}?demo=1&title=Changelog+v2&subtitle=Signed+URLs&accent
       ['llms.txt', '/llms.txt'],
       ['Next.js guide', '/for/nextjs'],
       ['Signed URLs', '/guides/signed-urls'],
+    ],
+  },
+  troubleshooting: {
+    title: 'Troubleshoot Open Graph images — blank, wrong, or stuck cards',
+    description:
+      'Fix blank og:image, wrong titles, relative URLs, API key errors, signed URL failures, and sticky Facebook/LinkedIn/Slack caches when using OGKit.',
+    h1: 'Troubleshoot Open Graph images',
+    intro:
+      'Most “OG is broken” reports are the same five failures: the HTML never had an absolute image URL, the key never reached the server, two tags disagree, the PNG URL 4xx’d, or a platform is serving a stale unfurl. Work the checklist top-down — do not start with Slack.',
+    sections: [
+      {
+        heading: '60-second triage',
+        bullets: [
+          'View source (not DevTools Elements after JS) — is og:image an absolute https://…/api/og/… URL?',
+          'Does twitter:image match og:image exactly?',
+          'curl -sI the image URL — HTTP 200 and content-type: image/png?',
+          'Open the image URL in a private window — does the title match the page H1?',
+          'If HTML and PNG are correct but Slack/FB are wrong → rescrape / version the URL (below).',
+        ],
+        code: `curl -sI "https://YOUR_PAGE" | head -5
+# then extract og:image and:
+curl -sI "PASTE_OG_IMAGE_URL" | grep -iE 'HTTP|content-type|cache-control'`,
+      },
+      {
+        heading: 'Symptom: blank or missing preview',
+        paragraphs: [
+          'Scrapers only see the first HTML response. Client-only React, late useEffect meta, or a SPA without prerender will look fine in Chrome and empty in Slack.',
+        ],
+        bullets: [
+          'Fix: set metadata in Next generateMetadata, Astro layout, Hugo partial, or another SSR/SSG head.',
+          'Relative paths like /og.png resolve against the wrong host for many bots — always absolute HTTPS.',
+          'Confirm the deployed host (www vs apex) matches the URL you are scraping.',
+        ],
+      },
+      {
+        heading: 'Symptom: wrong title / old product name on the card',
+        paragraphs: [
+          'OGKit renders whatever is in the query string. Updating page copy without updating the OGKit title param leaves the old card forever (and platforms may cache it).',
+        ],
+        bullets: [
+          'Align title/subtitle with the visible H1 + one-line summary.',
+          'After changing fields, the image URL changes → treat as a new cache object.',
+          'Static sites (Astro/Hugo): rebuild + redeploy before rescraping.',
+        ],
+      },
+      {
+        heading: 'Symptom: 401 / 403 / watermark / quota on the image URL',
+        bullets: [
+          'Missing or wrong key= — check server env (OGKIT_KEY), not NEXT_PUBLIC_ / PUBLIC_.',
+          'Signed URLs required on the key but sig= missing or canonical string wrong — see Signed URLs guide.',
+          'Domain allowlist enabled — add the page’s host (and www variant if used).',
+          'During open access, demo=1 works without a key for evaluation; production still prefers a rotatable key.',
+        ],
+      },
+      {
+        heading: 'Symptom: Facebook / LinkedIn / Slack stuck on the old card',
+        paragraphs: [
+          'This is almost never an OGKit render bug. Platforms cache unfurls aggressively. Caching & rescrape covers headers; here is the conversion path:',
+        ],
+        bullets: [
+          '1) Confirm live HTML already points at the new image URL.',
+          '2) Facebook Sharing Debugger → Scrape Again.',
+          '3) LinkedIn Post Inspector on the canonical URL.',
+          '4) Slack: delete the unfurl and reshare; if stuck, change the image URL (new title or v=2026-08-13) and reshare.',
+          '5) Avoid random _t= timestamps in production — use intentional v= only when you need a bust.',
+        ],
+      },
+      {
+        heading: 'Next.js-specific gotchas',
+        bullets: [
+          'Do not ship both opengraph-image.tsx and an OGKit URL for the same route without knowing which wins.',
+          'generateMetadata must run on the server — never import your og helper into a Client Component.',
+          'Static export / ISR: ensure the HTML that crawlers hit includes the tags (not only a client shell).',
+        ],
+      },
+      {
+        heading: 'Astro & Hugo (static) gotchas',
+        bullets: [
+          'Empty getenv / import.meta.env at build → key= blank baked into every page.',
+          'Theme default og:image conflicting with your partial — check for duplicate meta tags.',
+          'Title changes require rebuild + deploy before any rescrape will help.',
+        ],
+      },
+      {
+        heading: 'Still stuck?',
+        paragraphs: [
+          'Use Playground to prove the template+fields look right, Tools for debugger links, and Docs for status codes. If HTML + PNG are correct and rescrape was forced, wait for residual cache or version the image URL once more.',
+        ],
+      },
+    ],
+    faq: [
+      {
+        question: 'Why does the card look fine in Playground but wrong in Slack?',
+        answer:
+          'Playground hits OGKit directly. Slack reads your page HTML and may cache an older og:image. Fix HTML first, then rescrape or version the image URL.',
+      },
+      {
+        question: 'Should I add ?t=Date.now() to every og:image?',
+        answer:
+          'No. That defeats CDN caching and creates unbounded variants. Change real fields, or use a deliberate v= when you intentionally bust cache.',
+      },
+      {
+        question: 'og:image and twitter:image differ — which wins?',
+        answer:
+          'Depends on the app. Keep them identical absolute URLs so LinkedIn, Slack, and X see the same card.',
+      },
+      {
+        question: 'Does a 200 HTML page guarantee a good unfurl?',
+        answer:
+          'No. Bots need absolute image URLs in the first HTML, a fetchable PNG, and often a manual rescrape after edits.',
+      },
+    ],
+    related: [
+      ['Caching & rescrape', '/guides/caching-and-rescrape'],
+      ['Next.js guide', '/for/nextjs'],
+      ['Astro guide', '/for/astro'],
+      ['Hugo guide', '/for/hugo'],
+      ['Signed URLs', '/guides/signed-urls'],
+      ['Tools & debuggers', '/tools'],
+      ['Playground', '/playground'],
     ],
   },
   'og-image-rendering': {

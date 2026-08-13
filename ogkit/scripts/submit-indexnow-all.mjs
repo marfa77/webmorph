@@ -50,6 +50,7 @@ const ogkitPaths = [
   '/guides/caching-and-rescrape',
   '/guides/appearance',
   '/guides/mcp',
+  '/guides/troubleshooting',
   '/guides/og-image-rendering',
   '/contact',
   '/privacy',

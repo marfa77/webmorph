@@ -50,6 +50,7 @@ export function buildLlmsTxtBody(): string {
     `- Caching & rescrape: ${abs('/guides/caching-and-rescrape')} (alias: ${abs('/guides/caching')} → 301)`,
     `- Appearance (theme/accent/pattern/font): ${abs('/guides/appearance')}`,
     `- MCP how-to (Cursor / agents): ${abs('/guides/mcp')}`,
+    `- Troubleshooting (blank/wrong/stuck cards): ${abs('/guides/troubleshooting')}`,
     `- Satori vs Puppeteer (rendering models): ${abs('/guides/og-image-rendering')}`,
     `- Next.js framework guide: ${abs('/for/nextjs')} (alias: ${abs('/guides/nextjs')} → 301)`,
     `- Long-form SEO guide (Open Graph images): ${abs('/blog/open-graph-images-seo-guide')} (alias: ${abs('/guides/open-graph-seo')} → 301) — answers “open graph image size”, “og:image absolute URL”, “Next.js generateMetadata”, “Facebook/LinkedIn cache”, Google thumbnails + JSON-LD + /llms.txt for LLMs`,

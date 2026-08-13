@@ -32,6 +32,7 @@ const OGKIT_PATHS = [
   '/guides/caching-and-rescrape',
   '/guides/appearance',
   '/guides/mcp',
+  '/guides/troubleshooting',
   '/guides/og-image-rendering',
   '/contact',
   '/privacy',
