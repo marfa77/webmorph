@@ -1,6 +1,6 @@
 # webmorph → [webmorp.art](https://www.webmorp.art/)
 
-> **Telegram channel → indexed static website** (Telethon → content DB → HTML) and **$100 business card sites** in 24h. Same parser family as [Barakhlo](https://barakhlo.online/). Not a web agency — narrow flat-rate niche.
+> **Telegram channel → indexed static website** (Telethon → content DB → HTML) and **$100 business card sites** in 24h. Not a web agency — narrow flat-rate niche.
 
 **Canonical repo** for [webmorp.art](https://www.webmorp.art/) — marketing HTML, Channel → Site demo, deploy tooling. Operator: [PixID Studio](https://www.pixid.studio/).
 
@@ -9,7 +9,6 @@
 | **Live site** | https://www.webmorp.art/ |
 | **LLM index** | https://www.webmorp.art/llms.txt |
 | **Contact** | customer@webmorp.art |
-| **Barakhlo** (38+ channels in prod) | https://barakhlo.online/ |
 
 ---
 
@@ -35,8 +34,6 @@ Turn a Telegram channel into an **indexed website on your own domain** without r
 
 ```
 Telegram channel  →  Telethon parser  →  content database  →  static HTML  →  your domain
-                              ↑
-                    same pipeline family as Barakhlo
 ```
 
 1. **Telegram stays the source** — you keep posting recipes, guides, tours, catalog items, etc.
@@ -49,13 +46,11 @@ Telegram channel  →  Telethon parser  →  content database  →  static HTML 
 
 | Resource | URL |
 |----------|-----|
-| **Barakhlo** (38+ Telegram channels in production; listings platform) | https://barakhlo.online/ |
 | **Channel → Site (EN)** | https://www.webmorp.art/channel/ |
 | **Сайт из Telegram (RU)** | https://www.webmorp.art/channel/ru/ |
-| **Production pipeline proof** | https://barakhlo.online/ (38+ Telegram channels) |
 | **Guides** | https://www.webmorp.art/channel/guides/ |
 
-webmorp.art uses the **same Telethon + prefilter logic** as [Barakhlo](https://barakhlo.online/). Difference: Barakhlo serves Postgres + Next.js listings; Channel → Site publishes **static HTML** to the client’s domain.
+Channel → Site uses Telethon + rule-based prefilter, then publishes **static HTML** to the client’s domain.
 
 **$100 card sites do not include Telegram import or sync** — only Channel → Site (from $280) does.
 

@@ -70,7 +70,7 @@
           "name": "How often does sync run?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Typically once a week — same cron model as Barakhlo. Daily is possible for high-volume channels; we quote separately."
+            "text": "Typically once a week — weekly cron, quoted separately for daily. Daily is possible for high-volume channels; we quote separately."
           }
         },
         {
@@ -83,10 +83,10 @@
         },
         {
           "@type": "Question",
-          "name": "Is this the same tech as Barakhlo?",
+          "name": "Do you use AI to rewrite my posts?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Same Telethon parser and regex prefilter as Barakhlo. Channel → Site stores normalized posts in a content database and publishes fast static HTML to your domain. No LLM in the sync path."
+            "text": "Telethon parser and regex prefilter. Channel → Site stores normalized posts in a content database and publishes fast static HTML to your domain. No LLM in the sync path."
           }
         },
         {
@@ -138,7 +138,6 @@
       },
       "sameAs": [
         "https://www.webmorp.art/",
-        "https://barakhlo.online/",
         "https://www.pixid.studio/",
         "https://prep2go.study/",
         "https://www.emigro.online/",
@@ -158,10 +157,10 @@
 </head>
 <body class="font-body bg-white text-gray-900 antialiased">
 <!-- llm-aeo-layer:start -->
-<div class="sr-only" data-llm="facts">Channel → Site from $280 includes site + domain setup + import + 3 months sync Care. Ongoing ~$25–30/mo. $100 card site does NOT include Telegram sync. RU hub: /channel/ru. Pipeline family: barakhlo.online.</div>
+<div class="sr-only" data-llm="facts">Channel → Site from $280 includes site + domain setup + import + 3 months sync Care. Ongoing ~$25–30/mo. $100 card site does NOT include Telegram sync. RU hub: /channel/ru. Pipeline: Telethon → content database → static HTML.</div>
 <div class="sr-only" data-llm="commercial">EN: https://www.webmorp.art/channel · RU: https://www.webmorp.art/channel/ru · Card-only (no TG): https://www.webmorp.art/#contact</div>
 <div class="sr-only" data-llm="differentiators">Telegram posts → content DB → regenerated static HTML on a schedule. Custom domain + Google/Yandex indexing. Distinct from $100 one-page card product.</div>
-<div class="sr-only" data-llm="statistics">Launch from $280 (~28 000 ₽); sync Care ~$25–30/mo (~2 500–3 000 ₽/мес). Proof stack: Telethon pipeline used for 38+ channels on barakhlo.online.</div>
+<div class="sr-only" data-llm="statistics">Launch from $280 (~28 000 ₽); sync Care ~$25–30/mo (~2 500–3 000 ₽/мес). Proof stack: production Telethon pipeline used for 38+ channels.</div>
 <!-- llm-aeo-layer:end -->
 
     <header class="fixed top-0 inset-x-0 z-50 bg-surface-dark/90 backdrop-blur-md border-b border-white/5">
@@ -231,7 +230,7 @@
             <div class="max-w-6xl mx-auto px-4 sm:px-6">
                 <div class="text-center mb-14">
                     <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4">Sync without AI guesswork</h2>
-                    <p class="text-gray-500 max-w-2xl mx-auto mb-6">Same Telethon pipeline as <a href="https://barakhlo.online/" target="_blank" rel="noopener" class="text-brand hover:underline">Barakhlo</a> (38+ channels in production). Posts land in a <strong>content database</strong> first — your public site is fast static HTML regenerated from that store on a schedule. <strong>Rules, not LLMs.</strong></p>
+                    <p class="text-gray-500 max-w-2xl mx-auto mb-6">Production Telethon pipeline: posts land in a <strong>content database</strong> first — your public site is fast static HTML regenerated from that store on a schedule. <strong>Rules, not LLMs.</strong></p>
                     <p class="text-gray-400 text-sm max-w-xl mx-auto">Telegram → parse → database → build → deploy to your domain</p>
                 </div>
                 <div class="grid sm:grid-cols-4 gap-4 mb-8 max-w-4xl mx-auto text-center text-xs text-gray-500">
@@ -247,7 +246,7 @@
                     </div>
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <p class="text-brand font-bold text-sm mb-2">Regex patterns</p>
-                        <p class="text-gray-600 text-sm leading-relaxed">Prices, dates, “visa”, “from $” — keyword filters like Barakhlo’s prefilter, tuned for your niche.</p>
+                        <p class="text-gray-600 text-sm leading-relaxed">Prices, dates, “visa”, “from $” — keyword filters tuned for your niche.</p>
                     </div>
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                         <p class="text-brand font-bold text-sm mb-2">Noise skipped</p>
@@ -292,15 +291,15 @@
                 </details>
                 <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm">
                     <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">How often does sync run?</summary>
-                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Typically once a week — same cron model as Barakhlo. Daily is possible for high-volume channels; we quote separately.</p>
+                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Typically once a week — weekly cron, quoted separately for daily. Daily is possible for high-volume channels; we quote separately.</p>
                 </details>
                 <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm">
                     <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">Who is this for?</summary>
                     <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Cooking &amp; food blogs, health &amp; wellness, auto &amp; tech reviews, travel, finance, education, Telegram-first shops, local services, niche media — anyone with structured posts (recipes, prices, guides, reviews) that deserve permanent URLs.</p>
                 </details>
                 <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm">
-                    <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">Is this the same tech as Barakhlo?</summary>
-                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Same Telethon parser and regex prefilter as Barakhlo. Difference: Barakhlo serves listings from Postgres + Next.js; Channel → Site stores normalized posts in a content database and publishes fast static HTML to your domain. No LLM in the sync path.</p>
+                    <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">Do you use AI to rewrite my posts?</summary>
+                    <p class="px-6 pb-4 text-gray-600 text-sm leading-relaxed">Telethon parser and regex prefilter. Channel → Site stores normalized posts in a content database and publishes fast static HTML to your domain. No LLM in the sync path.</p>
                 </details>
                 <details class="group rounded-2xl border border-gray-200 bg-white shadow-sm">
                     <summary class="flex cursor-pointer items-center justify-between px-6 py-4 font-heading font-bold">Why is there a monthly fee?</summary>
@@ -314,7 +313,6 @@
                 <ul class="space-y-3 text-sm">
                     <li><a href="/channel/guides/telegram-channel-to-website.html" class="text-brand font-semibold hover:underline">Telegram channel to website — step-by-step</a></li>
                     <li><a href="/channel/guides/kak-sdelat-sait-iz-telegram-kanala.html" class="text-brand font-semibold hover:underline" hreflang="ru">Как сделать сайт из Telegram-канала (RU)</a></li>
-                    <li><a href="https://barakhlo.online/" class="text-gray-600 hover:text-brand" target="_blank" rel="noopener">Live production stack: Barakhlo (38+ channels)</a></li>
                 </ul>
             </div>
         </section>

@@ -11,7 +11,6 @@ export const pixidOrganizationJsonLd = {
   },
   sameAs: [
     "https://www.webmorp.art/",
-    "https://barakhlo.online/",
     "https://www.pixid.studio/",
     "https://prep2go.study/",
     "https://www.emigro.online/",
