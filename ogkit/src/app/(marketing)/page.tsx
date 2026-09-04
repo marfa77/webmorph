@@ -15,6 +15,7 @@ import {
   OGKIT_AI_DESCRIPTION,
   withAiMetadata,
 } from '@/lib/llm-meta'
+import { WEBMORP_PUBLIC_PAUSED } from '@/lib/site-pause'
 
 const openAccess = isOpenAccess()
 const homeCanonical = absoluteSiteUrl('')
@@ -31,7 +32,9 @@ const homeOgImage = dogfoodOgImageUrl({
 })
 const homeOgAlt = 'OGKit dynamic Open Graph image API — 1200×630 social cards'
 
-export const metadata: Metadata = withAiMetadata(
+export const metadata: Metadata = WEBMORP_PUBLIC_PAUSED
+  ? { robots: { index: false, follow: false, nocache: true } }
+  : withAiMetadata(
   {
     title: { absolute: homeTitle },
     description: homeDescription,
@@ -58,6 +61,8 @@ export const metadata: Metadata = withAiMetadata(
 )
 
 export default function HomePage() {
+  if (WEBMORP_PUBLIC_PAUSED) return null
+
   const faq = [
     {
       question: 'What is OGKit?',
