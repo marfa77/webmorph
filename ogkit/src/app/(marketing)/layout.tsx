@@ -1,11 +1,21 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { withBasePath } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { Ga4 } from '@/components/analytics/ga4'
 import { Button } from '@/components/ui/button'
 import { CookieBanner } from '@/components/marketing/cookie-banner'
+import { WEBMORP_PUBLIC_PAUSED } from '@/lib/site-pause'
+
+export const metadata: Metadata = WEBMORP_PUBLIC_PAUSED
+  ? { robots: { index: false, follow: false, nocache: true } }
+  : {}
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
+  if (WEBMORP_PUBLIC_PAUSED) {
+    return <div />
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <Ga4 />

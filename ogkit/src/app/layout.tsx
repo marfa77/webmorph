@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from 'next/font/google'
 import { Toaster } from 'sonner'
 import { AuthSessionProvider } from '@/components/auth-session-provider'
 import { PixidOrganizationSchema } from '@/components/PixidOrganizationSchema'
+import { WEBMORP_PUBLIC_PAUSED } from '@/lib/site-pause'
 import { absoluteSiteUrl } from '@/config/paths'
 import { siteConfig } from '@/config/site'
 import { dogfoodOgImageUrl, ogImageWithAlt } from '@/lib/dogfood-og'
@@ -112,7 +113,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className={`${spaceGrotesk.variable} ${inter.variable} font-body antialiased`}>
-        <PixidOrganizationSchema />
+        {WEBMORP_PUBLIC_PAUSED ? null : <PixidOrganizationSchema />}
         <AuthSessionProvider>{children}</AuthSessionProvider>
         <Toaster position="top-center" />
       </body>

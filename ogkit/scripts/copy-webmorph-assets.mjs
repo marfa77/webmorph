@@ -99,3 +99,41 @@ ${websiteRoutes
 `
 fs.writeFileSync(path.join(publicDir, 'website-sitemap.xml'), sitemapXml)
 console.log('[copy-webmorph-assets] ogkit/public/website-sitemap.xml (website landings)')
+
+/** Keep in sync with ogkit/src/lib/site-pause.ts — flip both to restore the public site. */
+const WEBMORP_PUBLIC_PAUSED = true
+const PAUSED_HTML = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title></title>
+</head>
+<body></body>
+</html>
+`
+
+function replaceMarketingHtml(dir) {
+  if (!fs.existsSync(dir)) return
+  for (const name of fs.readdirSync(dir)) {
+    const full = path.join(dir, name)
+    if (fs.statSync(full).isDirectory()) {
+      replaceMarketingHtml(full)
+      continue
+    }
+    if (!name.endsWith('.html')) continue
+    if (name.startsWith('yandex_')) continue
+    fs.writeFileSync(full, PAUSED_HTML)
+  }
+}
+
+if (WEBMORP_PUBLIC_PAUSED) {
+  replaceMarketingHtml(publicDir)
+  fs.writeFileSync(path.join(publicDir, 'website-robots.txt'), 'User-agent: *\nDisallow: /\n')
+  fs.writeFileSync(path.join(publicDir, 'website-llms.txt'), '# Unavailable\n')
+  fs.writeFileSync(
+    path.join(publicDir, 'website-sitemap.xml'),
+    '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>\n',
+  )
+  console.log('[copy-webmorph-assets] public marketing pages paused (empty + noindex)')
+}
