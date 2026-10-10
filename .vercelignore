@@ -1,0 +1,6 @@
+pipeline
+docs
+.env
+**/.env
+**/.env.local
+**/.audit_runs

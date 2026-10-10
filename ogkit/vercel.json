@@ -69,7 +69,12 @@
     { "source": "/ogkit/compare/satori-vs-puppeteer", "destination": "/ogkit/guides/og-image-rendering", "permanent": true },
     { "source": "/ogkit/compare/satori-vs-puppeteer/", "destination": "/ogkit/guides/og-image-rendering", "permanent": true }
   ],
+  "headers": [
+    { "source": "/p/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow, noarchive" }] }
+  ],
   "rewrites": [
+    { "source": "/p/:token", "destination": "https://webmorp-proposals.vercel.app/p/:token/index.html" },
+    { "source": "/p/:token/:path*", "destination": "https://webmorp-proposals.vercel.app/p/:token/:path*" },
     { "source": "/", "destination": "/ogkit/index.html" },
     { "source": "/freelancer", "destination": "/ogkit/freelancer/index.html" },
     { "source": "/freelancer/", "destination": "/ogkit/freelancer/index.html" },
