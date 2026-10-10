@@ -1,5 +1,4 @@
 import { absoluteSiteUrl } from '@/config/paths'
-import { WEBMORP_PUBLIC_PAUSED } from '@/lib/site-pause'
 import type { MetadataRoute } from 'next'
 
 /** PixID Layer A AI allowlist — Allow: / for each bot. */
@@ -21,9 +20,6 @@ const AI_BOTS = [
 ] as const
 
 export default function robots(): MetadataRoute.Robots {
-  if (WEBMORP_PUBLIC_PAUSED) {
-    return { rules: [{ userAgent: '*', disallow: '/' }] }
-  }
   return {
     rules: [
       { userAgent: '*', allow: '/' },
